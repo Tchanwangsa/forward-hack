@@ -23,3 +23,9 @@ frontend/.vite/
 # Build
 *.egg-info/
 uv.lock
+
+# TS incremental build state
+frontend/tsconfig.tsbuildinfo
+
+# Superseded mock data snapshot
+mock-company-OLD-v1-backup/

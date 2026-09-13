@@ -37,7 +37,11 @@ cp .env.example .env      # add your ANTHROPIC_API_KEY
 make install
 make migrate              # starts Postgres in Docker, runs alembic
 make ingest               # mock-company/ -> database
+make capture              # run tier 1 over the sources -> the review queue
 ```
+
+`make capture` drafts; it never commits. Rows leave the queue through
+`POST /api/capture/drafts/{id}/accept|edit|reject` and nowhere else.
 
 Then two terminals:
 
@@ -53,7 +57,11 @@ Postgres is published on host port **5433**, so a local Postgres on 5432 does no
 From [`plan/ARCHITECTURE.md`](plan/ARCHITECTURE.md) §Build order. Three built properly
 beats five half-wired.
 
-1. **Outage watch** — telemetry → incident log. The strongest single demo.
+1. ~~**Outage watch** — telemetry → incident log. The strongest single demo.~~
+   **Built.** 44 rows recovered, 559 completions, 100% field accuracy against
+   ground truth, coverage 53% → 93% if the queue is worked as drafted.
+   **The capture queue screen it feeds is built** — `make web`, then
+   http://localhost:5173/capture.
 2. **Inbox triage** — mail → comms log + complaint recommendation.
 3. **Meeting scribe** — transcript → comms log.
 4. **Tier 2**, all five workflows. Lands ALERT-FALSE / SW 1.1.0.

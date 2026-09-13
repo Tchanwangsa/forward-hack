@@ -4,6 +4,17 @@ export async function api<T>(path: string, init?: RequestInit): Promise<T> {
     headers: { 'Content-Type': 'application/json' },
     ...init,
   })
-  if (!res.ok) throw new Error(`${res.status} ${res.statusText}`)
+  if (!res.ok) {
+    // FastAPI puts the reason in `detail` — "a rejection needs a rationale" is
+    // worth showing the reviewer verbatim.
+    const detail = await res.text().then((t) => {
+      try {
+        return JSON.parse(t).detail ?? t
+      } catch {
+        return t
+      }
+    })
+    throw new Error(typeof detail === 'string' ? detail : `${res.status} ${res.statusText}`)
+  }
   return res.json() as Promise<T>
 }

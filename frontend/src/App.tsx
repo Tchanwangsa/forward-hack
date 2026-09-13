@@ -16,7 +16,7 @@ const nav = [
 
 export default function App() {
   return (
-    <div className="min-h-screen bg-neutral-50 text-neutral-900">
+    <div className="flex h-screen flex-col bg-neutral-50 text-neutral-900">
       <header className="flex items-center gap-6 border-b border-neutral-200 bg-white px-6 py-3">
         <span className="font-semibold tracking-tight">Asteria PMS</span>
         <nav className="flex gap-4 text-sm">
@@ -33,14 +33,14 @@ export default function App() {
           ))}
         </nav>
       </header>
-      <main className="p-6">
+      <main className="min-h-0 flex-1 overflow-hidden">
         <Routes>
           <Route path="/" element={<Navigate to="/capture" replace />} />
           <Route path="/capture" element={<CaptureQueue />} />
-          <Route path="/fleet" element={<Fleet />} />
-          <Route path="/indicators" element={<Indicators />} />
-          <Route path="/signals" element={<SignalQueue />} />
-          <Route path="/ncs" element={<NCDrafts />} />
+          <Route path="/fleet" element={<div className="p-6"><Fleet /></div>} />
+          <Route path="/indicators" element={<div className="p-6"><Indicators /></div>} />
+          <Route path="/signals" element={<div className="p-6"><SignalQueue /></div>} />
+          <Route path="/ncs" element={<div className="p-6"><NCDrafts /></div>} />
         </Routes>
       </main>
     </div>

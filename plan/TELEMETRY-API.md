@@ -6,7 +6,7 @@ PulseOne hubs are network-connected and already report to a clinical dashboard. 
 
 **The hinge:** an event's `code` is the indicator's `Internal Code`. A hub emitting `CONN-LINK-LOSS` has classified itself as IND-01. Workflow 1 does no work on telemetry; all of its work is on the human-authored sources.
 
-**And the stream now has a second consumer inside the product.** It is tier 1's primary source as well as tier 2's — see §5. Fleet size throughout: **250 hubs**, per [`mock-company-v2/README.md`](../mock-company-v2/README.md).
+**And the stream now has a second consumer inside the product.** It is tier 1's primary source as well as tier 2's — see §5. Fleet size throughout: **250 hubs**, per [`mock-company/README.md`](../mock-company/README.md).
 
 ---
 

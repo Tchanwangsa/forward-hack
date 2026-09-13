@@ -82,7 +82,7 @@ Four rules hold for all five:
 
 ## Why the gaps are the product
 
-This is not a hypothesis about real PMS teams. It is measured in the dataset the product is built against ([`MOCK-DATA.md`](MOCK-DATA.md), `mock-company-v2/ground-truth/`):
+This is not a hypothesis about real PMS teams. It is measured in the dataset the product is built against ([`MOCK-DATA.md`](MOCK-DATA.md), `mock-company/ground-truth/`):
 
 | The world | The register | Gap |
 |---|---|---|

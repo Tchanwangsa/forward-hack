@@ -226,7 +226,7 @@ The classification job here is the hardest in the dataset and the best demonstra
 
 ## The capture scorecard
 
-One table, all five bots, and it is a real screen. Every number below is computable against `mock-company-v2/ground-truth/`.
+One table, all five bots, and it is a real screen. Every number below is computable against `mock-company/ground-truth/`.
 
 | Metric | Why it is the right measure |
 |---|---|

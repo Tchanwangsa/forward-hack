@@ -1,6 +1,6 @@
 # Upstream sources — the raw material
 
-**What this is.** The spec for the artifacts tier 1 watches. These do not exist yet: `mock-company-v2/` generated the registers, and the capture agents need the material *upstream* of them.
+**What this is.** The spec for the artifacts tier 1 watches. These do not exist yet: `mock-company/` generated the registers, and the capture agents need the material *upstream* of them.
 
 Companions: [`CAPTURE-AGENTS.md`](CAPTURE-AGENTS.md) (who reads what), [`MOCK-DATA.md`](MOCK-DATA.md) (how the register set is generated), [`TELEMETRY-API.md`](TELEMETRY-API.md) (the stream's shape as an API).
 
@@ -39,7 +39,7 @@ That third one matters practically: the register pack is already verified, alrea
 ## Layout
 
 ```text
-mock-company-v2/
+mock-company/
   registers/            unchanged — the nine (now eleven) workbooks
   ground-truth/         extended — artifact ↔ row ↔ event links
   sources/              NEW — the raw upstream material
@@ -196,7 +196,7 @@ One NDJSON record per round: who, when, which ward, which beds walked, and free-
 
 ## Ground truth for artifacts
 
-Extends `mock-company-v2/ground-truth/`. Answer key, never handed to anything being evaluated.
+Extends `mock-company/ground-truth/`. Answer key, never handed to anything being evaluated.
 
 | File | What it is |
 |---|---|

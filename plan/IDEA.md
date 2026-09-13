@@ -12,7 +12,7 @@ Not a compliance engine. Not an eQMS. A colleague who takes the minutes, and onl
 
 Real post-market surveillance analysis fails, and it does not fail at the arithmetic. It fails because the logs it runs on are incomplete and everyone involved already knows it.
 
-In the register set this product is built against ([`mock-company-v2/`](../mock-company-v2/README.md), ground truth in `mock-company-v2/ground-truth/`):
+In the register set this product is built against ([`mock-company/`](../mock-company/README.md), ground truth in `mock-company/ground-truth/`):
 
 | The world | The register | Gap |
 |---|---|---|

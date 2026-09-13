@@ -59,7 +59,7 @@ One honest note about order. That diagram is the *logical* order, and the build 
 
 ## What gets generated
 
-**The registers** — as built and verified in [`mock-company-v2/`](../mock-company-v2/README.md):
+**The registers** — as built and verified in [`mock-company/`](../mock-company/README.md):
 
 | Artefact | Grain | Volume |
 |---|---|---|
@@ -73,7 +73,7 @@ One honest note about order. That diagram is the *logical* order, and the build 
 | `Complaint Register` | one per formal complaint | **new** — small by nature, and `Declined` rows are part of it |
 | `PMS Documents` · `Indicators & Thresholds` · `PMS Review Meetings` | — | 24 · 7 · 22 |
 
-**The upstream artifacts** — specified in [`UPSTREAM-SOURCES.md`](UPSTREAM-SOURCES.md), generated into `mock-company-v2/sources/`:
+**The upstream artifacts** — specified in [`UPSTREAM-SOURCES.md`](UPSTREAM-SOURCES.md), generated into `mock-company/sources/`:
 
 | Artefact | Grain | Read by |
 |---|---|---|
@@ -83,7 +83,7 @@ One honest note about order. That diagram is the *logical* order, and the build 
 | `service/work-orders.csv` · `technician-notes.csv` · `parts-replaced.csv` | joined on `work_order_id` | RMA capture |
 | `ward-rounds/rounds.ndjson` | one record per round, free-text per bed | field-check nudge |
 
-The four agent registers (Signal, Product NC, **CAPA**, Agent Action Log) are **not generated** for the live window. The product writes them. What exists is a back-catalogue — 18 historical signals, 5 closed NCs, 316 logged actions, none of them touching a planted story — because a believable history is precedent for the agent to find, while a pre-written finding is the answer.
+The four system-maintained registers (Signal, Product NC, **CAPA**, Agent Action Log) are **not generated** for the live window. The product writes them. Signals and Product NCs retain a back-catalogue — 18 historical signals and 5 closed NCs, none touching a planted story — because believable precedent helps the agent investigate. The Agent Action Log starts empty so every row shown in the demo was produced by that run.
 
 Period: register rows span twenty months ending at the demo date of 2026-09-13. Hub install dates precede it, from 2024-09-15.
 
@@ -199,7 +199,7 @@ Derived after generation, kept out of the product's reach.
 | **Coverage lift** | The headline: indicator events correctly represented in the registers, before and after capture. The measured baseline is 53%. |
 | Traceability | Can every number be walked back to source rows via the Agent Action Log, and from a drafted row to its artifact? |
 
-The answer key for the register layer is `mock-company-v2/ground-truth/` as built — `hubs.csv`, `events.csv`, the four `*-links.csv` files, `organisation-variants.csv`, `patch-allocations.csv`, `verification.txt`. The artifact layer extends it with five more files, specified in [`UPSTREAM-SOURCES.md`](UPSTREAM-SOURCES.md) §Ground truth for artifacts:
+The answer key for the register layer is `mock-company/ground-truth/` as built — `hubs.csv`, `events.csv`, the four `*-links.csv` files, `organisation-variants.csv`, `patch-allocations.csv`, `verification.txt`. The artifact layer extends it with five more files, specified in [`UPSTREAM-SOURCES.md`](UPSTREAM-SOURCES.md) §Ground truth for artifacts:
 
 | File | What it scores |
 |---|---|
@@ -230,4 +230,4 @@ A qualified reviewer may judge whether an output is useful. The dataset must not
 
 ## Ownership note
 
-`mock-company-v2/`, `tools/` and `reference-data/` are owned by the data-generation workstream. This file is the contract they generate against, and [`mock-company-v2/README.md`](../mock-company-v2/README.md) is the authority on what was actually built — where the two disagree, the README wins and this file is wrong. The upstream artifact layer is in progress against [`UPSTREAM-SOURCES.md`](UPSTREAM-SOURCES.md). The superseded v0 dataset build is logged in [`archive/BUILD-STATUS-V0.md`](archive/BUILD-STATUS-V0.md).
+`mock-company/`, `tools/` and `reference-data/` are owned by the data-generation workstream. This file is the contract they generate against, and [`mock-company/README.md`](../mock-company/README.md) is the authority on what was actually built — where the two disagree, the README wins and this file is wrong. The upstream artifact layer is in progress against [`UPSTREAM-SOURCES.md`](UPSTREAM-SOURCES.md). The superseded v0 dataset build is logged in [`archive/BUILD-STATUS-V0.md`](archive/BUILD-STATUS-V0.md).

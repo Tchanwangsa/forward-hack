@@ -76,7 +76,7 @@ Design rules for this pane, all of them about the same failure:
 └──────────────────────────────────────────────────────────────────────────────┘
 ```
 
-*(The 91% is an illustration of the shape, not a claim. Coverage lift, field accuracy and every other scorecard number are to-be-measured against `mock-company-v2/ground-truth/capture-targets.csv` once the capture run is scored. 53% and 44 are measured.)*
+*(The 91% is an illustration of the shape, not a claim. Coverage lift, field accuracy and every other scorecard number are to-be-measured against `mock-company/ground-truth/capture-targets.csv` once the capture run is scored. 53% and 44 are measured.)*
 
 Two reasons for the panel rather than the screen. First, the scorecard's job is to **discount the accept rate the reviewer is generating on this very screen** — a tired reviewer accepting everything scores identically to a perfect bot, which is why field accuracy is scored against ground truth and not against the verdict. Putting that caveat one navigation step away from the person clicking accept hides it from the only person it is about. Second, a standalone metrics screen in an internal tool is the screen nobody opens.
 

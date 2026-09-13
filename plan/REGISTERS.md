@@ -360,9 +360,9 @@ One row per CAPA. Recommended by tier 3, **opened by a human**. See [`CAPA.md`](
 
 **`Declined` and `Deferred` both require a rationale**, and both stay in the register permanently. `Why prior action did not hold` is the field that makes this register worth having: a CAPA system whose history does not record why the last fix failed will recommend the same fix again.
 
-### 4.4 Agent Action Log — 316 rows of history
+### 4.4 Agent Action Log — empty at demo start
 
-Every classification, calculation, draft and email the agent produced, across all three tiers.
+Every classification, calculation, draft and email the agent produces across all three tiers is appended during the live demo. The fixture contains the header only so the run's activity is unambiguous.
 
 `Action ID · Timestamp · Tier (1–3) · Workflow · Autonomy level · Inputs (artifact + source record IDs) · Rule/model version · Output · Human verdict (accepted / edited / rejected) · Reviewed By · Notes`
 

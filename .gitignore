@@ -12,3 +12,14 @@ venv/
 # Mock data
 mock-company/
 tools/
+# Env
+.env
+
+# Node
+node_modules/
+dist/
+frontend/.vite/
+
+# Build
+*.egg-info/
+uv.lock

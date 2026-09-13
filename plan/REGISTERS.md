@@ -48,6 +48,8 @@ PMS Plan & Report      ── the approved indicator rule set
 
 The customer-controlled reference and capture-fed spreadsheets remain authoritative for the human source records during the pilot. They are imported into versioned Postgres snapshots, and the analysis reads a completed database view that combines each untouched source row with accepted capture-layer additions and completions.
 
+In the pilot those spreadsheets are seven live Google Sheets, one per workbook, reached through a service account that is invited to each file rather than holding blanket access. Access is therefore per register: the agent can hold the Incident log without the Complaint register. See [`SHEETS.md`](SHEETS.md).
+
 The `.xlsx` names for the four system-maintained registers describe controlled exports and the deterministic demo fixtures, **not four live files that the agent edits directly**. Each export carries an as-at timestamp and database snapshot/version so it can be reproduced.
 
 SQLite is acceptable for an isolated developer demo, but it is not the target architecture: approvals, background workers, multiple users and concurrent workflow writes make Postgres the safer default.

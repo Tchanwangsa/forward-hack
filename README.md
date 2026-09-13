@@ -48,6 +48,23 @@ make web                  # http://localhost:5173
 
 Postgres is published on host port **5433**, so a local Postgres on 5432 does not clash.
 
+## Google Sheets
+
+The customer's registers are seven live Google Sheets, one per workbook. An agent
+reaches them as a service account that a human invited to each file — so access is per
+register, and revoking it is unsharing a file.
+
+Two things are not in the repository and never will be: the service-account JSON key,
+and the filled-in `.env`. Get both from Tanat, put the key outside the repo, and point
+`REGISTER_SHEETS_CREDENTIALS` at it.
+
+An `.xlsx` uploaded to Drive is **not** a Google Sheet — Drive keeps it as an Excel blob
+the API refuses to write to. Registers must be native sheets.
+
+Read [`plan/SHEETS.md`](plan/SHEETS.md) before writing anything that touches them: it
+covers what an agent is allowed to write, and the three constraints that will otherwise
+cost an hour each (RAW values, the 60 reads/min quota, the Office-file trap).
+
 ## Build order
 
 From [`plan/ARCHITECTURE.md`](plan/ARCHITECTURE.md) §Build order. Three built properly

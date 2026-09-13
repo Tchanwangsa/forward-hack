@@ -12,8 +12,14 @@ venv/
 # Mock data
 mock-company/
 tools/
+
 # Env
 .env
+
+# Credentials — never commit a service-account key
+secrets/
+*service-account*.json
+*credentials*.json
 
 # Node
 node_modules/

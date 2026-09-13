@@ -1,7 +1,7 @@
 .PHONY: db api web install migrate seed fmt test
 
 install:
-	cd backend && uv sync
+	cd backend && uv sync --extra dev
 	cd frontend && npm install
 
 db:

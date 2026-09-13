@@ -4,6 +4,7 @@
     capture_fed   2  Incident   3  Returns   4  Data Check   5  Comms   6  Complaint
     system        8  Signal   9  Product NC   10  CAPA   11  Agent Action Log
     capture       drafts, completion suggestions, review verdicts, snapshots
+    sources       the raw upstream artifacts tier 1 watches (not registers)
 """
 
 from asteria.models.base import Base, CaptureColumnsMixin, TimestampMixin
@@ -20,6 +21,18 @@ from asteria.models.capture_fed import (
     DataCheck,
     Incident,
     ProductReturn,
+)
+from asteria.models.sources import (
+    EmailMessage,
+    MeetingTranscript,
+    PartReplaced,
+    RoundBed,
+    TechnicianNote,
+    TelemetryEvent,
+    TelemetryHeartbeat,
+    TranscriptLine,
+    WardRound,
+    WorkOrder,
 )
 from asteria.models.reference import (
     ControlledDocument,
@@ -53,6 +66,17 @@ __all__ = [
     "ProductNC",
     "CAPA",
     "AgentAction",
+    # raw upstream artifacts
+    "TelemetryEvent",
+    "TelemetryHeartbeat",
+    "EmailMessage",
+    "MeetingTranscript",
+    "TranscriptLine",
+    "WorkOrder",
+    "TechnicianNote",
+    "PartReplaced",
+    "WardRound",
+    "RoundBed",
     # capture layer
     "SourceSnapshot",
     "CaptureDraft",

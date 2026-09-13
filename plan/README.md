@@ -15,6 +15,7 @@
 | [`ARCHITECTURE.md`](ARCHITECTURE.md) | **The spine.** The three tiers, the capture primitive, tier boundaries, autonomy, build order, scope |
 | [`IDEA.md`](IDEA.md) | The pitch — what it is, who it is for, the demo beat, the risks |
 | [`CAPTURE-AGENTS.md`](CAPTURE-AGENTS.md) | Tier 1 — the five bots, field by field, and the capture scorecard |
+| [`TRIAGE.md`](TRIAGE.md) | OPS-SOP-004 executed — the decision tree, the eight read-only estate probes, and the fleet simulator that comes next |
 | [`DIAGRAMS.md`](DIAGRAMS.md) | The tier overview, the capture primitive, tier 2's five workflows, tier 3's sweep |
 | [`CAPA.md`](CAPA.md) | Tier 3 — how recurrence and cross-register overlap become a CAPA recommendation |
 | [`REGISTERS.md`](REGISTERS.md) | The eleven registers, the indicator rule set, how both denominators are computed |

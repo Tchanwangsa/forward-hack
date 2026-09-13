@@ -15,10 +15,16 @@ dependencies = [
     "openpyxl>=3.1",
     "pandas>=2.2",
     "python-dateutil>=2.9",
+    "pyyaml>=6.0",
+    # The product talks to the fleet service over HTTP, the same way it would
+    # talk to a real device cloud. See asteria/fleet/.
+    "httpx>=0.27",
 ]
 
 [project.optional-dependencies]
 dev = ["pytest>=8.3", "ruff>=0.8", "httpx>=0.27"]
+# Typesets the controlled SOP PDF from reference-data/sop/. Not needed at runtime.
+docs = ["reportlab>=4.2"]
 
 [build-system]
 requires = ["hatchling"]

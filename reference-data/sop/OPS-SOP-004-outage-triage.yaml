@@ -1,0 +1,233 @@
+# OPS-SOP-004 — the ops team's outage triage procedure, machine-readable.
+#
+# The controlled document is the PDF in mock-company/sops/. This file is its
+# executable twin: same steps, same numbering, same decision tree, so every
+# action the agent takes cites a clause a human auditor can open and read.
+#
+# Two rules about this file:
+#
+#   The issued PDF and this file come off the same definition, so on the day of
+#   issue they cannot disagree. Afterwards they can — somebody edits one and not
+#   the other — and `document.sha256` pins the issued artifact so that triage
+#   refuses to run rather than following a superseded revision. Reissue with
+#   `make sop`, and move `revision` when you do.
+#
+#   Conditions are named, not expressed. `when: site_wide` resolves to a Python
+#   predicate in triage/conditions.py that reads the findings the tools returned.
+#   Thresholds live here (the procedure sets them); the reading of them lives in
+#   code (so it can be tested against real findings rather than parsed at runtime).
+
+document:
+  id: OPS-SOP-004
+  title: PulseOne outage and data-loss triage
+  revision: "3.0"
+  effective: 2026-04-01
+  owner: Field Operations Manager
+  approved_by: Head of Quality
+  supersedes: "2.1 (2025-08-11)"
+  pdf: mock-company/sops/OPS-SOP-004-Outage-Triage.pdf
+  sha256: 166d55754e8811d8ce347f8e45c3f68f07dcdc25caa95144e9f60dcc43913dc9  # pinned by backend/tools/sop_pdf.py at issue
+  references:
+    - PMS-PLAN-001 v3.0 — indicators and thresholds
+    - OPS-SOP-002 — RMA raising and depot return
+    - QMS-WI-011 — remote access to customer estates
+
+scope:
+  # §2 of the document. The codes triage runs on; everything else is out of scope
+  # for this procedure and goes to its own.
+  codes: [HUB-OFFLINE, CONN-LINK-LOSS, BATT, DISPLAY, ADHESIVE]
+  # SKIN is a clinical observation with no telemetry path. No branch of this
+  # procedure can reach it and none should try.
+  excludes: [SKIN]
+  register: data_check  # PM-Data-Check-and-Troubleshooting-Log
+
+constraints:
+  # §3. These are the boundary of what remote triage may do, and they are the
+  # reason the estate tooling is read-only. Diagnose, record, recommend. A human
+  # with a change ticket does the acting.
+  - id: C1
+    rule: Diagnostic reads only. No restart, no reconfiguration, no firmware action.
+  - id: C2
+    rule: No clinical data. Bed occupancy is a yes or no; who is in the bed is never read.
+  - id: C3
+    rule: Every check is recorded with its output, including the checks that found nothing.
+  - id: C4
+    rule: An inconclusive triage is escalated, never guessed.
+
+steps:
+  - id: T1
+    section: "5.1"
+    title: Establish scope
+    question: One unit, or the whole site?
+    tools: [fleet.hub_status, fleet.heartbeat_gaps]
+    branches:
+      - when: site_wide
+        goto: T4
+        note: >-
+          Three or more hubs at one site quiet inside 72 hours is a site event
+          until proven otherwise. Checking the socket on one of them first is how
+          an afternoon gets spent.
+    next: T2
+
+  - id: T2
+    section: "5.2"
+    title: Rule out expected absence
+    question: Did somebody mean for this unit to stop reporting?
+    tools: [registers.context, ward.occupancy]
+    branches:
+      - when: unit_not_accruing
+        outcome: expected-removal
+      - when: planned_works_notice
+        outcome: expected-removal
+      - when: discharged_bed
+        outcome: expected-removal
+    next: T3
+    note: >-
+      Runs before any technical check, deliberately. The commonest reason a hub
+      stops reporting is that the patient was discharged, died, or the unit was
+      moved — and an incident row written for that is a false signal that ends up
+      in a rate, in a report, and eventually in front of a regulator.
+
+  - id: T3
+    section: "5.3"
+    title: Power and dock
+    question: Is it getting power?
+    tools: [power.socket_check]
+    branches:
+      - when: socket_dead
+        outcome: power-loss
+      - when: battery_exhausted_off_dock
+        outcome: power-loss
+    next: T4
+
+  - id: T4
+    section: "5.4"
+    title: Site network path
+    question: Can the site reach us?
+    tools: [net.path_check]
+    branches:
+      - when: tunnel_down
+        outcome: site-network
+      - when: path_degraded
+        outcome: site-network
+    next: T5
+
+  - id: T5
+    section: "5.5"
+    title: Data box service
+    question: Is the site aggregator running and shipping?
+    tools: [ssh.databox]
+    branches:
+      - when: collector_not_running
+        outcome: data-box-backlog
+      - when: upload_backlog
+        outcome: data-box-backlog
+      - when: disk_pressure
+        outcome: data-box-backlog
+      - when: certificate_expired
+        outcome: data-box-backlog
+    next: T6
+
+  - id: T6
+    section: "5.6"
+    title: Hub device
+    question: Is the unit itself healthy?
+    tools: [ssh.hub]
+    branches:
+      - when: service_crash_loop
+        outcome: device-fault
+      - when: post_fault
+        outcome: device-fault
+    next: T7
+
+  - id: T7
+    section: "5.7"
+    title: Patch link
+    question: Is the consumable the problem?
+    tools: [ssh.hub]
+    branches:
+      - when: link_margin_poor
+        outcome: consumable-patch
+    next: T8
+
+  - id: T8
+    section: "5.8"
+    title: Classify and record
+    question: What gets written down?
+    tools: []
+    default_outcome: unknown-escalate
+
+thresholds:
+  # §5 tables. The procedure's numbers, in one place, because these are what an
+  # auditor asks about and what a revision changes.
+  site_wide_min_hubs: 3
+  site_wide_window_h: 72
+  heartbeat_gap_h: 2
+  packet_loss_pct: 5.0
+  rtt_ms: 400
+  upload_queue_depth: 500
+  disk_used_pct: 95
+  service_restarts_24h: 3
+  rssi_dbm: -85
+  repeat_device_faults_30d: 2
+
+outcomes:
+  expected-removal:
+    label: Expected removal — not a product incident
+    disposition: no_incident
+    confidence: 0.90
+    issue_found: No fault. Unit was out of service for a known reason.
+    action_taken: Closed at triage. No incident raised.
+    escalate_to: null
+
+  power-loss:
+    label: Power loss at the unit
+    disposition: incident_customer_side
+    confidence: 0.88
+    issue_found: Unit lost mains power. No device fault found.
+    action_taken: Ward asked to restore the socket and confirm the unit re-pairs.
+    escalate_to: Customer — ward facilities
+
+  site-network:
+    label: Site network — the hub never lost itself, the site lost us
+    disposition: incident_customer_side
+    confidence: 0.92
+    issue_found: Site connectivity interrupted. Units reachable on the local segment.
+    action_taken: Raised with the customer's network team. One episode, not one per unit.
+    escalate_to: Customer — IT
+
+  data-box-backlog:
+    label: Site aggregator not shipping data
+    disposition: incident_asteria_side
+    confidence: 0.90
+    issue_found: Data box accepted device data and failed to upload it.
+    action_taken: Escalated to Asteria platform ops. Buffered data recoverable on restart.
+    escalate_to: Asteria — platform ops
+
+  device-fault:
+    label: Hub fault
+    disposition: incident_device
+    confidence: 0.85
+    issue_found: Fault on the unit itself, reproducible from the device log.
+    action_taken: RMA consideration per OPS-SOP-002. Unit swap proposed.
+    escalate_to: Asteria — field engineering
+
+  consumable-patch:
+    label: Patch or link margin
+    disposition: incident_consumable
+    confidence: 0.45
+    issue_found: Link margin consistent with a patch problem rather than a hub problem.
+    action_taken: Ward asked to confirm patch placement and record the lot. Lot held pending.
+    escalate_to: Asteria — field engineering
+    # Below the queue's question threshold on purpose. A radio cannot see a piece
+    # of tape (TELEMETRY-API.md §2), so this outcome is asked, never asserted.
+    ask_do_not_assert: true
+
+  unknown-escalate:
+    label: Inconclusive — field visit required
+    disposition: incident_unknown
+    confidence: 0.40
+    issue_found: Remote triage inconclusive. No branch of OPS-SOP-004 satisfied.
+    action_taken: Field visit requested. Checks performed are recorded on this row.
+    escalate_to: Asteria — field engineering
+    ask_do_not_assert: true

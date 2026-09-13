@@ -18,7 +18,9 @@ backend/asteria/
   ingest/      mock-company/ -> Postgres (registers, telemetry, mail, meetings,
                service, ward rounds; ground truth into a separate schema)
   resolve/     entity resolution — plumbing, never a screen
-  capture/     tier 1 — five bots, one primitive, autonomy level 3 always
+  capture/     tier 1 — six bots, one primitive, autonomy level 3 always
+  triage/      OPS-SOP-004, executed: the procedure, eight read-only estate
+               probes, and the condition predicates behind each branch
   analysis/    tier 2 — indicators, denominators, the five workflows
   capa/        tier 3 — failure-mode matching and the sweep
   agent/       model client, autonomy levels, the append-only action log
@@ -62,11 +64,16 @@ beats five half-wired.
    ground truth, coverage 53% → 93% if the queue is worked as drafted.
    **The capture queue screen it feeds is built** — `make web`, then
    http://localhost:5173/capture.
-2. **Inbox triage** — mail → comms log + complaint recommendation.
-3. **Meeting scribe** — transcript → comms log.
-4. **Tier 2**, all five workflows. Lands ALERT-FALSE / SW 1.1.0.
-5. **Tier 3**, one CAPA recommendation. BATT / H1.
-6. RMA capture and field-check nudge, as stubs of the same primitive.
+2. ~~**Field triage** — OPS-SOP-004 → troubleshooting log. *Why*, not just *what*.~~
+   **Built.** 288 episodes triaged against the ops team's own procedure, 281
+   diagnoses matching what was actually wrong, 59 escalated as inconclusive
+   rather than guessed, 2,074 read-only checks and no device touched. The
+   procedure walk renders on the review panel, transcripts and all.
+3. **Inbox triage** — mail → comms log + complaint recommendation.
+4. **Meeting scribe** — transcript → comms log.
+5. **Tier 2**, all five workflows. Lands ALERT-FALSE / SW 1.1.0.
+6. **Tier 3**, one CAPA recommendation. BATT / H1.
+7. RMA capture and field-check nudge, as stubs of the same primitive.
 
 Ship the capture queue if you ship one screen.
 
@@ -79,3 +86,8 @@ Ship the capture queue if you ship one screen.
 - Capture is autonomy level 3, always. No promotion, however good the accept rate.
 - A rejection, a declined complaint, a signal closed as no action — each is a
   permanent record with a named reviewer and a rationale. Never a deletion.
+- Estate access is read-only. The triage agent diagnoses, records and
+  recommends; nothing in it restarts, reconfigures or flashes anything.
+- The agent follows a controlled procedure, not a prompt. Every diagnosis cites
+  the clause that produced it and the revision in force at the time —
+  [`plan/TRIAGE.md`](plan/TRIAGE.md).

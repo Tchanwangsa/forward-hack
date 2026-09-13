@@ -4,6 +4,7 @@
     capture_fed   2  Incident   3  Returns   4  Data Check   5  Comms   6  Complaint
     system        8  Signal   9  Product NC   10  CAPA   11  Agent Action Log
     capture       drafts, completion suggestions, review verdicts, snapshots
+    triage        the SOP runs behind a diagnosis, step by step
     sources       the raw upstream artifacts tier 1 watches (not registers)
 """
 
@@ -22,6 +23,14 @@ from asteria.models.capture_fed import (
     Incident,
     ProductReturn,
 )
+from asteria.models.reference import (
+    ControlledDocument,
+    CustomerOrganisation,
+    Hub,
+    Indicator,
+    PatchLotAllocation,
+    PMSReviewMeeting,
+)
 from asteria.models.sources import (
     EmailMessage,
     MeetingTranscript,
@@ -34,15 +43,8 @@ from asteria.models.sources import (
     WardRound,
     WorkOrder,
 )
-from asteria.models.reference import (
-    ControlledDocument,
-    CustomerOrganisation,
-    Hub,
-    Indicator,
-    PatchLotAllocation,
-    PMSReviewMeeting,
-)
 from asteria.models.system import CAPA, AgentAction, ProductNC, Signal
+from asteria.models.triage import TriageRun, TriageStep
 
 __all__ = [
     "Base",
@@ -83,4 +85,7 @@ __all__ = [
     "DraftField",
     "CompletionSuggestion",
     "ReviewVerdict",
+    # triage
+    "TriageRun",
+    "TriageStep",
 ]

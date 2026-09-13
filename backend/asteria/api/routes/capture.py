@@ -19,6 +19,7 @@ across new rows. The friction is the feature.
 
 from __future__ import annotations
 
+from dataclasses import dataclass
 from datetime import date, datetime
 from decimal import Decimal
 from typing import Annotated
@@ -32,12 +33,15 @@ from sqlalchemy.orm import Session
 from asteria.agent.action_log import log_action
 from asteria.agent.autonomy import Autonomy
 from asteria.capture import scorecard as sc
+from asteria.capture.field_triage import FIELD_COLUMNS as DATA_CHECK_COLUMNS
+from asteria.capture.field_triage import FieldTriage
 from asteria.capture.outage_watch import FIELD_COLUMNS, OutageWatch
 from asteria.db import get_session
 from asteria.models.capture import CaptureDraft, CompletionSuggestion, ReviewVerdict
-from asteria.models.capture_fed import Incident
+from asteria.models.capture_fed import DataCheck, Incident
 from asteria.models.enums import DraftStatus, HumanVerdict, RowOrigin
 from asteria.models.sources import TelemetryEvent
+from asteria.models.triage import TriageRun
 
 router = APIRouter()
 
@@ -47,6 +51,27 @@ SessionDep = Annotated[Session, Depends(get_session)]
 # the only thing that lands here today: a hub inferring a piece of tape came
 # loose from a radio signal is a question for someone who can look at the ward.
 QUESTION_THRESHOLD = Decimal("0.5")
+
+
+@dataclass(frozen=True)
+class Target:
+    """Where an accepted draft lands. One entry per register a bot drafts into.
+
+    The commit path is generic on purpose: a second bot drafting into a second
+    register must not need a second copy of the accept/edit/reject machinery,
+    because the machinery is where the gate lives.
+    """
+
+    model: type
+    columns: dict[str, str]
+    id_attr: str
+    id_prefix: str
+
+
+TARGETS = {
+    "incident": Target(Incident, FIELD_COLUMNS, "incident_id", "INC"),
+    "data_check": Target(DataCheck, DATA_CHECK_COLUMNS, "check_id", "CHK"),
+}
 
 _HUMAN_VERDICT = {
     DraftStatus.ACCEPTED: HumanVerdict.ACCEPTED,
@@ -130,6 +155,10 @@ def get_draft(draft_id: int, session: SessionDep) -> dict:
         ],
         "blank_by_design": draft.payload.get("blank_by_design", {}),
         "artifact": _artifact(session, draft),
+        # The procedure walk behind a diagnosis, where there is one. The checks
+        # that found nothing are part of it — a reviewer judging a root cause is
+        # judging what was ruled out (OPS-SOP-004 §3 C3).
+        "triage": _triage(session, draft),
     }
 
 
@@ -242,6 +271,15 @@ def get_scorecard(session: SessionDep) -> dict:
     truth, never against the verdict the reviewer is generating on this screen.
     """
     return sc.scorecard(session)
+
+
+@router.post("/run/field-triage")
+def run_field_triage(session: SessionDep) -> dict:
+    """Run OPS-SOP-004 over the episodes in its scope. Read-only against the
+    estate, drafts only against the register.
+    """
+    bot = FieldTriage(session)
+    return {**bot.run().summary(), **bot.score()}
 
 
 @router.post("/run/outage-watch")
@@ -359,6 +397,41 @@ def _episode(session: Session, event_ids: list[str]) -> dict:
     }
 
 
+def _triage(session: Session, draft: CaptureDraft) -> dict | None:
+    """The triage run behind this draft, step by step, transcripts and all."""
+    run = session.execute(
+        select(TriageRun).where(TriageRun.artifact_ref == draft.artifact_ref)
+    ).scalar_one_or_none()
+    if run is None:
+        return None
+    return {
+        "procedure": f"{run.procedure_id} rev {run.procedure_revision}",
+        "verification": run.procedure_verification,
+        "outcome": run.outcome,
+        "label": run.outcome.replace("-", " "),
+        "disposition": run.disposition,
+        "citation": run.citation,
+        "narrative": run.narrative,
+        "escalate_to": run.escalate_to,
+        "checks_run": run.checks_run,
+        "confidence": float(run.confidence) if run.confidence is not None else None,
+        "steps": [
+            {
+                "step_id": s.step_id,
+                "section": s.section,
+                "title": s.title,
+                "question": s.question,
+                "satisfied": s.satisfied,
+                "outcome": s.outcome,
+                "goto": s.goto,
+                "note": s.note,
+                "probes": s.probes or [],
+            }
+            for s in run.steps
+        ],
+    }
+
+
 def _row_as_written(session: Session, completion: CompletionSuggestion) -> dict | None:
     """The customer's row, untouched, as the reviewer would see it in the
     workbook. Accepting a completion does not change any of this — the value
@@ -391,21 +464,25 @@ def _pending(session: Session, draft_id: int) -> CaptureDraft:
 
 def _commit(session: Session, draft_id: int, verdict: Verdict, edits: dict | None) -> dict:
     draft = _pending(session, draft_id)
+    target = TARGETS.get(draft.target_register)
+    if target is None:
+        raise HTTPException(422, f"no commit path for register {draft.target_register}")
     values = dict(draft.payload.get("fields", {}))
     values.update(edits or {})
 
-    incident = Incident(
-        incident_id=_next_incident_id(session),
+    row = target.model(
         row_origin=RowOrigin.AGENT_EDITED if edits else RowOrigin.AGENT_ACCEPTED,
         captured_from=draft.artifact_ref,
-        resolved_hub_id=values.get("HubID"),
+        resolved_hub_id=values.get("HubID") or _hub_of(session, draft),
     )
+    setattr(row, target.id_attr, _next_id(session, target))
     for column, value in values.items():
-        attr = FIELD_COLUMNS.get(column)
+        attr = target.columns.get(column)
         if attr:
-            setattr(incident, attr, _coerce(attr, value))
-    session.add(incident)
+            setattr(row, attr, _coerce(attr, value))
+    session.add(row)
     session.flush()
+    incident = row  # the committed row, whichever register it landed in
 
     draft.status = DraftStatus.EDITED if edits else DraftStatus.ACCEPTED
     draft.committed_row_id = incident.id
@@ -431,13 +508,22 @@ def _commit(session: Session, draft_id: int, verdict: Verdict, edits: dict | Non
         workflow=draft.bot,
         autonomy=Autonomy.DRAFT,
         inputs={"artifact_ref": draft.artifact_ref, "draft_id": draft.id},
-        output={"committed": True, "incident_id": incident.incident_id, "edits": edits},
+        output={
+            "committed": True,
+            "register": draft.target_register,
+            "row_id": getattr(incident, target.id_attr),
+            "edits": edits,
+        },
         human_verdict=HumanVerdict.EDITED if edits else HumanVerdict.ACCEPTED,
         reviewed_by=verdict.reviewed_by,
         notes=verdict.rationale,
     )
     session.commit()
-    return {"draft_id": draft.id, "status": draft.status, "committed_row": incident.incident_id}
+    return {
+        "draft_id": draft.id,
+        "status": draft.status,
+        "committed_row": getattr(incident, target.id_attr),
+    }
 
 
 def _settle_completion(
@@ -487,21 +573,30 @@ def _settle_completion(
     }
 
 
-def _next_incident_id(session: Session) -> str:
+def _next_id(session: Session, target: Target) -> str:
     """Next in sequence, allocated on accept rather than on draft — a rejected
     draft must not leave a hole in the customer's ID sequence.
     """
-    last = session.execute(
-        select(func.max(Incident.incident_id)).where(Incident.incident_id.like("INC-%"))
+    column = getattr(target.model, target.id_attr)
+    rows = session.execute(select(column).where(column.like(f"{target.id_prefix}-%"))).scalars()
+    n = max((int(r.rsplit("-", 1)[1]) for r in rows if r.rsplit("-", 1)[1].isdigit()), default=0)
+    return f"{target.id_prefix}-{n + 1}"
+
+
+def _hub_of(session: Session, draft: CaptureDraft) -> str | None:
+    """A data-check row has no HubID column; the episode behind it still knows."""
+    event_id = (draft.payload.get("events") or [None])[0]
+    if not event_id:
+        return None
+    return session.execute(
+        select(TelemetryEvent.hub_id).where(TelemetryEvent.event_id == event_id)
     ).scalar()
-    n = int(last.split("-")[1]) + 1 if last else 1
-    return f"INC-{n}"
 
 
 def _coerce(attr: str, value):
     if value in (None, ""):
         return None
-    if attr in ("reported_date", "date_of_last_email_sent"):
+    if attr in ("reported_date", "date_of_last_email_sent", "check_date"):
         return date.fromisoformat(str(value)[:10])
     if attr == "last_online":
         return datetime.fromisoformat(str(value))

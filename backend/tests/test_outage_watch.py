@@ -22,7 +22,15 @@ from asteria.models.capture_fed import Incident
 from asteria.models.enums import DraftStatus, RowOrigin
 from asteria.models.sources import TelemetryEvent
 
-CAPTURE_TABLES = ("draft_field", "review_verdict", "capture_draft", "completion_suggestion")
+# Order matters: triage runs point at the drafts they produced, so they go first.
+CAPTURE_TABLES = (
+    "triage_step",
+    "triage_run",
+    "draft_field",
+    "review_verdict",
+    "capture_draft",
+    "completion_suggestion",
+)
 
 
 @pytest.fixture(scope="module")

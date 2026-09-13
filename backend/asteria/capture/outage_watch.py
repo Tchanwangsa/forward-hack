@@ -27,7 +27,7 @@ What it must never do, both of them tested:
 from __future__ import annotations
 
 from dataclasses import dataclass
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta
 from decimal import Decimal
 
 from sqlalchemy import select
@@ -133,9 +133,10 @@ class OutageWatch(CaptureBot):
     target_register = "incident"
     autonomy = Autonomy.DRAFT
 
-    def __init__(self, session: Session) -> None:
+    def __init__(self, session: Session, *, since: datetime | None = None) -> None:
         self.session = session
         self.resolver = Resolver(session)
+        self.since = since
 
     # -- observe ---------------------------------------------------------
 
@@ -146,7 +147,13 @@ class OutageWatch(CaptureBot):
         on (bot, artifact_ref), so a re-run adds what is new and re-proposes
         nothing that was already reviewed.
         """
-        events = list(self.session.execute(select(TelemetryEvent)).scalars())
+        # A live run scopes to what has arrived since the loop started. The
+        # frozen twenty months are already drafted and re-reducing them every
+        # few seconds would be 35,000 rows of work to reach the same answer.
+        query = select(TelemetryEvent)
+        if self.since is not None:
+            query = query.where(TelemetryEvent.ts_received >= self.since)
+        events = list(self.session.execute(query).scalars())
         episodes = to_episodes(events)
         find_clusters(episodes)
         return episodes
@@ -530,11 +537,17 @@ class OutageWatch(CaptureBot):
                 select(CaptureDraft.artifact_ref).where(CaptureDraft.bot == self.name)
             )
         }
+        # Not filtered by bot, and the database agrees: the uniqueness that
+        # matters is one proposal per cell, whoever made it. If field triage has
+        # already offered this row's Notes, this bot does not offer a competing
+        # one — two agents arguing in a reviewer's queue is worse than either of
+        # them staying quiet, and `uq_completion_target_field` will refuse the
+        # write anyway.
         existing_completions = {
             (row, field_name)
             for row, field_name in self.session.execute(
                 select(CompletionSuggestion.target_row_key, CompletionSuggestion.field_name).where(
-                    CompletionSuggestion.bot == self.name
+                    CompletionSuggestion.target_register == self.target_register
                 )
             )
         }

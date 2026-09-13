@@ -127,6 +127,9 @@ class CompletionSuggestion(Base, TimestampMixin):
 
     existing_value: Mapped[str | None] = mapped_column(Text)  # usually blank
     proposed_value: Mapped[str] = mapped_column(Text)
+    # Set on accept. Differs from proposed_value when the reviewer corrected it:
+    # the bot was close, and the correction names how it was wrong.
+    accepted_value: Mapped[str | None] = mapped_column(Text)
     artifact_ref: Mapped[str | None] = mapped_column(String(200), index=True)
     evidence: Mapped[str | None] = mapped_column(Text)
     confidence: Mapped[Decimal | None] = mapped_column(Numeric(4, 3))

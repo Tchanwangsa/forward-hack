@@ -1,4 +1,4 @@
-.PHONY: db api web install migrate seed fmt test
+.PHONY: db api web install migrate seed fmt test capture
 
 install:
 	cd backend && uv sync --extra dev
@@ -18,6 +18,9 @@ web:
 
 ingest:
 	cd backend && uv run python -m asteria.ingest
+
+capture:
+	cd backend && uv run python -m asteria.capture
 
 test:
 	cd backend && uv run pytest

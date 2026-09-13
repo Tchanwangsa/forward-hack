@@ -28,6 +28,23 @@ Seven rather than one is not only realism. Access is granted per spreadsheet, so
 agent can hold the Incident log without holding the Complaint register — which is the
 answer when someone asks what stops it touching complaints.
 
+### Naming a register
+
+A register is named by its **workbook and tab** — *PM Incident and Outage Log →
+`Incidents & Outages`* — because three workbooks hold more than one. Where the other
+plan documents name a register, they mean the live sheet.
+
+### The `.xlsx` files are seed, not the register
+
+`mock-company/registers/*.xlsx` define the column shapes and carry the verified demo
+fixtures — 737 incident rows, the planted stories, the deliberate mess. They are pushed
+**once** into the live sheets and are never written to again. Nothing reads them at
+runtime and no agent writes to them.
+
+After the push, the Google Sheet is the register. A row that exists only in the `.xlsx`
+does not exist as far as the product is concerned, and re-pushing overwrites whatever
+the sheet holds — including rows an agent has committed since.
+
 ---
 
 ## Authentication

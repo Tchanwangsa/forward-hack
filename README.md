@@ -55,7 +55,7 @@ reaches them as a service account that a human invited to each file — so acces
 register, and revoking it is unsharing a file.
 
 Two things are not in the repository and never will be: the service-account JSON key,
-and the filled-in `.env`. Get both from Tanat, put the key outside the repo, and point
+and the filled-in `.env`. Keep the key outside the repo and point
 `REGISTER_SHEETS_CREDENTIALS` at it.
 
 An `.xlsx` uploaded to Drive is **not** a Google Sheet — Drive keeps it as an Excel blob

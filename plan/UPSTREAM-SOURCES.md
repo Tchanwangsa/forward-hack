@@ -40,7 +40,8 @@ That third one matters practically: the register pack is already verified, alrea
 
 ```text
 mock-company/
-  registers/            unchanged — the nine (now eleven) workbooks
+  registers/            seed only — the shapes and fixtures pushed once into
+                        the live Google Sheets, never written to again
   ground-truth/         extended — artifact ↔ row ↔ event links
   sources/              NEW — the raw upstream material
     telemetry/

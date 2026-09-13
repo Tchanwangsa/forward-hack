@@ -195,7 +195,7 @@ Everything else about this API is unchanged. It is still read-only to the agent,
 | HTTP ingest and reads | **API Gateway** + **Lambda** | Six endpoints, spiky traffic, no servers. |
 | Event store | **Timestream** (events) or **DynamoDB** (`hub_id` partition, `ts` sort) | Append-only time series with a device partition key. DynamoDB is the hackathon answer; Timestream is the right one. |
 | Fleet state | **DynamoDB** | One item per hub, updated by heartbeat. |
-| Register set | **S3** (the eleven workbooks, frozen and versioned) | Immutable sources with object versioning. |
+| Register set | **Google Sheets** (the customer's seven workbooks) + Postgres for workflow state | The registers stay where their owners already work; see [`SHEETS.md`](SHEETS.md). The frozen `.xlsx` seed pack belongs in **S3**, versioned. |
 | Upstream artifacts | **S3** (`sources/` — mail, transcripts, work orders, rounds) | Tier 1's input. Same immutability rule, and the same reason: a drafted row has to be walkable back to the artifact it came from. |
 | Nightly Measure run | **EventBridge Scheduler** → Lambda | Cron with a queryable history. |
 | Threshold webhook | **EventBridge** custom bus → **SNS** / HTTPS target | The agent is one subscriber; the dashboard can be another. |

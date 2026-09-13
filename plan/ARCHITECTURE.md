@@ -28,6 +28,8 @@ The application runs on **Postgres**, not on a folder of mutable workbooks. Post
 
 The customer's reference and capture-fed spreadsheets remain source inputs during the pilot. Each import is retained as a versioned snapshot, source rows are never overwritten, and accepted additions or completions live in the database capture layer. Controlled `.xlsx` files can be generated from a named database snapshot for review, hand-off or audit evidence.
 
+Those spreadsheets are live **Google Sheets** — seven workbooks carrying the eleven registers, each shared with a service account that holds no credential beyond what a person granted it by sharing a file. Sheets is the customer-facing surface, downstream of the database: a row reaches it only once a human has approved it. The integration contract is [`SHEETS.md`](SHEETS.md).
+
 ---
 
 ## The three tiers

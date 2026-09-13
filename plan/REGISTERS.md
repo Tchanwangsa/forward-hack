@@ -26,19 +26,23 @@ Customer Orgs & Hubs   ── denominators, resolution        every action, ever
 PMS Plan & Report      ── the approved indicator rule set
 ```
 
-| # | Register | Class | Writes |
-|---|---|---|---|
-| 1 | `PM-Customer-Organisations-and-Hubs-Record.xlsx` | Reference | Human (the system of record) |
-| 2 | `PM-Incident-and-Outage-Log.xlsx` | Capture-fed | Human + **outage watch** |
-| 3 | `Product-Return-and-Replacement-Register.xlsx` | Capture-fed | Human + **RMA capture** |
-| 4 | `PM-Data-Check-and-Troubleshooting-Log.xlsx` | Capture-fed | Human + **field-check nudge** |
-| 5 | `PM-Client-Communications-Log.xlsx` | Capture-fed | Human + **inbox triage**, **meeting scribe** |
-| 6 | `Complaint-Register.xlsx` | Capture-fed | **NEW.** Human decides, **inbox triage** recommends |
-| 7 | `PMS-Plan-and-Report-Register.xlsx` | Reference | Human (controlled documents) |
-| 8 | `Signal-Register.xlsx` | System-maintained | Tier 2, WF 3–4 |
-| 9 | `Product-NC-Register.xlsx` | System-maintained | Tier 2, WF 5, human signs |
-| 10 | `CAPA-Register.xlsx` | System-maintained | **NEW.** Tier 3 recommends, human opens |
-| 11 | `Agent-Action-Log.xlsx` | System-maintained | Every tier |
+| # | Register | Class | Lives in | Writes |
+|---|---|---|---|---|
+| 1 | PM Customer Organisations and Hubs Record | Reference | Google Sheet | Human (the system of record) |
+| 2 | PM Incident and Outage Log | Capture-fed | Google Sheet | Human + **outage watch** |
+| 3 | Product Return and Replacement Register | Capture-fed | Google Sheet | Human + **RMA capture** |
+| 4 | PM Data Check and Troubleshooting Log | Capture-fed | Google Sheet | Human + **field-check nudge** |
+| 5 | PM Client Communications Log | Capture-fed | Google Sheet | Human + **inbox triage**, **meeting scribe** |
+| 6 | Complaint Register | Capture-fed | Google Sheet | **NEW.** Human decides, **inbox triage** recommends |
+| 7 | PMS Plan and Report Register | Reference | Google Sheet | Human (controlled documents) |
+| 8 | Signal Register | System-maintained | Postgres | Tier 2, WF 3–4 |
+| 9 | Product NC Register | System-maintained | Postgres | Tier 2, WF 5, human signs |
+| 10 | CAPA Register | System-maintained | Postgres | **NEW.** Tier 3 recommends, human opens |
+| 11 | Agent Action Log | System-maintained | Postgres | Every tier |
+
+Registers 1–7 are the customer's seven Google Sheets ([`SHEETS.md`](SHEETS.md)); three of
+them carry more than one tab, which is how seven workbooks hold eleven registers.
+Registers 8–11 never existed as customer files and live only in Postgres.
 
 ---
 
@@ -48,7 +52,11 @@ PMS Plan & Report      ── the approved indicator rule set
 
 The customer-controlled reference and capture-fed spreadsheets remain authoritative for the human source records during the pilot. They are imported into versioned Postgres snapshots, and the analysis reads a completed database view that combines each untouched source row with accepted capture-layer additions and completions.
 
-The `.xlsx` names for the four system-maintained registers describe controlled exports and the deterministic demo fixtures, **not four live files that the agent edits directly**. Each export carries an as-at timestamp and database snapshot/version so it can be reproduced.
+In the pilot those spreadsheets are seven live Google Sheets, one per workbook, reached through a service account that is invited to each file rather than holding blanket access. Access is therefore per register: the agent can hold the Incident log without the Complaint register. See [`SHEETS.md`](SHEETS.md).
+
+**The `.xlsx` files in `mock-company/registers/` are seed data and templates, not the live registers.** They define the column shapes and carry the verified demo fixtures; they are pushed once into the Google Sheets and are not written to afterwards. Where this document names a register, it means the live sheet — the `.xlsx` of the same name is where its shape came from.
+
+The four system-maintained registers have no customer file at all. Any `.xlsx` bearing their name is a controlled export from a named database snapshot, carrying an as-at timestamp so it can be reproduced — **not a live file that the agent edits directly**.
 
 SQLite is acceptable for an isolated developer demo, but it is not the target architecture: approvals, background workers, multiple users and concurrent workflow writes make Postgres the safer default.
 
@@ -58,7 +66,7 @@ Ownership still belongs to people. **System-maintained** means the workflow crea
 
 ## 1. The indicator rule set
 
-Seven rows, from the `Indicators & Thresholds` sheet of `PMS-Plan-and-Report-Register.xlsx`. A machine-readable rule set that a named human approved in a controlled document before any of the data existed. Everything tier 2 does hangs off it. Unchanged by the reframe.
+Seven rows, from the `Indicators & Thresholds` tab of the PMS Plan and Report Register sheet. A machine-readable rule set that a named human approved in a controlled document before any of the data existed. Everything tier 2 does hangs off it. Unchanged by the reframe.
 
 | ID | Product | Description | Internal Code | Denominator | Baseline (trailing 12mo) | Escalation Threshold | Review Function | Source Document |
 |---|---|---|---|---|---:|---|---|---|
@@ -91,7 +99,7 @@ Three properties make this the engine rather than a lookup table:
 
 ## 2. Denominators
 
-Both come from `PM-Customer-Organisations-and-Hubs-Record.xlsx`, which is why that file matters more than the other six. Neither is ever entered by hand, and **no capture agent may write to either sheet** — a bot that can move the denominator can move every rate in the product.
+Both come from the PM Customer Organisations and Hubs Record sheet, which is why it matters more than the other six. Neither is ever entered by hand, and **no capture agent may write to either sheet** — a bot that can move the denominator can move every rate in the product.
 
 ### 2.1 Unit-months in service — IND-01, 02, 03, 04, 07
 
@@ -166,7 +174,7 @@ Every capture-fed register gains the same two columns, appended after the existi
 
 **Completions are not in these columns.** When a bot proposes a value for a blank cell on an existing human row, the source row is not touched — the proposal lives in the capture layer with its evidence, and downstream analysis reads the completed view. See §6.
 
-### 3.1 `PM-Customer-Organisations-and-Hubs-Record.xlsx` — 3 sheets, reference only
+### 3.1 PM Customer Organisations and Hubs Record — 3 tabs, reference only
 
 **`Organisations`** (16 rows, 18 cols)
 `CustomerID · Organisation Name · Legal Entity Name · Location · State · Country/Region · Status · Timezone · Record ID · Customer Since · PulseOne Units (total) · PulseOne Units (in service) · Wards · Primary Contact · Primary Contact Email · Channel · Account Owner · Notes`
@@ -183,7 +191,7 @@ AU / NZ / UK / NO. `Status` carries `Active`, `Active (Distributor)`, `Evaluatio
 **`PulsePatch Stock Allocation`** (275 rows, 10 cols)
 `Lot Code · Product Code · Manufactured · Expiry · CustomerID · Organisation · Patches Allocated · Boxes · Shipped Date · Notes`
 
-### 3.2 `PM-Incident-and-Outage-Log.xlsx` — 737 rows, 20 + 2 cols
+### 3.2 PM Incident and Outage Log → `Incidents & Outages` — 737 rows, 20 + 2 cols
 
 `Incident/Outage ID · Pairing ID · Pairing Status · Organisation · HubID · Serial Number · WardID · BedID · Last Online · Offline Duration (hrs) · Reported Date · Incident Description · Status · Date of Last Email Sent · Reported By · Assigned To · SW Version at Time · Notes · Event Code · Source`
 
@@ -198,7 +206,7 @@ Plus `Row Origin` · `Captured From`.
 
 `SW Version at Time` is blank on 35% of rows, and — the part that matters — on 13 of the 15 rows in the primary story. `Last Online` is a snapshot copied from the inventory rather than the time of the incident: a column that looks event-related and is not.
 
-### 3.3 `Product-Return-and-Replacement-Register.xlsx` — 308 rows, 20 + 2 cols
+### 3.3 Product Return and Replacement Register → `Returns & Replacements` — 308 rows, 20 + 2 cols
 
 `RMA Number · Date Raised · Organisation · CustomerID · Product · Serial Number · HW Rev · SW Version · Customer Reported Fault · Date Received · Technician Findings · Component Replaced · Linked Complaint · Disposition · Replacement Serial · Date Closed · Technician · Warranty Status · Notes · Linked Signal`
 
@@ -208,7 +216,7 @@ The register's whole value is the gap between `Customer Reported Fault` and `Tec
 
 `SW Version` is blank on 48% and recoverable from the hub inventory as at `Date Raised` — a completion that is a *join*, not a transcription. `Linked Complaint` is blank on 83% and now has a register to point at (§3.6).
 
-### 3.4 `PM-Data-Check-and-Troubleshooting-Log.xlsx` — 712 rows, 15 + 2 cols
+### 3.4 PM Data Check and Troubleshooting Log → `Data Check & Troubleshooting` — 712 rows, 15 + 2 cols
 
 `Check ID · Date · Organisation · Ward · Bed · PulseOne-PulsePatch Pairing · Serial Number · Patch Lot · Hardware Issues · Alert Misclassifications · Patient & Alert Issues · Software Issues · Issue Found · Checked By · Action Taken`
 
@@ -225,7 +233,7 @@ Four free-text issue columns, mostly blank, mapping *imperfectly* onto the seven
 
 The mapping is deliberately imperfect: an adhesive finding sits in `Hardware Issues`, a battery finding sometimes sits in `Software Issues` as "Charge state reporting wrong", and one row can carry two indicators. `Serial Number` is blank on 26% and is sometimes the bare `4111`; `Patch Lot` is blank on 51%; `Action Taken` on 66%.
 
-### 3.5 `PM-Client-Communications-Log.xlsx` — 566 rows, 15 + 3 cols
+### 3.5 PM Client Communications Log → `Client Communications` — 566 rows, 15 + 3 cols
 
 `Comm ID · Email Subject · Date of Initial Email · Date of Last Email Sent · Status · Type · Organisation · Client Contact · Contact Role · Contact Email · Handled By · Mailbox · Notes · Attachments · Cross-reference`
 
@@ -241,7 +249,7 @@ This is why there is no standalone Client Feedback Log. It is a live decision, n
 
 `Type` is `Technical query · Complaint · Service request · Training request · Escalation · Feedback · General enquiry · Order / stock` — human-assigned and unreliable. **`Type = Complaint` here is a casual label, not a complaint record.** The formal object is §3.6. `Notes` is where the signal actually is ("NUM reports patch to receiver dropping out ~3x per night"). `Cross-reference` is free text — `See RMA`, `Logged in incident log`, `Raised at PMS review`, `Linked to CMP-0200` — an unreliable join the agent should use as a hint, never as a key.
 
-### 3.6 `Complaint-Register.xlsx` — **NEW**
+### 3.6 Complaint Register → `Complaints` — **NEW**
 
 One row per formal complaint. Recommended by [inbox triage](CAPTURE-AGENTS.md#2-inbox-triage), **classified by a human**, and it has a lifecycle of its own.
 
@@ -270,7 +278,7 @@ One row per formal complaint. Recommended by [inbox triage](CAPTURE-AGENTS.md#2-
 
 **`Declined` is a first-class status with a rationale.** A recommendation the human rejected is a record that the screen happened, exactly as `Closed - no action` is on a signal. A complaint register with no declined rows is a register nobody is actually screening.
 
-### 3.7 `PMS-Plan-and-Report-Register.xlsx` — 3 sheets, reference only
+### 3.7 PMS Plan and Report Register — 3 tabs, reference only
 
 **`PMS Documents`** (24 rows, 10 cols)
 `Document ID · Title · Type · Version · Status · Approved Date · Next Review Due · Owner · Frequency · Notes`
@@ -332,7 +340,7 @@ One row per confirmed product nonconformity. Drafted by WF 5, signed by a human.
 | `Linked CAPA` | → §4.3, set when one is opened |
 | `Status` · `Approved By` · `Date closed` | |
 
-### 4.3 `CAPA-Register.xlsx` — **NEW**
+### 4.3 CAPA Register — **NEW**
 
 One row per CAPA. Recommended by tier 3, **opened by a human**. See [`CAPA.md`](CAPA.md) for the reasoning that produces the recommendation.
 

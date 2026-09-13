@@ -19,6 +19,7 @@
 | [`DIAGRAMS.md`](DIAGRAMS.md) | The tier overview, the capture primitive, tier 2's five workflows, tier 3's sweep |
 | [`CAPA.md`](CAPA.md) | Tier 3 — how recurrence and cross-register overlap become a CAPA recommendation |
 | [`REGISTERS.md`](REGISTERS.md) | The eleven registers, the indicator rule set, how both denominators are computed |
+| [`SHEETS.md`](SHEETS.md) | The live Google Sheets surface — seven workbooks, service-account auth, what an agent may write |
 | [`UPSTREAM-SOURCES.md`](UPSTREAM-SOURCES.md) | The raw artifacts tier 1 watches, and the ground truth that scores it |
 | [`TELEMETRY-API.md`](TELEMETRY-API.md) | The six endpoints, event codes, backfill, AWS mapping — and tier 1's primary source |
 | [`DASHBOARD.md`](DASHBOARD.md) | The five React screens (design only, not built) |

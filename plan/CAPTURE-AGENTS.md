@@ -58,7 +58,7 @@ Rule 4 and the second column are the same rule. The customer's spreadsheet stays
 ## 1. Outage watch
 
 **Watches** the telemetry event stream — see [`TELEMETRY-API.md`](TELEMETRY-API.md) and [`UPSTREAM-SOURCES.md`](UPSTREAM-SOURCES.md) §Telemetry stream.
-**Drafts into** `PM-Incident-and-Outage-Log.xlsx`.
+**Drafts into** PM Incident and Outage Log → `Incidents & Outages`.
 
 The strongest bot, because the gap it closes is the largest and the source is machine-truthful.
 
@@ -107,7 +107,7 @@ The `SW Version at Time` line is the one that matters most, and not because 35% 
 ## 2. Inbox triage
 
 **Watches** the `support@`, `service@` and `quality@` mailboxes — threads, not messages.
-**Drafts into** `PM-Client-Communications-Log.xlsx`, and separately **recommends a complaint**.
+**Drafts into** PM Client Communications Log → `Client Communications`, and separately **recommends a complaint**.
 
 | Field | Drafts | From |
 |---|---|---|
@@ -154,7 +154,7 @@ The register's own field `Vigilance screen required (Y/N)` is **human-only and t
 ## 3. Meeting scribe
 
 **Watches** transcripts — client site visits, support queue reviews, and the PMS review meetings themselves.
-**Drafts into** `PM-Client-Communications-Log.xlsx` with `Channel = Meeting`.
+**Drafts into** PM Client Communications Log → `Client Communications` with `Channel = Meeting`.
 
 **Why the comms log and not its own register.** ISO 13485 §8.2.1 is one feedback net. A concern raised by a nurse unit manager in a Tuesday site visit and the same concern emailed on Wednesday are the same feedback, and splitting them into two registers means tier 2 has to re-join them to see it. One register, a `Channel` column, and the analysis reads across channels for free.
 
@@ -188,7 +188,7 @@ A raised item that also carries an indicator issue gets one classification, at a
 ## 4. RMA capture — stub
 
 **Watches** the service system: work orders, technician notes, parts-replaced lines.
-**Drafts into** `Product-Return-and-Replacement-Register.xlsx`.
+**Drafts into** Product Return and Replacement Register → `Returns & Replacements`.
 
 Stubbed for the hackathon: the same primitive, wired to a thinner source, enough to show the pattern generalises.
 
@@ -212,7 +212,7 @@ The register's actual value is the gap between `Customer Reported Fault` and `Te
 ## 5. Field-check nudge — stub
 
 **Watches** ward round notes.
-**Drafts into** `PM-Data-Check-and-Troubleshooting-Log.xlsx`.
+**Drafts into** PM Data Check and Troubleshooting Log → `Data Check & Troubleshooting`.
 
 Also stubbed. Its two jobs:
 

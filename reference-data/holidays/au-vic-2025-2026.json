@@ -1,0 +1,321 @@
+{
+  "calendar_id": "au-vic",
+  "jurisdiction": "AU-VIC",
+  "jurisdiction_name": "Victoria, Australia",
+  "timezone": "Australia/Melbourne",
+  "years_covered": [2025, 2026],
+  "weekend_days": ["saturday", "sunday"],
+  "schema_version": "1.0.0",
+  "purpose": "Asteria's own working calendar — used for internal target dates, meeting scheduling and 'was anyone in the office' reasoning. It is NOT a regulatory clock calendar: AU has clock_rules_available = false in jurisdictions.json, so no statutory due date is computed from it. See REGISTER-SHAPES-V0.md 5.4.",
+  "weekend_substitution_rule": {
+    "applies": true,
+    "statement": "Victoria substitutes a weekday for some, but not all, weekend public holidays. Australia Day and Boxing Day are substituted; ANZAC Day is not.",
+    "source": "australianpublicholidays-vic-2026"
+  },
+  "sources": [
+    {
+      "key": "officeholidays-vic-2025",
+      "title": "Public Holidays in Victoria (Australia) in 2025",
+      "url": "https://www.officeholidays.com/countries/australia/victoria/2025",
+      "publisher": "Office Holidays (secondary)",
+      "retrieved": "2026-09-13"
+    },
+    {
+      "key": "australianpublicholidays-vic-2026",
+      "title": "Public Holidays VIC 2026",
+      "url": "https://australianpublicholidays.com/vic-public-holidays/public-holidays-vic-2026/",
+      "publisher": "australianpublicholidays.com (secondary)",
+      "retrieved": "2026-09-13"
+    },
+    {
+      "key": "business-vic",
+      "title": "Victorian public holidays — Business Victoria",
+      "url": "https://business.vic.gov.au/business-information/public-holidays/victorian-public-holidays-2026",
+      "publisher": "Victorian Government (official)",
+      "retrieved": "2026-09-13",
+      "note": "The official page refused an automated fetch (HTTP 403) on 2026-09-13. Its content was reached only through search summaries and secondary listings that cite it. Anything that depends on this source alone is marked accordingly."
+    }
+  ],
+  "caveats": [
+    "The Friday before the AFL Grand Final is gazetted annually and its date is not fixed by rule. The 2026 entry is marked confidence: unverified and MUST NOT be relied on. AU computes no regulatory deadline in V0, so an unverified Victorian date cannot move one.",
+    "Easter Sunday is a Victorian public holiday (unlike in Ireland). Office Holidays omits it from its 2025 table; the Victorian official list includes it. It is included here for both years."
+  ],
+  "holidays": [
+    {
+      "date": "2025-01-01",
+      "weekday": "Wednesday",
+      "name": "New Year's Day",
+      "jurisdiction": "AU-VIC",
+      "type": "fixed",
+      "basis": "1 January",
+      "source": "officeholidays-vic-2025",
+      "confidence": "verified"
+    },
+    {
+      "date": "2025-01-27",
+      "weekday": "Monday",
+      "name": "Australia Day (observed)",
+      "jurisdiction": "AU-VIC",
+      "type": "fixed",
+      "basis": "26 January, observed on the following Monday because 2025-01-26 is a Sunday.",
+      "actual_date": "2025-01-26",
+      "source": "officeholidays-vic-2025",
+      "confidence": "verified"
+    },
+    {
+      "date": "2025-03-10",
+      "weekday": "Monday",
+      "name": "Labour Day",
+      "jurisdiction": "AU-VIC",
+      "type": "moveable",
+      "basis": "Second Monday in March.",
+      "source": "officeholidays-vic-2025",
+      "confidence": "verified"
+    },
+    {
+      "date": "2025-04-18",
+      "weekday": "Friday",
+      "name": "Good Friday",
+      "jurisdiction": "AU-VIC",
+      "type": "moveable",
+      "basis": "Easter Sunday minus 2 days (Easter 2025-04-20).",
+      "source": "officeholidays-vic-2025",
+      "confidence": "verified"
+    },
+    {
+      "date": "2025-04-19",
+      "weekday": "Saturday",
+      "name": "Saturday before Easter Sunday",
+      "jurisdiction": "AU-VIC",
+      "type": "moveable",
+      "basis": "Easter Sunday minus 1 day.",
+      "source": "officeholidays-vic-2025",
+      "confidence": "verified"
+    },
+    {
+      "date": "2025-04-20",
+      "weekday": "Sunday",
+      "name": "Easter Sunday",
+      "jurisdiction": "AU-VIC",
+      "type": "moveable",
+      "basis": "Gregorian Easter 2025.",
+      "source": "australianpublicholidays-vic-2026",
+      "confidence": "verified",
+      "notes": "Easter Sunday has been a Victorian public holiday since 2016. Office Holidays omits it from its 2025 table; the Victorian list includes it."
+    },
+    {
+      "date": "2025-04-21",
+      "weekday": "Monday",
+      "name": "Easter Monday",
+      "jurisdiction": "AU-VIC",
+      "type": "moveable",
+      "basis": "Easter Sunday plus 1 day.",
+      "source": "officeholidays-vic-2025",
+      "confidence": "verified"
+    },
+    {
+      "date": "2025-04-25",
+      "weekday": "Friday",
+      "name": "ANZAC Day",
+      "jurisdiction": "AU-VIC",
+      "type": "fixed",
+      "basis": "25 April",
+      "source": "officeholidays-vic-2025",
+      "confidence": "verified"
+    },
+    {
+      "date": "2025-06-09",
+      "weekday": "Monday",
+      "name": "King's Birthday",
+      "jurisdiction": "AU-VIC",
+      "type": "moveable",
+      "basis": "Second Monday in June.",
+      "source": "officeholidays-vic-2025",
+      "confidence": "verified"
+    },
+    {
+      "date": "2025-09-26",
+      "weekday": "Friday",
+      "name": "Friday before the AFL Grand Final",
+      "jurisdiction": "AU-VIC",
+      "type": "moveable",
+      "basis": "Gazetted annually as the Friday preceding the AFL Grand Final. The 2025 Grand Final was played on Saturday 2025-09-27.",
+      "source": "officeholidays-vic-2025",
+      "confidence": "verified",
+      "notes": "Office Holidays flagged this as a 'probable date' at publication. It is a past event as of the 2026-09-01 dataset freeze and is consistent across the listings consulted."
+    },
+    {
+      "date": "2025-11-04",
+      "weekday": "Tuesday",
+      "name": "Melbourne Cup Day",
+      "jurisdiction": "AU-VIC",
+      "type": "moveable",
+      "basis": "First Tuesday in November.",
+      "source": "officeholidays-vic-2025",
+      "confidence": "verified"
+    },
+    {
+      "date": "2025-12-25",
+      "weekday": "Thursday",
+      "name": "Christmas Day",
+      "jurisdiction": "AU-VIC",
+      "type": "fixed",
+      "basis": "25 December",
+      "source": "officeholidays-vic-2025",
+      "confidence": "verified"
+    },
+    {
+      "date": "2025-12-26",
+      "weekday": "Friday",
+      "name": "Boxing Day",
+      "jurisdiction": "AU-VIC",
+      "type": "fixed",
+      "basis": "26 December",
+      "source": "officeholidays-vic-2025",
+      "confidence": "verified"
+    },
+    {
+      "date": "2026-01-01",
+      "weekday": "Thursday",
+      "name": "New Year's Day",
+      "jurisdiction": "AU-VIC",
+      "type": "fixed",
+      "basis": "1 January",
+      "source": "australianpublicholidays-vic-2026",
+      "confidence": "verified"
+    },
+    {
+      "date": "2026-01-26",
+      "weekday": "Monday",
+      "name": "Australia Day",
+      "jurisdiction": "AU-VIC",
+      "type": "fixed",
+      "basis": "26 January; falls on a Monday in 2026, so no substitution applies.",
+      "source": "australianpublicholidays-vic-2026",
+      "confidence": "verified"
+    },
+    {
+      "date": "2026-03-09",
+      "weekday": "Monday",
+      "name": "Labour Day",
+      "jurisdiction": "AU-VIC",
+      "type": "moveable",
+      "basis": "Second Monday in March.",
+      "source": "australianpublicholidays-vic-2026",
+      "confidence": "verified"
+    },
+    {
+      "date": "2026-04-03",
+      "weekday": "Friday",
+      "name": "Good Friday",
+      "jurisdiction": "AU-VIC",
+      "type": "moveable",
+      "basis": "Easter Sunday minus 2 days (Easter 2026-04-05).",
+      "source": "australianpublicholidays-vic-2026",
+      "confidence": "verified"
+    },
+    {
+      "date": "2026-04-04",
+      "weekday": "Saturday",
+      "name": "Saturday before Easter Sunday",
+      "jurisdiction": "AU-VIC",
+      "type": "moveable",
+      "basis": "Easter Sunday minus 1 day.",
+      "source": "australianpublicholidays-vic-2026",
+      "confidence": "verified"
+    },
+    {
+      "date": "2026-04-05",
+      "weekday": "Sunday",
+      "name": "Easter Sunday",
+      "jurisdiction": "AU-VIC",
+      "type": "moveable",
+      "basis": "Gregorian Easter 2026.",
+      "source": "australianpublicholidays-vic-2026",
+      "confidence": "verified"
+    },
+    {
+      "date": "2026-04-06",
+      "weekday": "Monday",
+      "name": "Easter Monday",
+      "jurisdiction": "AU-VIC",
+      "type": "moveable",
+      "basis": "Easter Sunday plus 1 day.",
+      "source": "australianpublicholidays-vic-2026",
+      "confidence": "verified"
+    },
+    {
+      "date": "2026-04-25",
+      "weekday": "Saturday",
+      "name": "ANZAC Day",
+      "jurisdiction": "AU-VIC",
+      "type": "fixed",
+      "basis": "25 April. Falls on a Saturday in 2026; Victoria creates no substitute weekday for ANZAC Day.",
+      "source": "australianpublicholidays-vic-2026",
+      "confidence": "verified"
+    },
+    {
+      "date": "2026-06-08",
+      "weekday": "Monday",
+      "name": "King's Birthday",
+      "jurisdiction": "AU-VIC",
+      "type": "moveable",
+      "basis": "Second Monday in June.",
+      "source": "australianpublicholidays-vic-2026",
+      "confidence": "verified"
+    },
+    {
+      "date": "2026-09-25",
+      "weekday": "Friday",
+      "name": "Friday before the AFL Grand Final",
+      "jurisdiction": "AU-VIC",
+      "type": "moveable",
+      "basis": "Gazetted annually as the Friday preceding the AFL Grand Final; typically the last Friday in September.",
+      "source": "australianpublicholidays-vic-2026",
+      "confidence": "unverified",
+      "notes": "NOT CONFIRMED. Both listings consulted on 2026-09-13 show this holiday as 'date to be confirmed' pending the AFL fixture and Victorian gazettal. 2026-09-25 is the conventional last-Friday-in-September guess and is recorded only so the entry is not silently absent. Do not use it for any deadline. AU has clock_rules_available = false, so nothing statutory depends on it."
+    },
+    {
+      "date": "2026-11-03",
+      "weekday": "Tuesday",
+      "name": "Melbourne Cup Day",
+      "jurisdiction": "AU-VIC",
+      "type": "moveable",
+      "basis": "First Tuesday in November.",
+      "source": "australianpublicholidays-vic-2026",
+      "confidence": "verified"
+    },
+    {
+      "date": "2026-12-25",
+      "weekday": "Friday",
+      "name": "Christmas Day",
+      "jurisdiction": "AU-VIC",
+      "type": "fixed",
+      "basis": "25 December",
+      "source": "australianpublicholidays-vic-2026",
+      "confidence": "verified"
+    },
+    {
+      "date": "2026-12-26",
+      "weekday": "Saturday",
+      "name": "Boxing Day",
+      "jurisdiction": "AU-VIC",
+      "type": "fixed",
+      "basis": "26 December",
+      "source": "australianpublicholidays-vic-2026",
+      "confidence": "verified"
+    },
+    {
+      "date": "2026-12-28",
+      "weekday": "Monday",
+      "name": "Additional public holiday for Boxing Day",
+      "jurisdiction": "AU-VIC",
+      "type": "fixed",
+      "basis": "Substitute weekday because Boxing Day 2026-12-26 falls on a Saturday.",
+      "actual_date": "2026-12-26",
+      "source": "australianpublicholidays-vic-2026",
+      "confidence": "verified",
+      "notes": "This is the clearest AU/IE/NL divergence in the dataset: Victoria creates 2026-12-28 as a holiday, Ireland and the Netherlands do not."
+    }
+  ]
+}

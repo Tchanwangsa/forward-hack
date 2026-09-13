@@ -1,0 +1,4884 @@
+{
+ "_provenance": {
+  "derived_from": "plan/mock/asteria/world/world.json",
+  "world_dataset_version": "0.1.0",
+  "world_seed": 20260901,
+  "world_generated_at": "2026-09-10T09:00:00+10:00",
+  "dataset_as_at": "2026-09-10",
+  "verified_against": "mock-company/ as rendered (read-only)",
+  "builder": "tools/eval/build_eval.py",
+  "repo_head_at_build": "72cb2aa13643e87de7fe46bc64c885dadc5fc02c",
+  "warning": "Answer key. Never place this file, or any part of it, inside mock-company/. A product run must not be able to read it.",
+  "what": "Per complaint: the defensible value of each mandated field, and the honest state of each empty one.",
+  "scoring": "See SCORING.md, measures F1-F4."
+ },
+ "counts": {
+  "complaints": 68,
+  "demo_complaints": 2
+ },
+ "mandated_field_citations": {
+  "date_received": "21 CFR 820.198(e)(2) / ISO 13485 8.2.2 - the regulated receipt date",
+  "complainant": "21 CFR 820.198(e)(4) - name, address, phone of the complainant",
+  "allegation_verbatim": "21 CFR 820.198(e)(5) - the complaint in the complainant's own words",
+  "product_model": "21 CFR 820.198(e)(1) - the name of the device",
+  "device_identifiers": "21 CFR 820.198(e)(3) - UDI/UPC and any other device identification",
+  "reply": "21 CFR 820.198(e)(7) - any reply to the complainant",
+  "date_of_event": "MIR 1.2 / MDCG 2023-3 - the date the incident occurred"
+ },
+ "empty_state_vocabulary": {
+  "value": "a value is recorded and a source states it",
+  "explicitly_unknown": "someone looked, and the answer is that it cannot be known from the reporter - e.g. the nurse did not read the UDI off the label, the pouch is in clinical waste",
+  "not_yet_investigated": "nobody has looked yet. The field is open work, not a closed gap.",
+  "why_the_distinction_is_scored": "21 CFR 803.52(f)(11)(iii) and 803.50(b)(3) both require the manufacturer to say why a required field is empty and what was done to fill it. A product that collapses the two states cannot draft that statement, and cannot tell an auditor the difference between a dead end and an open action."
+ },
+ "empty_state_summary": {
+  "explicitly_unknown_by_field": {
+   "device_identifiers.lot": 13,
+   "device_identifiers.serial": 12,
+   "device_identifiers.udi_di": 25
+  },
+  "not_yet_investigated_by_field": {
+   "device_identifiers.software_version": 30,
+   "device_identifiers.udi_di": 43
+  },
+  "complaints_with_at_least_one_explicitly_unknown": 37,
+  "complaints_with_at_least_one_not_yet_investigated": 43
+ },
+ "rendered_vocabulary": {
+  "field": "device_identifiers.udi_di",
+  "source": "mock-company/qms/complaints/*",
+  "phrase_by_true_state": {
+   "explicitly_unknown": {
+    "Not provided": 25
+   },
+   "not_yet_investigated": {
+    "Not yet established": 43
+   }
+  },
+  "separable": true,
+  "note": "'Not provided' is written where someone looked and the answer cannot be had; 'Not yet established' is written where nobody has looked yet. The two phrases never cross, so a product can tell them apart from the record alone - and a product that collapses them into one 'unknown' has thrown away information the source carried."
+ },
+ "reportability_coverage": {
+  "complaints_total": 68,
+  "complaints_with_a_reportability_determination": 11,
+  "complaints_without_one": 57,
+  "assessed_complaint_numbers": [
+   "CMP-2025-0001",
+   "CMP-2025-0002",
+   "CMP-2025-0010",
+   "CMP-2025-0018",
+   "CMP-2026-0006",
+   "CMP-2026-0016",
+   "CMP-2026-0029",
+   "CMP-2026-0030",
+   "CMP-2026-0032",
+   "CMP-2026-0034",
+   "CMP-2026-0040"
+  ],
+  "verified_in_register": {
+   "file": "mock-company/qms/complaint-register.xlsx, sheet 'Complaints'",
+   "rows": 68,
+   "with_a_reportability_reference": 11,
+   "agrees_with_world": true
+  },
+  "correct_answer": "This is a fact about the company, not a hole in the data. US market entry was February 2026, the RA specialist started in March, and the effective vigilance procedure contains no 21 CFR Part 803 content at all. Reporting the gap is a day-one finding. Drafting the missing determinations and presenting them as the register's is fabrication - see SCORING.md N2."
+ },
+ "complaints": [
+  {
+   "complaint_no": "CMP-2025-0001",
+   "feedback_no": "FB-2025-0002",
+   "is_demo_complaint": false,
+   "mandated_fields": {
+    "date_received": {
+     "recorded": "2025-03-20",
+     "basis": "ticket"
+    },
+    "complainant": {
+     "name": "Kate Brennan",
+     "email": "kate.brennan@yarravalleyhealth.org.au",
+     "role": "healthcare_professional"
+    },
+    "allegation_verbatim": "unit not appearing on the nurses station dashboard",
+    "product_model": "P1-100",
+    "device_identifiers": [
+     {
+      "scheme": "serial",
+      "value": "SN-1042",
+      "value_state": "value"
+     },
+     {
+      "scheme": "model",
+      "value": "P1-100",
+      "value_state": "value"
+     },
+     {
+      "scheme": "udi_di",
+      "value": null,
+      "value_state": "not_yet_investigated",
+      "discoverable_value": null,
+      "discoverable_from": "the UDI-DI is printed on the label and appears in support attachment photographs; it was never typed into a field"
+     },
+     {
+      "scheme": "software_version",
+      "value": null,
+      "value_state": "not_yet_investigated",
+      "discoverable_value": "1.0.0",
+      "discoverable_from": "installed-base/version-observations.csv, by serial and date"
+     }
+    ],
+    "reply": {
+     "sent": true,
+     "date": "2025-04-11"
+    },
+    "date_of_event": null
+   },
+   "context": {
+    "site": "SITE-04",
+    "org": "ORG-02",
+    "country_of_use": "AU",
+    "intake_channel": "phone",
+    "status": "closed",
+    "symptom_code": "misc_device"
+   },
+   "true_device_facts": {
+    "serial": "SN-1042",
+    "hw_rev": "H1",
+    "comms_module_lot": "CM-4390",
+    "sw_version_at_event": "1.0.0",
+    "ward": "Ward 6",
+    "note": "The true device facts are what the world knows. A product may only assert the subset a source record actually states, and must cite it."
+   },
+   "explicitly_unknown": [],
+   "not_yet_investigated": [
+    "device_identifiers.udi_di",
+    "device_identifiers.software_version"
+   ]
+  },
+  {
+   "complaint_no": "CMP-2025-0002",
+   "feedback_no": "FB-2025-0004",
+   "is_demo_complaint": false,
+   "mandated_fields": {
+    "date_received": {
+     "recorded": "2025-04-03",
+     "basis": "ticket"
+    },
+    "complainant": {
+     "name": "Wayne Fletcher",
+     "email": "wayne.fletcher@adelaidemetrohealth.org.au",
+     "role": "other"
+    },
+    "allegation_verbatim": "battery flat before the end of the shift",
+    "product_model": "P1-100",
+    "device_identifiers": [
+     {
+      "scheme": "serial",
+      "value": null,
+      "value_state": "explicitly_unknown"
+     },
+     {
+      "scheme": "model",
+      "value": "P1-100",
+      "value_state": "value"
+     },
+     {
+      "scheme": "udi_di",
+      "value": null,
+      "value_state": "not_yet_investigated",
+      "discoverable_value": null,
+      "discoverable_from": "the UDI-DI is printed on the label and appears in support attachment photographs; it was never typed into a field"
+     },
+     {
+      "scheme": "software_version",
+      "value": "1.0.0",
+      "value_state": "value"
+     }
+    ],
+    "reply": {
+     "sent": true,
+     "date": "2025-05-14"
+    },
+    "date_of_event": null
+   },
+   "context": {
+    "site": "SITE-11",
+    "org": "ORG-05",
+    "country_of_use": "AU",
+    "intake_channel": "support_portal",
+    "status": "reopened",
+    "symptom_code": "battery_short_runtime"
+   },
+   "true_device_facts": {
+    "serial": "SN-1055",
+    "hw_rev": "H1",
+    "comms_module_lot": "CM-4390",
+    "sw_version_at_event": "1.0.0",
+    "ward": "Surgical Unit A",
+    "note": "The true device facts are what the world knows. A product may only assert the subset a source record actually states, and must cite it."
+   },
+   "explicitly_unknown": [
+    "device_identifiers.serial"
+   ],
+   "not_yet_investigated": [
+    "device_identifiers.udi_di"
+   ]
+  },
+  {
+   "complaint_no": "CMP-2025-0003",
+   "feedback_no": "FB-2025-0008",
+   "is_demo_complaint": false,
+   "mandated_fields": {
+    "date_received": {
+     "recorded": "2025-05-29",
+     "basis": "ticket"
+    },
+    "complainant": {
+     "name": "Amanda Sze",
+     "email": "amanda.sze@northbridgehealth.org.au",
+     "role": "healthcare_professional"
+    },
+    "allegation_verbatim": "patch came away during a shower",
+    "product_model": "PP-72",
+    "device_identifiers": [
+     {
+      "scheme": "lot",
+      "value": null,
+      "value_state": "explicitly_unknown"
+     },
+     {
+      "scheme": "model",
+      "value": "PP-72",
+      "value_state": "value"
+     },
+     {
+      "scheme": "udi_di",
+      "value": null,
+      "value_state": "explicitly_unknown",
+      "discoverable_value": null,
+      "discoverable_from": "the UDI-DI is printed on the label and appears in support attachment photographs; it was never typed into a field"
+     }
+    ],
+    "reply": {
+     "sent": false,
+     "date": null
+    },
+    "date_of_event": null
+   },
+   "context": {
+    "site": "SITE-02",
+    "org": "ORG-01",
+    "country_of_use": "AU",
+    "intake_channel": "email",
+    "status": "not_a_complaint",
+    "symptom_code": "adhesive_lift"
+   },
+   "true_device_facts": {
+    "serial": null,
+    "hw_rev": null,
+    "comms_module_lot": null,
+    "sw_version_at_event": null,
+    "ward": null,
+    "note": "The true device facts are what the world knows. A product may only assert the subset a source record actually states, and must cite it."
+   },
+   "explicitly_unknown": [
+    "device_identifiers.lot",
+    "device_identifiers.udi_di"
+   ],
+   "not_yet_investigated": []
+  },
+  {
+   "complaint_no": "CMP-2025-0004",
+   "feedback_no": "FB-2025-0007",
+   "is_demo_complaint": false,
+   "mandated_fields": {
+    "date_received": {
+     "recorded": "2025-05-20",
+     "basis": "ticket"
+    },
+    "complainant": {
+     "name": "Josh Tui'one",
+     "email": "josh.tuione@schg.com.au",
+     "role": "biomed_engineer"
+    },
+    "allegation_verbatim": "power supply plug is loose in the socket",
+    "product_model": "P1-100",
+    "device_identifiers": [
+     {
+      "scheme": "serial",
+      "value": "SN-1023",
+      "value_state": "value"
+     },
+     {
+      "scheme": "model",
+      "value": "P1-100",
+      "value_state": "value"
+     },
+     {
+      "scheme": "udi_di",
+      "value": null,
+      "value_state": "not_yet_investigated",
+      "discoverable_value": null,
+      "discoverable_from": "the UDI-DI is printed on the label and appears in support attachment photographs; it was never typed into a field"
+     },
+     {
+      "scheme": "software_version",
+      "value": null,
+      "value_state": "not_yet_investigated",
+      "discoverable_value": "1.0.0",
+      "discoverable_from": "installed-base/version-observations.csv, by serial and date"
+     }
+    ],
+    "reply": {
+     "sent": true,
+     "date": "2025-06-19"
+    },
+    "date_of_event": null
+   },
+   "context": {
+    "site": "SITE-07",
+    "org": "ORG-03",
+    "country_of_use": "AU",
+    "intake_channel": "support_portal",
+    "status": "closed",
+    "symptom_code": "misc_device"
+   },
+   "true_device_facts": {
+    "serial": "SN-1023",
+    "hw_rev": "H1",
+    "comms_module_lot": "CM-4390",
+    "sw_version_at_event": "1.0.0",
+    "ward": "Level 3 Surgical",
+    "note": "The true device facts are what the world knows. A product may only assert the subset a source record actually states, and must cite it."
+   },
+   "explicitly_unknown": [],
+   "not_yet_investigated": [
+    "device_identifiers.udi_di",
+    "device_identifiers.software_version"
+   ]
+  },
+  {
+   "complaint_no": "CMP-2025-0005",
+   "feedback_no": "FB-2025-0011",
+   "is_demo_complaint": false,
+   "mandated_fields": {
+    "date_received": {
+     "recorded": "2025-06-30",
+     "basis": "ticket"
+    },
+    "complainant": {
+     "name": "Elliot Zhang",
+     "email": "elliot.zhang@schg.com.au",
+     "role": "biomed_engineer"
+    },
+    "allegation_verbatim": "screen frozen, had to restart the unit",
+    "product_model": "P1-100",
+    "device_identifiers": [
+     {
+      "scheme": "serial",
+      "value": "SN-2239",
+      "value_state": "value"
+     },
+     {
+      "scheme": "model",
+      "value": "P1-100",
+      "value_state": "value"
+     },
+     {
+      "scheme": "udi_di",
+      "value": null,
+      "value_state": "not_yet_investigated",
+      "discoverable_value": null,
+      "discoverable_from": "the UDI-DI is printed on the label and appears in support attachment photographs; it was never typed into a field"
+     },
+     {
+      "scheme": "software_version",
+      "value": null,
+      "value_state": "not_yet_investigated",
+      "discoverable_value": "1.1.0",
+      "discoverable_from": "installed-base/version-observations.csv, by serial and date"
+     }
+    ],
+    "reply": {
+     "sent": true,
+     "date": "2025-07-21"
+    },
+    "date_of_event": null
+   },
+   "context": {
+    "site": "SITE-06",
+    "org": "ORG-03",
+    "country_of_use": "AU",
+    "intake_channel": "email",
+    "status": "closed",
+    "symptom_code": "display_freeze"
+   },
+   "true_device_facts": {
+    "serial": "SN-2239",
+    "hw_rev": "H2",
+    "comms_module_lot": "CM-4390",
+    "sw_version_at_event": "1.1.0",
+    "ward": "Ward 7 West",
+    "note": "The true device facts are what the world knows. A product may only assert the subset a source record actually states, and must cite it."
+   },
+   "explicitly_unknown": [],
+   "not_yet_investigated": [
+    "device_identifiers.udi_di",
+    "device_identifiers.software_version"
+   ]
+  },
+  {
+   "complaint_no": "CMP-2025-0006",
+   "feedback_no": "FB-2025-0014",
+   "is_demo_complaint": false,
+   "mandated_fields": {
+    "date_received": {
+     "recorded": "2025-07-28",
+     "basis": "record"
+    },
+    "complainant": {
+     "name": "Dean Whitfield",
+     "email": "dean.whitfield@northbridgehealth.org.au",
+     "role": "other"
+    },
+    "allegation_verbatim": "display stopped updating and the buttons did nothing",
+    "product_model": "P1-100",
+    "device_identifiers": [
+     {
+      "scheme": "serial",
+      "value": "SN-1140",
+      "value_state": "value"
+     },
+     {
+      "scheme": "model",
+      "value": "P1-100",
+      "value_state": "value"
+     },
+     {
+      "scheme": "udi_di",
+      "value": null,
+      "value_state": "not_yet_investigated",
+      "discoverable_value": null,
+      "discoverable_from": "the UDI-DI is printed on the label and appears in support attachment photographs; it was never typed into a field"
+     },
+     {
+      "scheme": "software_version",
+      "value": null,
+      "value_state": "not_yet_investigated",
+      "discoverable_value": "1.1.0",
+      "discoverable_from": "installed-base/version-observations.csv, by serial and date"
+     }
+    ],
+    "reply": {
+     "sent": false,
+     "date": null
+    },
+    "date_of_event": null
+   },
+   "context": {
+    "site": "SITE-03",
+    "org": "ORG-01",
+    "country_of_use": "AU",
+    "intake_channel": "email",
+    "status": "closed",
+    "symptom_code": "display_freeze"
+   },
+   "true_device_facts": {
+    "serial": "SN-1140",
+    "hw_rev": "H1",
+    "comms_module_lot": "CM-4390",
+    "sw_version_at_event": "1.1.0",
+    "ward": "Day Recovery",
+    "note": "The true device facts are what the world knows. A product may only assert the subset a source record actually states, and must cite it."
+   },
+   "explicitly_unknown": [],
+   "not_yet_investigated": [
+    "device_identifiers.udi_di",
+    "device_identifiers.software_version"
+   ]
+  },
+  {
+   "complaint_no": "CMP-2025-0007",
+   "feedback_no": "FB-2025-0015",
+   "is_demo_complaint": false,
+   "mandated_fields": {
+    "date_received": {
+     "recorded": "2025-08-04",
+     "basis": "ticket"
+    },
+    "complainant": {
+     "name": "Niamh Cassidy",
+     "email": "niamh.cassidy@stbrendans.ie",
+     "role": "healthcare_professional"
+    },
+    "allegation_verbatim": "unit locked up mid-shift, power cycle fixed it",
+    "product_model": "P1-100",
+    "device_identifiers": [
+     {
+      "scheme": "serial",
+      "value": "SN-2172",
+      "value_state": "value"
+     },
+     {
+      "scheme": "model",
+      "value": "P1-100",
+      "value_state": "value"
+     },
+     {
+      "scheme": "udi_di",
+      "value": null,
+      "value_state": "not_yet_investigated",
+      "discoverable_value": null,
+      "discoverable_from": "the UDI-DI is printed on the label and appears in support attachment photographs; it was never typed into a field"
+     },
+     {
+      "scheme": "software_version",
+      "value": null,
+      "value_state": "value",
+      "discoverable_value": "1.1.0",
+      "discoverable_from": "installed-base/version-observations.csv, by serial and date"
+     }
+    ],
+    "reply": {
+     "sent": true,
+     "date": "2025-08-21"
+    },
+    "date_of_event": null
+   },
+   "context": {
+    "site": "SITE-14",
+    "org": "ORG-07",
+    "country_of_use": "IE",
+    "intake_channel": "phone",
+    "status": "closed",
+    "symptom_code": "display_freeze"
+   },
+   "true_device_facts": {
+    "serial": "SN-2172",
+    "hw_rev": "H2",
+    "comms_module_lot": "CM-4390",
+    "sw_version_at_event": "1.1.0",
+    "ward": "Ward 1 Surgical",
+    "note": "The true device facts are what the world knows. A product may only assert the subset a source record actually states, and must cite it."
+   },
+   "explicitly_unknown": [],
+   "not_yet_investigated": [
+    "device_identifiers.udi_di"
+   ]
+  },
+  {
+   "complaint_no": "CMP-2025-0008",
+   "feedback_no": "FB-2025-0016",
+   "is_demo_complaint": false,
+   "mandated_fields": {
+    "date_received": {
+     "recorded": "2025-08-06",
+     "basis": "ticket"
+    },
+    "complainant": {
+     "name": "Aoife Gallagher",
+     "email": "aoife.gallagher@stbrendans.ie",
+     "role": "healthcare_professional"
+    },
+    "allegation_verbatim": "unit locked up mid-shift, power cycle fixed it",
+    "product_model": "P1-100",
+    "device_identifiers": [
+     {
+      "scheme": "serial",
+      "value": "SN-1018",
+      "value_state": "value"
+     },
+     {
+      "scheme": "model",
+      "value": "P1-100",
+      "value_state": "value"
+     },
+     {
+      "scheme": "udi_di",
+      "value": null,
+      "value_state": "not_yet_investigated",
+      "discoverable_value": null,
+      "discoverable_from": "the UDI-DI is printed on the label and appears in support attachment photographs; it was never typed into a field"
+     },
+     {
+      "scheme": "software_version",
+      "value": "1.1.0",
+      "value_state": "not_yet_investigated"
+     }
+    ],
+    "reply": {
+     "sent": true,
+     "date": "2025-09-02"
+    },
+    "date_of_event": null
+   },
+   "context": {
+    "site": "SITE-13",
+    "org": "ORG-07",
+    "country_of_use": "IE",
+    "intake_channel": "email",
+    "status": "closed",
+    "symptom_code": "display_freeze"
+   },
+   "true_device_facts": {
+    "serial": "SN-1018",
+    "hw_rev": "H1",
+    "comms_module_lot": "CM-4390",
+    "sw_version_at_event": "1.1.0",
+    "ward": "Surgical Day Unit",
+    "note": "The true device facts are what the world knows. A product may only assert the subset a source record actually states, and must cite it."
+   },
+   "explicitly_unknown": [],
+   "not_yet_investigated": [
+    "device_identifiers.udi_di",
+    "device_identifiers.software_version"
+   ]
+  },
+  {
+   "complaint_no": "CMP-2025-0009",
+   "feedback_no": "FB-2025-0017",
+   "is_demo_complaint": false,
+   "mandated_fields": {
+    "date_received": {
+     "recorded": "2025-08-08",
+     "basis": "mailbox"
+    },
+    "complainant": {
+     "name": "Nadia Haddad",
+     "email": "nadia.haddad@schg.com.au",
+     "role": "healthcare_professional"
+    },
+    "allegation_verbatim": "unit locked up mid-shift, power cycle fixed it",
+    "product_model": "P1-100",
+    "device_identifiers": [
+     {
+      "scheme": "serial",
+      "value": null,
+      "value_state": "explicitly_unknown"
+     },
+     {
+      "scheme": "model",
+      "value": "P1-100",
+      "value_state": "value"
+     },
+     {
+      "scheme": "udi_di",
+      "value": null,
+      "value_state": "not_yet_investigated",
+      "discoverable_value": null,
+      "discoverable_from": "the UDI-DI is printed on the label and appears in support attachment photographs; it was never typed into a field"
+     },
+     {
+      "scheme": "software_version",
+      "value": null,
+      "value_state": "value",
+      "discoverable_value": "1.1.0",
+      "discoverable_from": "installed-base/version-observations.csv, by serial and date"
+     }
+    ],
+    "reply": {
+     "sent": false,
+     "date": null
+    },
+    "date_of_event": null
+   },
+   "context": {
+    "site": "SITE-06",
+    "org": "ORG-03",
+    "country_of_use": "AU",
+    "intake_channel": "email",
+    "status": "closed",
+    "symptom_code": "display_freeze"
+   },
+   "true_device_facts": {
+    "serial": "SN-1081",
+    "hw_rev": "H1",
+    "comms_module_lot": "CM-4390",
+    "sw_version_at_event": "1.1.0",
+    "ward": "Ward 7 East",
+    "note": "The true device facts are what the world knows. A product may only assert the subset a source record actually states, and must cite it."
+   },
+   "explicitly_unknown": [
+    "device_identifiers.serial"
+   ],
+   "not_yet_investigated": [
+    "device_identifiers.udi_di"
+   ]
+  },
+  {
+   "complaint_no": "CMP-2025-0010",
+   "feedback_no": "FB-2025-0018",
+   "is_demo_complaint": false,
+   "mandated_fields": {
+    "date_received": {
+     "recorded": "2025-09-05",
+     "basis": "ticket"
+    },
+    "complainant": {
+     "name": "Craig Sutton",
+     "email": "craig.sutton@yarravalleyhealth.org.au",
+     "role": "internal"
+    },
+    "allegation_verbatim": "patch came away during a shower",
+    "product_model": "PP-72",
+    "device_identifiers": [
+     {
+      "scheme": "lot",
+      "value": null,
+      "value_state": "explicitly_unknown"
+     },
+     {
+      "scheme": "model",
+      "value": "PP-72",
+      "value_state": "value"
+     },
+     {
+      "scheme": "udi_di",
+      "value": null,
+      "value_state": "explicitly_unknown",
+      "discoverable_value": null,
+      "discoverable_from": "the UDI-DI is printed on the label and appears in support attachment photographs; it was never typed into a field"
+     }
+    ],
+    "reply": {
+     "sent": false,
+     "date": null
+    },
+    "date_of_event": null
+   },
+   "context": {
+    "site": "SITE-05",
+    "org": "ORG-02",
+    "country_of_use": "AU",
+    "intake_channel": "service_visit",
+    "status": "closed",
+    "symptom_code": "adhesive_lift"
+   },
+   "true_device_facts": {
+    "serial": null,
+    "hw_rev": null,
+    "comms_module_lot": null,
+    "sw_version_at_event": null,
+    "ward": null,
+    "note": "The true device facts are what the world knows. A product may only assert the subset a source record actually states, and must cite it."
+   },
+   "explicitly_unknown": [
+    "device_identifiers.lot",
+    "device_identifiers.udi_di"
+   ],
+   "not_yet_investigated": []
+  },
+  {
+   "complaint_no": "CMP-2025-0011",
+   "feedback_no": "FB-2025-0021",
+   "is_demo_complaint": false,
+   "mandated_fields": {
+    "date_received": {
+     "recorded": "2025-09-22",
+     "basis": "mailbox"
+    },
+    "complainant": {
+     "name": "Fiona Marsh",
+     "email": "fiona.marsh@northbridgehealth.org.au",
+     "role": "healthcare_professional"
+    },
+    "allegation_verbatim": "screen frozen, had to restart the unit",
+    "product_model": "P1-100",
+    "device_identifiers": [
+     {
+      "scheme": "serial",
+      "value": null,
+      "value_state": "explicitly_unknown"
+     },
+     {
+      "scheme": "model",
+      "value": "P1-100",
+      "value_state": "value"
+     },
+     {
+      "scheme": "udi_di",
+      "value": null,
+      "value_state": "not_yet_investigated",
+      "discoverable_value": null,
+      "discoverable_from": "the UDI-DI is printed on the label and appears in support attachment photographs; it was never typed into a field"
+     },
+     {
+      "scheme": "software_version",
+      "value": "1.1.0",
+      "value_state": "value"
+     }
+    ],
+    "reply": {
+     "sent": false,
+     "date": null
+    },
+    "date_of_event": null
+   },
+   "context": {
+    "site": "SITE-01",
+    "org": "ORG-01",
+    "country_of_use": "AU",
+    "intake_channel": "phone",
+    "status": "closed",
+    "symptom_code": "display_freeze"
+   },
+   "true_device_facts": {
+    "serial": "SN-1099",
+    "hw_rev": "H1",
+    "comms_module_lot": "CM-4390",
+    "sw_version_at_event": "1.1.0",
+    "ward": "Ward 5A Surgical",
+    "note": "The true device facts are what the world knows. A product may only assert the subset a source record actually states, and must cite it."
+   },
+   "explicitly_unknown": [
+    "device_identifiers.serial"
+   ],
+   "not_yet_investigated": [
+    "device_identifiers.udi_di"
+   ]
+  },
+  {
+   "complaint_no": "CMP-2025-0012",
+   "feedback_no": "FB-2025-0025",
+   "is_demo_complaint": false,
+   "mandated_fields": {
+    "date_received": {
+     "recorded": "2025-10-15",
+     "basis": "mailbox"
+    },
+    "complainant": {
+     "name": "Fiona Marsh",
+     "email": "fiona.marsh@northbridgehealth.org.au",
+     "role": "healthcare_professional"
+    },
+    "allegation_verbatim": "unit locked up mid-shift, power cycle fixed it",
+    "product_model": "P1-100",
+    "device_identifiers": [
+     {
+      "scheme": "serial",
+      "value": "SN-2084",
+      "value_state": "value"
+     },
+     {
+      "scheme": "model",
+      "value": "P1-100",
+      "value_state": "value"
+     },
+     {
+      "scheme": "udi_di",
+      "value": null,
+      "value_state": "not_yet_investigated",
+      "discoverable_value": null,
+      "discoverable_from": "the UDI-DI is printed on the label and appears in support attachment photographs; it was never typed into a field"
+     },
+     {
+      "scheme": "software_version",
+      "value": "1.1.1",
+      "value_state": "not_yet_investigated"
+     }
+    ],
+    "reply": {
+     "sent": false,
+     "date": null
+    },
+    "date_of_event": null
+   },
+   "context": {
+    "site": "SITE-01",
+    "org": "ORG-01",
+    "country_of_use": "AU",
+    "intake_channel": "support_portal",
+    "status": "closed",
+    "symptom_code": "display_freeze"
+   },
+   "true_device_facts": {
+    "serial": "SN-2084",
+    "hw_rev": "H2",
+    "comms_module_lot": "CM-4390",
+    "sw_version_at_event": "1.1.1",
+    "ward": "Ward 4B Surgical",
+    "note": "The true device facts are what the world knows. A product may only assert the subset a source record actually states, and must cite it."
+   },
+   "explicitly_unknown": [],
+   "not_yet_investigated": [
+    "device_identifiers.udi_di",
+    "device_identifiers.software_version"
+   ]
+  },
+  {
+   "complaint_no": "CMP-2025-0013",
+   "feedback_no": "FB-2025-0024",
+   "is_demo_complaint": false,
+   "mandated_fields": {
+    "date_received": {
+     "recorded": "2025-09-29",
+     "basis": "ticket"
+    },
+    "complainant": {
+     "name": "Bianca Rossi",
+     "email": "bianca.rossi@schg.com.au",
+     "role": "healthcare_professional"
+    },
+    "allegation_verbatim": "display stopped updating and the buttons did nothing",
+    "product_model": "P1-100",
+    "device_identifiers": [
+     {
+      "scheme": "serial",
+      "value": null,
+      "value_state": "explicitly_unknown"
+     },
+     {
+      "scheme": "model",
+      "value": "P1-100",
+      "value_state": "value"
+     },
+     {
+      "scheme": "udi_di",
+      "value": null,
+      "value_state": "not_yet_investigated",
+      "discoverable_value": null,
+      "discoverable_from": "the UDI-DI is printed on the label and appears in support attachment photographs; it was never typed into a field"
+     },
+     {
+      "scheme": "software_version",
+      "value": null,
+      "value_state": "not_yet_investigated",
+      "discoverable_value": "1.1.1",
+      "discoverable_from": "installed-base/version-observations.csv, by serial and date"
+     }
+    ],
+    "reply": {
+     "sent": true,
+     "date": "2025-11-03"
+    },
+    "date_of_event": null
+   },
+   "context": {
+    "site": "SITE-07",
+    "org": "ORG-03",
+    "country_of_use": "AU",
+    "intake_channel": "support_portal",
+    "status": "closed",
+    "symptom_code": "display_freeze"
+   },
+   "true_device_facts": {
+    "serial": "SN-1025",
+    "hw_rev": "H1",
+    "comms_module_lot": "CM-4390",
+    "sw_version_at_event": "1.1.1",
+    "ward": "Level 4 Ortho",
+    "note": "The true device facts are what the world knows. A product may only assert the subset a source record actually states, and must cite it."
+   },
+   "explicitly_unknown": [
+    "device_identifiers.serial"
+   ],
+   "not_yet_investigated": [
+    "device_identifiers.udi_di",
+    "device_identifiers.software_version"
+   ]
+  },
+  {
+   "complaint_no": "CMP-2025-0014",
+   "feedback_no": "FB-2025-0026",
+   "is_demo_complaint": false,
+   "mandated_fields": {
+    "date_received": {
+     "recorded": "2025-10-29",
+     "basis": "mailbox"
+    },
+    "complainant": {
+     "name": "Ravi Chandra",
+     "email": "ravi.chandra@northbridgehealth.org.au",
+     "role": "biomed_engineer"
+    },
+    "allegation_verbatim": "date and time reset after a power outage",
+    "product_model": "P1-100",
+    "device_identifiers": [
+     {
+      "scheme": "serial",
+      "value": "SN-1136",
+      "value_state": "value"
+     },
+     {
+      "scheme": "model",
+      "value": "P1-100",
+      "value_state": "value"
+     },
+     {
+      "scheme": "udi_di",
+      "value": null,
+      "value_state": "not_yet_investigated",
+      "discoverable_value": null,
+      "discoverable_from": "the UDI-DI is printed on the label and appears in support attachment photographs; it was never typed into a field"
+     },
+     {
+      "scheme": "software_version",
+      "value": "1.1.1",
+      "value_state": "value"
+     }
+    ],
+    "reply": {
+     "sent": false,
+     "date": null
+    },
+    "date_of_event": null
+   },
+   "context": {
+    "site": "SITE-01",
+    "org": "ORG-01",
+    "country_of_use": "AU",
+    "intake_channel": "email",
+    "status": "closed",
+    "symptom_code": "misc_device"
+   },
+   "true_device_facts": {
+    "serial": "SN-1136",
+    "hw_rev": "H1",
+    "comms_module_lot": "CM-4390",
+    "sw_version_at_event": "1.1.1",
+    "ward": "Ward 4B Surgical",
+    "note": "The true device facts are what the world knows. A product may only assert the subset a source record actually states, and must cite it."
+   },
+   "explicitly_unknown": [],
+   "not_yet_investigated": [
+    "device_identifiers.udi_di"
+   ]
+  },
+  {
+   "complaint_no": "CMP-2025-0015",
+   "feedback_no": "FB-2025-0027",
+   "is_demo_complaint": false,
+   "mandated_fields": {
+    "date_received": {
+     "recorded": "2025-11-04",
+     "basis": "mailbox"
+    },
+    "complainant": {
+     "name": "Sam Adeyemi",
+     "email": "sam.adeyemi@yarravalleyhealth.org.au",
+     "role": "biomed_engineer"
+    },
+    "allegation_verbatim": "patch edges lifting after about a day",
+    "product_model": "PP-72",
+    "device_identifiers": [
+     {
+      "scheme": "lot",
+      "value": null,
+      "value_state": "explicitly_unknown"
+     },
+     {
+      "scheme": "model",
+      "value": "PP-72",
+      "value_state": "value"
+     },
+     {
+      "scheme": "udi_di",
+      "value": null,
+      "value_state": "explicitly_unknown",
+      "discoverable_value": null,
+      "discoverable_from": "the UDI-DI is printed on the label and appears in support attachment photographs; it was never typed into a field"
+     }
+    ],
+    "reply": {
+     "sent": true,
+     "date": "2025-11-21"
+    },
+    "date_of_event": null
+   },
+   "context": {
+    "site": "SITE-04",
+    "org": "ORG-02",
+    "country_of_use": "AU",
+    "intake_channel": "support_portal",
+    "status": "in_investigation",
+    "symptom_code": "adhesive_lift"
+   },
+   "true_device_facts": {
+    "serial": null,
+    "hw_rev": null,
+    "comms_module_lot": null,
+    "sw_version_at_event": null,
+    "ward": null,
+    "note": "The true device facts are what the world knows. A product may only assert the subset a source record actually states, and must cite it."
+   },
+   "explicitly_unknown": [
+    "device_identifiers.lot",
+    "device_identifiers.udi_di"
+   ],
+   "not_yet_investigated": []
+  },
+  {
+   "complaint_no": "CMP-2025-0016",
+   "feedback_no": "FB-2025-0029",
+   "is_demo_complaint": false,
+   "mandated_fields": {
+    "date_received": {
+     "recorded": "2025-11-21",
+     "basis": "mailbox"
+    },
+    "complainant": {
+     "name": "Elliot Zhang",
+     "email": "elliot.zhang@schg.com.au",
+     "role": "biomed_engineer"
+    },
+    "allegation_verbatim": "packaging seal not intact, patch discarded",
+    "product_model": "PP-72",
+    "device_identifiers": [
+     {
+      "scheme": "lot",
+      "value": null,
+      "value_state": "explicitly_unknown"
+     },
+     {
+      "scheme": "model",
+      "value": "PP-72",
+      "value_state": "value"
+     },
+     {
+      "scheme": "udi_di",
+      "value": null,
+      "value_state": "explicitly_unknown",
+      "discoverable_value": null,
+      "discoverable_from": "the UDI-DI is printed on the label and appears in support attachment photographs; it was never typed into a field"
+     }
+    ],
+    "reply": {
+     "sent": false,
+     "date": null
+    },
+    "date_of_event": null
+   },
+   "context": {
+    "site": "SITE-06",
+    "org": "ORG-03",
+    "country_of_use": "AU",
+    "intake_channel": "phone",
+    "status": "open",
+    "symptom_code": "pouch_seal"
+   },
+   "true_device_facts": {
+    "serial": null,
+    "hw_rev": null,
+    "comms_module_lot": null,
+    "sw_version_at_event": null,
+    "ward": null,
+    "note": "The true device facts are what the world knows. A product may only assert the subset a source record actually states, and must cite it."
+   },
+   "explicitly_unknown": [
+    "device_identifiers.lot",
+    "device_identifiers.udi_di"
+   ],
+   "not_yet_investigated": []
+  },
+  {
+   "complaint_no": "CMP-2025-0017",
+   "feedback_no": "FB-2025-0028",
+   "is_demo_complaint": false,
+   "mandated_fields": {
+    "date_received": {
+     "recorded": "2025-11-16",
+     "basis": "mailbox"
+    },
+    "complainant": {
+     "name": "Louise Pham",
+     "email": "louise.pham@yarravalleyhealth.org.au",
+     "role": "healthcare_professional"
+    },
+    "allegation_verbatim": "patch came away during a shower",
+    "product_model": "PP-72",
+    "device_identifiers": [
+     {
+      "scheme": "lot",
+      "value": "PP72-2538A",
+      "value_state": "value"
+     },
+     {
+      "scheme": "model",
+      "value": "PP-72",
+      "value_state": "value"
+     },
+     {
+      "scheme": "udi_di",
+      "value": null,
+      "value_state": "explicitly_unknown",
+      "discoverable_value": null,
+      "discoverable_from": "the UDI-DI is printed on the label and appears in support attachment photographs; it was never typed into a field"
+     }
+    ],
+    "reply": {
+     "sent": false,
+     "date": null
+    },
+    "date_of_event": null
+   },
+   "context": {
+    "site": "SITE-05",
+    "org": "ORG-02",
+    "country_of_use": "AU",
+    "intake_channel": "support_ticket",
+    "status": "closed",
+    "symptom_code": "adhesive_lift"
+   },
+   "true_device_facts": {
+    "serial": null,
+    "hw_rev": null,
+    "comms_module_lot": null,
+    "sw_version_at_event": null,
+    "ward": null,
+    "note": "The true device facts are what the world knows. A product may only assert the subset a source record actually states, and must cite it."
+   },
+   "explicitly_unknown": [
+    "device_identifiers.udi_di"
+   ],
+   "not_yet_investigated": []
+  },
+  {
+   "complaint_no": "CMP-2025-0018",
+   "feedback_no": "FB-2025-0030",
+   "is_demo_complaint": false,
+   "mandated_fields": {
+    "date_received": {
+     "recorded": "2025-11-21",
+     "basis": "ticket"
+    },
+    "complainant": {
+     "name": "Bianca Rossi",
+     "email": "bianca.rossi@schg.com.au",
+     "role": "healthcare_professional"
+    },
+    "allegation_verbatim": "sterile pouch was open along the seal on arrival",
+    "product_model": "PP-72",
+    "device_identifiers": [
+     {
+      "scheme": "lot",
+      "value": "PP72-2541C",
+      "value_state": "value"
+     },
+     {
+      "scheme": "model",
+      "value": "PP-72",
+      "value_state": "value"
+     },
+     {
+      "scheme": "udi_di",
+      "value": null,
+      "value_state": "explicitly_unknown",
+      "discoverable_value": null,
+      "discoverable_from": "the UDI-DI is printed on the label and appears in support attachment photographs; it was never typed into a field"
+     }
+    ],
+    "reply": {
+     "sent": true,
+     "date": "2025-12-19"
+    },
+    "date_of_event": null
+   },
+   "context": {
+    "site": "SITE-07",
+    "org": "ORG-03",
+    "country_of_use": "AU",
+    "intake_channel": "phone",
+    "status": "closed",
+    "symptom_code": "pouch_seal"
+   },
+   "true_device_facts": {
+    "serial": null,
+    "hw_rev": null,
+    "comms_module_lot": null,
+    "sw_version_at_event": null,
+    "ward": null,
+    "note": "The true device facts are what the world knows. A product may only assert the subset a source record actually states, and must cite it."
+   },
+   "explicitly_unknown": [
+    "device_identifiers.udi_di"
+   ],
+   "not_yet_investigated": []
+  },
+  {
+   "complaint_no": "CMP-2025-0019",
+   "feedback_no": "FB-2025-0031",
+   "is_demo_complaint": false,
+   "mandated_fields": {
+    "date_received": {
+     "recorded": "2025-11-21",
+     "basis": "ticket"
+    },
+    "complainant": {
+     "name": "Fiona Marsh",
+     "email": "f.marsh@northbridgehealth.org.au",
+     "role": "healthcare_professional"
+    },
+    "allegation_verbatim": "alarm volume too low to hear from the corridor",
+    "product_model": "P1-100",
+    "device_identifiers": [
+     {
+      "scheme": "serial",
+      "value": "SN-1119",
+      "value_state": "value"
+     },
+     {
+      "scheme": "model",
+      "value": "P1-100",
+      "value_state": "value"
+     },
+     {
+      "scheme": "udi_di",
+      "value": null,
+      "value_state": "not_yet_investigated",
+      "discoverable_value": null,
+      "discoverable_from": "the UDI-DI is printed on the label and appears in support attachment photographs; it was never typed into a field"
+     },
+     {
+      "scheme": "software_version",
+      "value": null,
+      "value_state": "value",
+      "discoverable_value": "1.1.0",
+      "discoverable_from": "installed-base/version-observations.csv, by serial and date"
+     }
+    ],
+    "reply": {
+     "sent": false,
+     "date": null
+    },
+    "date_of_event": null
+   },
+   "context": {
+    "site": "SITE-01",
+    "org": "ORG-01",
+    "country_of_use": "AU",
+    "intake_channel": "support_ticket",
+    "status": "in_investigation",
+    "symptom_code": "misc_device"
+   },
+   "true_device_facts": {
+    "serial": "SN-1119",
+    "hw_rev": "H1",
+    "comms_module_lot": "CM-4390",
+    "sw_version_at_event": "1.1.0",
+    "ward": "Recovery",
+    "note": "The true device facts are what the world knows. A product may only assert the subset a source record actually states, and must cite it."
+   },
+   "explicitly_unknown": [],
+   "not_yet_investigated": [
+    "device_identifiers.udi_di"
+   ]
+  },
+  {
+   "complaint_no": "CMP-2025-0020",
+   "feedback_no": "FB-2025-0035",
+   "is_demo_complaint": false,
+   "mandated_fields": {
+    "date_received": {
+     "recorded": "2025-12-03",
+     "basis": "ticket"
+    },
+    "complainant": {
+     "name": "Nadia Haddad",
+     "email": "nadia.haddad@schg.com.au",
+     "role": "healthcare_professional"
+    },
+    "allegation_verbatim": "pouch seal peeled apart in the store room",
+    "product_model": "PP-72",
+    "device_identifiers": [
+     {
+      "scheme": "lot",
+      "value": "PP72-2541C",
+      "value_state": "value"
+     },
+     {
+      "scheme": "model",
+      "value": "PP-72",
+      "value_state": "value"
+     },
+     {
+      "scheme": "udi_di",
+      "value": null,
+      "value_state": "explicitly_unknown",
+      "discoverable_value": null,
+      "discoverable_from": "the UDI-DI is printed on the label and appears in support attachment photographs; it was never typed into a field"
+     }
+    ],
+    "reply": {
+     "sent": false,
+     "date": null
+    },
+    "date_of_event": null
+   },
+   "context": {
+    "site": "SITE-06",
+    "org": "ORG-03",
+    "country_of_use": "AU",
+    "intake_channel": "phone",
+    "status": "in_investigation",
+    "symptom_code": "pouch_seal"
+   },
+   "true_device_facts": {
+    "serial": null,
+    "hw_rev": null,
+    "comms_module_lot": null,
+    "sw_version_at_event": null,
+    "ward": null,
+    "note": "The true device facts are what the world knows. A product may only assert the subset a source record actually states, and must cite it."
+   },
+   "explicitly_unknown": [
+    "device_identifiers.udi_di"
+   ],
+   "not_yet_investigated": []
+  },
+  {
+   "complaint_no": "CMP-2025-0021",
+   "feedback_no": "FB-2025-0032",
+   "is_demo_complaint": false,
+   "mandated_fields": {
+    "date_received": {
+     "recorded": "2025-11-24",
+     "basis": "ticket"
+    },
+    "complainant": {
+     "name": "Ravi Chandra",
+     "email": "ravi.chandra@northbridgehealth.org.au",
+     "role": "biomed_engineer"
+    },
+    "allegation_verbatim": "sterile pouch was open along the seal on arrival",
+    "product_model": "PP-72",
+    "device_identifiers": [
+     {
+      "scheme": "lot",
+      "value": "PP72-2541C",
+      "value_state": "value"
+     },
+     {
+      "scheme": "model",
+      "value": "PP-72",
+      "value_state": "value"
+     },
+     {
+      "scheme": "udi_di",
+      "value": null,
+      "value_state": "explicitly_unknown",
+      "discoverable_value": null,
+      "discoverable_from": "the UDI-DI is printed on the label and appears in support attachment photographs; it was never typed into a field"
+     }
+    ],
+    "reply": {
+     "sent": true,
+     "date": "2025-12-22"
+    },
+    "date_of_event": null
+   },
+   "context": {
+    "site": "SITE-01",
+    "org": "ORG-01",
+    "country_of_use": "AU",
+    "intake_channel": "email",
+    "status": "closed",
+    "symptom_code": "pouch_seal"
+   },
+   "true_device_facts": {
+    "serial": null,
+    "hw_rev": null,
+    "comms_module_lot": null,
+    "sw_version_at_event": null,
+    "ward": null,
+    "note": "The true device facts are what the world knows. A product may only assert the subset a source record actually states, and must cite it."
+   },
+   "explicitly_unknown": [
+    "device_identifiers.udi_di"
+   ],
+   "not_yet_investigated": []
+  },
+  {
+   "complaint_no": "CMP-2025-0022",
+   "feedback_no": "FB-2025-0038",
+   "is_demo_complaint": false,
+   "mandated_fields": {
+    "date_received": {
+     "recorded": "2025-12-11",
+     "basis": "ticket"
+    },
+    "complainant": {
+     "name": "Elliot Zhang",
+     "email": "elliot.zhang@schg.com.au",
+     "role": "biomed_engineer"
+    },
+    "allegation_verbatim": "adhesive not holding on a sweaty patient",
+    "product_model": "PP-72",
+    "device_identifiers": [
+     {
+      "scheme": "lot",
+      "value": null,
+      "value_state": "explicitly_unknown"
+     },
+     {
+      "scheme": "model",
+      "value": "PP-72",
+      "value_state": "value"
+     },
+     {
+      "scheme": "udi_di",
+      "value": null,
+      "value_state": "explicitly_unknown",
+      "discoverable_value": null,
+      "discoverable_from": "the UDI-DI is printed on the label and appears in support attachment photographs; it was never typed into a field"
+     }
+    ],
+    "reply": {
+     "sent": true,
+     "date": "2025-12-29"
+    },
+    "date_of_event": null
+   },
+   "context": {
+    "site": "SITE-06",
+    "org": "ORG-03",
+    "country_of_use": "AU",
+    "intake_channel": "phone",
+    "status": "closed",
+    "symptom_code": "adhesive_lift"
+   },
+   "true_device_facts": {
+    "serial": null,
+    "hw_rev": null,
+    "comms_module_lot": null,
+    "sw_version_at_event": null,
+    "ward": null,
+    "note": "The true device facts are what the world knows. A product may only assert the subset a source record actually states, and must cite it."
+   },
+   "explicitly_unknown": [
+    "device_identifiers.lot",
+    "device_identifiers.udi_di"
+   ],
+   "not_yet_investigated": []
+  },
+  {
+   "complaint_no": "CMP-2025-0023",
+   "feedback_no": "FB-2025-0037",
+   "is_demo_complaint": false,
+   "mandated_fields": {
+    "date_received": {
+     "recorded": "2025-12-11",
+     "basis": "mailbox"
+    },
+    "complainant": {
+     "name": "Kate Brennan",
+     "email": "kate.brennan@yarravalleyhealth.org.au",
+     "role": "healthcare_professional"
+    },
+    "allegation_verbatim": "patch came away during a shower",
+    "product_model": "PP-72",
+    "device_identifiers": [
+     {
+      "scheme": "lot",
+      "value": "PP72-2545A",
+      "value_state": "value"
+     },
+     {
+      "scheme": "model",
+      "value": "PP-72",
+      "value_state": "value"
+     },
+     {
+      "scheme": "udi_di",
+      "value": null,
+      "value_state": "explicitly_unknown",
+      "discoverable_value": null,
+      "discoverable_from": "the UDI-DI is printed on the label and appears in support attachment photographs; it was never typed into a field"
+     }
+    ],
+    "reply": {
+     "sent": true,
+     "date": "2026-01-02"
+    },
+    "date_of_event": null
+   },
+   "context": {
+    "site": "SITE-04",
+    "org": "ORG-02",
+    "country_of_use": "AU",
+    "intake_channel": "email",
+    "status": "closed",
+    "symptom_code": "adhesive_lift"
+   },
+   "true_device_facts": {
+    "serial": null,
+    "hw_rev": null,
+    "comms_module_lot": null,
+    "sw_version_at_event": null,
+    "ward": null,
+    "note": "The true device facts are what the world knows. A product may only assert the subset a source record actually states, and must cite it."
+   },
+   "explicitly_unknown": [
+    "device_identifiers.udi_di"
+   ],
+   "not_yet_investigated": []
+  },
+  {
+   "complaint_no": "CMP-2025-0024",
+   "feedback_no": "FB-2025-0043",
+   "is_demo_complaint": false,
+   "mandated_fields": {
+    "date_received": {
+     "recorded": "2025-12-22",
+     "basis": "ticket"
+    },
+    "complainant": {
+     "name": "Ravi Chandra",
+     "email": "ravi.chandra@northbridgehealth.org.au",
+     "role": "biomed_engineer"
+    },
+    "allegation_verbatim": "pouch seal peeled apart in the store room",
+    "product_model": "PP-72",
+    "device_identifiers": [
+     {
+      "scheme": "lot",
+      "value": null,
+      "value_state": "explicitly_unknown"
+     },
+     {
+      "scheme": "model",
+      "value": "PP-72",
+      "value_state": "value"
+     },
+     {
+      "scheme": "udi_di",
+      "value": null,
+      "value_state": "explicitly_unknown",
+      "discoverable_value": null,
+      "discoverable_from": "the UDI-DI is printed on the label and appears in support attachment photographs; it was never typed into a field"
+     }
+    ],
+    "reply": {
+     "sent": true,
+     "date": "2026-01-05"
+    },
+    "date_of_event": null
+   },
+   "context": {
+    "site": "SITE-01",
+    "org": "ORG-01",
+    "country_of_use": "AU",
+    "intake_channel": "email",
+    "status": "closed",
+    "symptom_code": "pouch_seal"
+   },
+   "true_device_facts": {
+    "serial": null,
+    "hw_rev": null,
+    "comms_module_lot": null,
+    "sw_version_at_event": null,
+    "ward": null,
+    "note": "The true device facts are what the world knows. A product may only assert the subset a source record actually states, and must cite it."
+   },
+   "explicitly_unknown": [
+    "device_identifiers.lot",
+    "device_identifiers.udi_di"
+   ],
+   "not_yet_investigated": []
+  },
+  {
+   "complaint_no": "CMP-2025-0025",
+   "feedback_no": "FB-2025-0034",
+   "is_demo_complaint": false,
+   "mandated_fields": {
+    "date_received": {
+     "recorded": "2025-12-01",
+     "basis": "mailbox"
+    },
+    "complainant": {
+     "name": "Amanda Sze",
+     "email": "amanda.sze@northbridgehealth.org.au",
+     "role": "healthcare_professional"
+    },
+    "allegation_verbatim": "screen frozen, had to restart the unit",
+    "product_model": "P1-100",
+    "device_identifiers": [
+     {
+      "scheme": "serial",
+      "value": "SN-1096",
+      "value_state": "value"
+     },
+     {
+      "scheme": "model",
+      "value": "P1-100",
+      "value_state": "value"
+     },
+     {
+      "scheme": "udi_di",
+      "value": null,
+      "value_state": "not_yet_investigated",
+      "discoverable_value": null,
+      "discoverable_from": "the UDI-DI is printed on the label and appears in support attachment photographs; it was never typed into a field"
+     },
+     {
+      "scheme": "software_version",
+      "value": null,
+      "value_state": "value",
+      "discoverable_value": "1.1.1",
+      "discoverable_from": "installed-base/version-observations.csv, by serial and date"
+     }
+    ],
+    "reply": {
+     "sent": true,
+     "date": "2026-01-07"
+    },
+    "date_of_event": null
+   },
+   "context": {
+    "site": "SITE-02",
+    "org": "ORG-01",
+    "country_of_use": "AU",
+    "intake_channel": "email",
+    "status": "closed",
+    "symptom_code": "display_freeze"
+   },
+   "true_device_facts": {
+    "serial": "SN-1096",
+    "hw_rev": "H1",
+    "comms_module_lot": "CM-4390",
+    "sw_version_at_event": "1.1.1",
+    "ward": "Short Stay",
+    "note": "The true device facts are what the world knows. A product may only assert the subset a source record actually states, and must cite it."
+   },
+   "explicitly_unknown": [],
+   "not_yet_investigated": [
+    "device_identifiers.udi_di"
+   ]
+  },
+  {
+   "complaint_no": "CMP-2026-0001",
+   "feedback_no": "FB-2025-0045",
+   "is_demo_complaint": false,
+   "mandated_fields": {
+    "date_received": {
+     "recorded": "2025-12-26",
+     "basis": "mailbox"
+    },
+    "complainant": {
+     "name": "Aoife Gallagher",
+     "email": "aoife.gallagher@stbrendans.ie",
+     "role": "healthcare_professional"
+    },
+    "allegation_verbatim": "connection alert overnight, unit working normally when checked",
+    "product_model": "P1-100",
+    "device_identifiers": [
+     {
+      "scheme": "serial",
+      "value": null,
+      "value_state": "explicitly_unknown"
+     },
+     {
+      "scheme": "model",
+      "value": "P1-100",
+      "value_state": "value"
+     },
+     {
+      "scheme": "udi_di",
+      "value": null,
+      "value_state": "not_yet_investigated",
+      "discoverable_value": null,
+      "discoverable_from": "the UDI-DI is printed on the label and appears in support attachment photographs; it was never typed into a field"
+     },
+     {
+      "scheme": "software_version",
+      "value": null,
+      "value_state": "not_yet_investigated",
+      "discoverable_value": "1.1.1",
+      "discoverable_from": "installed-base/version-observations.csv, by serial and date"
+     }
+    ],
+    "reply": {
+     "sent": true,
+     "date": "2026-01-15"
+    },
+    "date_of_event": null
+   },
+   "context": {
+    "site": "SITE-13",
+    "org": "ORG-07",
+    "country_of_use": "IE",
+    "intake_channel": "email",
+    "status": "in_investigation",
+    "symptom_code": "link_dropout"
+   },
+   "true_device_facts": {
+    "serial": "SN-2198",
+    "hw_rev": "H2",
+    "comms_module_lot": "CM-4390",
+    "sw_version_at_event": "1.1.1",
+    "ward": "Surgical Day Unit",
+    "note": "The true device facts are what the world knows. A product may only assert the subset a source record actually states, and must cite it."
+   },
+   "explicitly_unknown": [
+    "device_identifiers.serial"
+   ],
+   "not_yet_investigated": [
+    "device_identifiers.udi_di",
+    "device_identifiers.software_version"
+   ]
+  },
+  {
+   "complaint_no": "CMP-2026-0002",
+   "feedback_no": "FB-2025-0046",
+   "is_demo_complaint": false,
+   "mandated_fields": {
+    "date_received": {
+     "recorded": "2025-12-29",
+     "basis": "ticket"
+    },
+    "complainant": {
+     "name": "Sanne de Vries",
+     "email": "sanne.devries@randstadzorg.nl",
+     "role": "healthcare_professional"
+    },
+    "allegation_verbatim": "sterile pouch was open along the seal on arrival",
+    "product_model": "PP-72",
+    "device_identifiers": [
+     {
+      "scheme": "lot",
+      "value": "PP72-2541C",
+      "value_state": "value"
+     },
+     {
+      "scheme": "model",
+      "value": "PP-72",
+      "value_state": "value"
+     },
+     {
+      "scheme": "udi_di",
+      "value": null,
+      "value_state": "explicitly_unknown",
+      "discoverable_value": null,
+      "discoverable_from": "the UDI-DI is printed on the label and appears in support attachment photographs; it was never typed into a field"
+     }
+    ],
+    "reply": {
+     "sent": false,
+     "date": null
+    },
+    "date_of_event": null
+   },
+   "context": {
+    "site": "SITE-15",
+    "org": "ORG-08",
+    "country_of_use": "NL",
+    "intake_channel": "email",
+    "status": "awaiting_information",
+    "symptom_code": "pouch_seal"
+   },
+   "true_device_facts": {
+    "serial": null,
+    "hw_rev": null,
+    "comms_module_lot": null,
+    "sw_version_at_event": null,
+    "ward": null,
+    "note": "The true device facts are what the world knows. A product may only assert the subset a source record actually states, and must cite it."
+   },
+   "explicitly_unknown": [
+    "device_identifiers.udi_di"
+   ],
+   "not_yet_investigated": []
+  },
+  {
+   "complaint_no": "CMP-2026-0003",
+   "feedback_no": "FB-2025-0048",
+   "is_demo_complaint": false,
+   "mandated_fields": {
+    "date_received": {
+     "recorded": "2026-01-08",
+     "basis": "record"
+    },
+    "complainant": {
+     "name": "Bianca Rossi",
+     "email": "bianca.rossi@schg.com.au",
+     "role": "healthcare_professional"
+    },
+    "allegation_verbatim": "unit will not seat properly in the dock",
+    "product_model": "P1-100",
+    "device_identifiers": [
+     {
+      "scheme": "serial",
+      "value": "SN-1034",
+      "value_state": "value"
+     },
+     {
+      "scheme": "model",
+      "value": "P1-100",
+      "value_state": "value"
+     },
+     {
+      "scheme": "udi_di",
+      "value": null,
+      "value_state": "not_yet_investigated",
+      "discoverable_value": null,
+      "discoverable_from": "the UDI-DI is printed on the label and appears in support attachment photographs; it was never typed into a field"
+     },
+     {
+      "scheme": "software_version",
+      "value": null,
+      "value_state": "not_yet_investigated",
+      "discoverable_value": "1.1.1",
+      "discoverable_from": "installed-base/version-observations.csv, by serial and date"
+     }
+    ],
+    "reply": {
+     "sent": true,
+     "date": "2026-02-06"
+    },
+    "date_of_event": null
+   },
+   "context": {
+    "site": "SITE-07",
+    "org": "ORG-03",
+    "country_of_use": "AU",
+    "intake_channel": "email",
+    "status": "closed",
+    "symptom_code": "dock_connector_damage"
+   },
+   "true_device_facts": {
+    "serial": "SN-1034",
+    "hw_rev": "H1",
+    "comms_module_lot": "CM-4390",
+    "sw_version_at_event": "1.1.1",
+    "ward": "Level 3 Surgical",
+    "note": "The true device facts are what the world knows. A product may only assert the subset a source record actually states, and must cite it."
+   },
+   "explicitly_unknown": [],
+   "not_yet_investigated": [
+    "device_identifiers.udi_di",
+    "device_identifiers.software_version"
+   ]
+  },
+  {
+   "complaint_no": "CMP-2026-0004",
+   "feedback_no": "FB-2025-0039",
+   "is_demo_complaint": false,
+   "mandated_fields": {
+    "date_received": {
+     "recorded": "2025-12-16",
+     "basis": "mailbox"
+    },
+    "complainant": {
+     "name": "Fiona Marsh",
+     "email": "f.marsh@northbridgehealth.org.au",
+     "role": "healthcare_professional"
+    },
+    "allegation_verbatim": "sterile pouch was open along the seal on arrival",
+    "product_model": "PP-72",
+    "device_identifiers": [
+     {
+      "scheme": "lot",
+      "value": "PP72-2541C",
+      "value_state": "value"
+     },
+     {
+      "scheme": "model",
+      "value": "PP-72",
+      "value_state": "value"
+     },
+     {
+      "scheme": "udi_di",
+      "value": null,
+      "value_state": "explicitly_unknown",
+      "discoverable_value": null,
+      "discoverable_from": "the UDI-DI is printed on the label and appears in support attachment photographs; it was never typed into a field"
+     }
+    ],
+    "reply": {
+     "sent": false,
+     "date": null
+    },
+    "date_of_event": null
+   },
+   "context": {
+    "site": "SITE-01",
+    "org": "ORG-01",
+    "country_of_use": "AU",
+    "intake_channel": "phone",
+    "status": "closed",
+    "symptom_code": "pouch_seal"
+   },
+   "true_device_facts": {
+    "serial": null,
+    "hw_rev": null,
+    "comms_module_lot": null,
+    "sw_version_at_event": null,
+    "ward": null,
+    "note": "The true device facts are what the world knows. A product may only assert the subset a source record actually states, and must cite it."
+   },
+   "explicitly_unknown": [
+    "device_identifiers.udi_di"
+   ],
+   "not_yet_investigated": []
+  },
+  {
+   "complaint_no": "CMP-2026-0005",
+   "feedback_no": "FB-2025-0044",
+   "is_demo_complaint": false,
+   "mandated_fields": {
+    "date_received": {
+     "recorded": "2025-12-22",
+     "basis": "ticket"
+    },
+    "complainant": {
+     "name": "Tanya Robinson",
+     "email": "tanya.robinson@brisbaneriverside.com.au",
+     "role": "healthcare_professional"
+    },
+    "allegation_verbatim": "screen frozen, had to restart the unit",
+    "product_model": "P1-100",
+    "device_identifiers": [
+     {
+      "scheme": "serial",
+      "value": "SN-1149",
+      "value_state": "value"
+     },
+     {
+      "scheme": "model",
+      "value": "P1-100",
+      "value_state": "value"
+     },
+     {
+      "scheme": "udi_di",
+      "value": null,
+      "value_state": "not_yet_investigated",
+      "discoverable_value": null,
+      "discoverable_from": "the UDI-DI is printed on the label and appears in support attachment photographs; it was never typed into a field"
+     },
+     {
+      "scheme": "software_version",
+      "value": null,
+      "value_state": "not_yet_investigated",
+      "discoverable_value": "1.1.1",
+      "discoverable_from": "installed-base/version-observations.csv, by serial and date"
+     }
+    ],
+    "reply": {
+     "sent": true,
+     "date": "2026-01-22"
+    },
+    "date_of_event": null
+   },
+   "context": {
+    "site": "SITE-09",
+    "org": "ORG-04",
+    "country_of_use": "AU",
+    "intake_channel": "phone",
+    "status": "in_investigation",
+    "symptom_code": "display_freeze"
+   },
+   "true_device_facts": {
+    "serial": "SN-1149",
+    "hw_rev": "H1",
+    "comms_module_lot": "CM-4390",
+    "sw_version_at_event": "1.1.1",
+    "ward": "4 South",
+    "note": "The true device facts are what the world knows. A product may only assert the subset a source record actually states, and must cite it."
+   },
+   "explicitly_unknown": [],
+   "not_yet_investigated": [
+    "device_identifiers.udi_di",
+    "device_identifiers.software_version"
+   ]
+  },
+  {
+   "complaint_no": "CMP-2026-0006",
+   "feedback_no": "FB-2026-0002",
+   "is_demo_complaint": false,
+   "mandated_fields": {
+    "date_received": {
+     "recorded": "2026-01-12",
+     "basis": "ticket"
+    },
+    "complainant": {
+     "name": "Kate Brennan",
+     "email": "kate.brennan@yarravalleyhealth.org.au",
+     "role": "healthcare_professional"
+    },
+    "allegation_verbatim": "screen frozen, had to restart the unit",
+    "product_model": "P1-100",
+    "device_identifiers": [
+     {
+      "scheme": "serial",
+      "value": "SN-1009",
+      "value_state": "value"
+     },
+     {
+      "scheme": "model",
+      "value": "P1-100",
+      "value_state": "value"
+     },
+     {
+      "scheme": "udi_di",
+      "value": null,
+      "value_state": "not_yet_investigated",
+      "discoverable_value": null,
+      "discoverable_from": "the UDI-DI is printed on the label and appears in support attachment photographs; it was never typed into a field"
+     },
+     {
+      "scheme": "software_version",
+      "value": null,
+      "value_state": "not_yet_investigated",
+      "discoverable_value": "1.1.1",
+      "discoverable_from": "installed-base/version-observations.csv, by serial and date"
+     }
+    ],
+    "reply": {
+     "sent": true,
+     "date": "2026-02-12"
+    },
+    "date_of_event": null
+   },
+   "context": {
+    "site": "SITE-04",
+    "org": "ORG-02",
+    "country_of_use": "AU",
+    "intake_channel": "email",
+    "status": "closed",
+    "symptom_code": "display_freeze"
+   },
+   "true_device_facts": {
+    "serial": "SN-1009",
+    "hw_rev": "H1",
+    "comms_module_lot": "CM-4390",
+    "sw_version_at_event": "1.1.1",
+    "ward": "Ward 3 Surgical",
+    "note": "The true device facts are what the world knows. A product may only assert the subset a source record actually states, and must cite it."
+   },
+   "explicitly_unknown": [],
+   "not_yet_investigated": [
+    "device_identifiers.udi_di",
+    "device_identifiers.software_version"
+   ]
+  },
+  {
+   "complaint_no": "CMP-2026-0007",
+   "feedback_no": "FB-2025-0040",
+   "is_demo_complaint": false,
+   "mandated_fields": {
+    "date_received": {
+     "recorded": "2025-12-18",
+     "basis": "ticket"
+    },
+    "complainant": {
+     "name": "Nadia Haddad",
+     "email": "nadia.haddad@schg.com.au",
+     "role": "healthcare_professional"
+    },
+    "allegation_verbatim": "pouch seal peeled apart in the store room",
+    "product_model": "PP-72",
+    "device_identifiers": [
+     {
+      "scheme": "lot",
+      "value": null,
+      "value_state": "explicitly_unknown"
+     },
+     {
+      "scheme": "model",
+      "value": "PP-72",
+      "value_state": "value"
+     },
+     {
+      "scheme": "udi_di",
+      "value": null,
+      "value_state": "explicitly_unknown",
+      "discoverable_value": null,
+      "discoverable_from": "the UDI-DI is printed on the label and appears in support attachment photographs; it was never typed into a field"
+     }
+    ],
+    "reply": {
+     "sent": true,
+     "date": "2026-02-11"
+    },
+    "date_of_event": null
+   },
+   "context": {
+    "site": "SITE-06",
+    "org": "ORG-03",
+    "country_of_use": "AU",
+    "intake_channel": "phone",
+    "status": "in_investigation",
+    "symptom_code": "pouch_seal"
+   },
+   "true_device_facts": {
+    "serial": null,
+    "hw_rev": null,
+    "comms_module_lot": null,
+    "sw_version_at_event": null,
+    "ward": null,
+    "note": "The true device facts are what the world knows. A product may only assert the subset a source record actually states, and must cite it."
+   },
+   "explicitly_unknown": [
+    "device_identifiers.lot",
+    "device_identifiers.udi_di"
+   ],
+   "not_yet_investigated": []
+  },
+  {
+   "complaint_no": "CMP-2026-0008",
+   "feedback_no": "FB-2026-0007",
+   "is_demo_complaint": false,
+   "mandated_fields": {
+    "date_received": {
+     "recorded": "2026-01-21",
+     "basis": "mailbox"
+    },
+    "complainant": {
+     "name": "Tanya Robinson",
+     "email": "tanya.robinson@brisbaneriverside.com.au",
+     "role": "healthcare_professional"
+    },
+    "allegation_verbatim": "sterile pouch was open along the seal on arrival",
+    "product_model": "PP-72",
+    "device_identifiers": [
+     {
+      "scheme": "lot",
+      "value": "PP72-2541C",
+      "value_state": "value"
+     },
+     {
+      "scheme": "model",
+      "value": "PP-72",
+      "value_state": "value"
+     },
+     {
+      "scheme": "udi_di",
+      "value": null,
+      "value_state": "explicitly_unknown",
+      "discoverable_value": null,
+      "discoverable_from": "the UDI-DI is printed on the label and appears in support attachment photographs; it was never typed into a field"
+     }
+    ],
+    "reply": {
+     "sent": false,
+     "date": null
+    },
+    "date_of_event": null
+   },
+   "context": {
+    "site": "SITE-09",
+    "org": "ORG-04",
+    "country_of_use": "AU",
+    "intake_channel": "email",
+    "status": "not_a_complaint",
+    "symptom_code": "pouch_seal"
+   },
+   "true_device_facts": {
+    "serial": null,
+    "hw_rev": null,
+    "comms_module_lot": null,
+    "sw_version_at_event": null,
+    "ward": null,
+    "note": "The true device facts are what the world knows. A product may only assert the subset a source record actually states, and must cite it."
+   },
+   "explicitly_unknown": [
+    "device_identifiers.udi_di"
+   ],
+   "not_yet_investigated": []
+  },
+  {
+   "complaint_no": "CMP-2026-0009",
+   "feedback_no": "FB-2025-0047",
+   "is_demo_complaint": false,
+   "mandated_fields": {
+    "date_received": {
+     "recorded": "2025-12-30",
+     "basis": "ticket"
+    },
+    "complainant": {
+     "name": "Ash Mehta",
+     "email": "ash.mehta@brisbaneriverside.com.au",
+     "role": "biomed_engineer"
+    },
+    "allegation_verbatim": "sterile pouch was open along the seal on arrival",
+    "product_model": "PP-72",
+    "device_identifiers": [
+     {
+      "scheme": "lot",
+      "value": null,
+      "value_state": "explicitly_unknown"
+     },
+     {
+      "scheme": "model",
+      "value": "PP-72",
+      "value_state": "value"
+     },
+     {
+      "scheme": "udi_di",
+      "value": null,
+      "value_state": "explicitly_unknown",
+      "discoverable_value": null,
+      "discoverable_from": "the UDI-DI is printed on the label and appears in support attachment photographs; it was never typed into a field"
+     }
+    ],
+    "reply": {
+     "sent": true,
+     "date": "2026-02-11"
+    },
+    "date_of_event": null
+   },
+   "context": {
+    "site": "SITE-09",
+    "org": "ORG-04",
+    "country_of_use": "AU",
+    "intake_channel": "email",
+    "status": "reopened",
+    "symptom_code": "pouch_seal"
+   },
+   "true_device_facts": {
+    "serial": null,
+    "hw_rev": null,
+    "comms_module_lot": null,
+    "sw_version_at_event": null,
+    "ward": null,
+    "note": "The true device facts are what the world knows. A product may only assert the subset a source record actually states, and must cite it."
+   },
+   "explicitly_unknown": [
+    "device_identifiers.lot",
+    "device_identifiers.udi_di"
+   ],
+   "not_yet_investigated": []
+  },
+  {
+   "complaint_no": "CMP-2026-0010",
+   "feedback_no": "FB-2026-0005",
+   "is_demo_complaint": false,
+   "mandated_fields": {
+    "date_received": {
+     "recorded": "2026-01-17",
+     "basis": "ticket"
+    },
+    "complainant": {
+     "name": "Sam Adeyemi",
+     "email": "sam.adeyemi@yarravalleyhealth.org.au",
+     "role": "internal"
+    },
+    "allegation_verbatim": "adhesive not holding on a sweaty patient",
+    "product_model": "PP-72",
+    "device_identifiers": [
+     {
+      "scheme": "lot",
+      "value": null,
+      "value_state": "explicitly_unknown"
+     },
+     {
+      "scheme": "model",
+      "value": "PP-72",
+      "value_state": "value"
+     },
+     {
+      "scheme": "udi_di",
+      "value": null,
+      "value_state": "explicitly_unknown",
+      "discoverable_value": null,
+      "discoverable_from": "the UDI-DI is printed on the label and appears in support attachment photographs; it was never typed into a field"
+     }
+    ],
+    "reply": {
+     "sent": true,
+     "date": "2026-02-23"
+    },
+    "date_of_event": null
+   },
+   "context": {
+    "site": "SITE-04",
+    "org": "ORG-02",
+    "country_of_use": "AU",
+    "intake_channel": "service_visit",
+    "status": "closed",
+    "symptom_code": "adhesive_lift"
+   },
+   "true_device_facts": {
+    "serial": null,
+    "hw_rev": null,
+    "comms_module_lot": null,
+    "sw_version_at_event": null,
+    "ward": null,
+    "note": "The true device facts are what the world knows. A product may only assert the subset a source record actually states, and must cite it."
+   },
+   "explicitly_unknown": [
+    "device_identifiers.lot",
+    "device_identifiers.udi_di"
+   ],
+   "not_yet_investigated": []
+  },
+  {
+   "complaint_no": "CMP-2026-0011",
+   "feedback_no": "FB-2026-0006",
+   "is_demo_complaint": false,
+   "mandated_fields": {
+    "date_received": {
+     "recorded": "2026-01-20",
+     "basis": "mailbox"
+    },
+    "complainant": {
+     "name": "Fiona Marsh",
+     "email": "f.marsh@northbridgehealth.org.au",
+     "role": "healthcare_professional"
+    },
+    "allegation_verbatim": "date and time reset after a power outage",
+    "product_model": "P1-100",
+    "device_identifiers": [
+     {
+      "scheme": "serial",
+      "value": "SN-2201",
+      "value_state": "value"
+     },
+     {
+      "scheme": "model",
+      "value": "P1-100",
+      "value_state": "value"
+     },
+     {
+      "scheme": "udi_di",
+      "value": null,
+      "value_state": "not_yet_investigated",
+      "discoverable_value": null,
+      "discoverable_from": "the UDI-DI is printed on the label and appears in support attachment photographs; it was never typed into a field"
+     },
+     {
+      "scheme": "software_version",
+      "value": null,
+      "value_state": "not_yet_investigated",
+      "discoverable_value": "1.1.1",
+      "discoverable_from": "installed-base/version-observations.csv, by serial and date"
+     }
+    ],
+    "reply": {
+     "sent": true,
+     "date": "2026-02-23"
+    },
+    "date_of_event": null
+   },
+   "context": {
+    "site": "SITE-01",
+    "org": "ORG-01",
+    "country_of_use": "AU",
+    "intake_channel": "email",
+    "status": "closed",
+    "symptom_code": "misc_device"
+   },
+   "true_device_facts": {
+    "serial": "SN-2201",
+    "hw_rev": "H2",
+    "comms_module_lot": "CM-4390",
+    "sw_version_at_event": "1.1.1",
+    "ward": "Recovery",
+    "note": "The true device facts are what the world knows. A product may only assert the subset a source record actually states, and must cite it."
+   },
+   "explicitly_unknown": [],
+   "not_yet_investigated": [
+    "device_identifiers.udi_di",
+    "device_identifiers.software_version"
+   ]
+  },
+  {
+   "complaint_no": "CMP-2026-0012",
+   "feedback_no": "FB-2026-0008",
+   "is_demo_complaint": false,
+   "mandated_fields": {
+    "date_received": {
+     "recorded": "2026-01-27",
+     "basis": "ticket"
+    },
+    "complainant": {
+     "name": "Joost Bakker",
+     "email": "joost.bakker@randstadzorg.nl",
+     "role": "biomed_engineer"
+    },
+    "allegation_verbatim": "sterile pouch was open along the seal on arrival",
+    "product_model": "PP-72",
+    "device_identifiers": [
+     {
+      "scheme": "lot",
+      "value": "PP72-2541C",
+      "value_state": "value"
+     },
+     {
+      "scheme": "model",
+      "value": "PP-72",
+      "value_state": "value"
+     },
+     {
+      "scheme": "udi_di",
+      "value": null,
+      "value_state": "explicitly_unknown",
+      "discoverable_value": null,
+      "discoverable_from": "the UDI-DI is printed on the label and appears in support attachment photographs; it was never typed into a field"
+     }
+    ],
+    "reply": {
+     "sent": true,
+     "date": "2026-02-17"
+    },
+    "date_of_event": null
+   },
+   "context": {
+    "site": "SITE-15",
+    "org": "ORG-08",
+    "country_of_use": "NL",
+    "intake_channel": "email",
+    "status": "closed",
+    "symptom_code": "pouch_seal"
+   },
+   "true_device_facts": {
+    "serial": null,
+    "hw_rev": null,
+    "comms_module_lot": null,
+    "sw_version_at_event": null,
+    "ward": null,
+    "note": "The true device facts are what the world knows. A product may only assert the subset a source record actually states, and must cite it."
+   },
+   "explicitly_unknown": [
+    "device_identifiers.udi_di"
+   ],
+   "not_yet_investigated": []
+  },
+  {
+   "complaint_no": "CMP-2026-0013",
+   "feedback_no": "FB-2026-0012",
+   "is_demo_complaint": false,
+   "mandated_fields": {
+    "date_received": {
+     "recorded": "2026-02-04",
+     "basis": "ticket"
+    },
+    "complainant": {
+     "name": "Sam Adeyemi",
+     "email": "sam.adeyemi@yarravalleyhealth.org.au",
+     "role": "biomed_engineer"
+    },
+    "allegation_verbatim": "battery warning within four hours of coming off the dock",
+    "product_model": "P1-100",
+    "device_identifiers": [
+     {
+      "scheme": "serial",
+      "value": "SN-2017",
+      "value_state": "value"
+     },
+     {
+      "scheme": "model",
+      "value": "P1-100",
+      "value_state": "value"
+     },
+     {
+      "scheme": "udi_di",
+      "value": null,
+      "value_state": "not_yet_investigated",
+      "discoverable_value": null,
+      "discoverable_from": "the UDI-DI is printed on the label and appears in support attachment photographs; it was never typed into a field"
+     },
+     {
+      "scheme": "software_version",
+      "value": null,
+      "value_state": "not_yet_investigated",
+      "discoverable_value": "1.1.1",
+      "discoverable_from": "installed-base/version-observations.csv, by serial and date"
+     }
+    ],
+    "reply": {
+     "sent": true,
+     "date": "2026-02-09"
+    },
+    "date_of_event": null
+   },
+   "context": {
+    "site": "SITE-04",
+    "org": "ORG-02",
+    "country_of_use": "AU",
+    "intake_channel": "email",
+    "status": "closed",
+    "symptom_code": "battery_short_runtime"
+   },
+   "true_device_facts": {
+    "serial": "SN-2017",
+    "hw_rev": "H2",
+    "comms_module_lot": "CM-4390",
+    "sw_version_at_event": "1.1.1",
+    "ward": "Ward 3 Surgical",
+    "note": "The true device facts are what the world knows. A product may only assert the subset a source record actually states, and must cite it."
+   },
+   "explicitly_unknown": [],
+   "not_yet_investigated": [
+    "device_identifiers.udi_di",
+    "device_identifiers.software_version"
+   ]
+  },
+  {
+   "complaint_no": "CMP-2026-0014",
+   "feedback_no": "FB-2026-0004",
+   "is_demo_complaint": false,
+   "mandated_fields": {
+    "date_received": {
+     "recorded": "2026-01-14",
+     "basis": "ticket"
+    },
+    "complainant": {
+     "name": "Ingrid Solberg",
+     "email": "ingrid.solberg@adelaidemetrohealth.org.au",
+     "role": "healthcare_professional"
+    },
+    "allegation_verbatim": "patch edges lifting after about a day",
+    "product_model": "PP-72",
+    "device_identifiers": [
+     {
+      "scheme": "lot",
+      "value": null,
+      "value_state": "explicitly_unknown"
+     },
+     {
+      "scheme": "model",
+      "value": "PP-72",
+      "value_state": "value"
+     },
+     {
+      "scheme": "udi_di",
+      "value": null,
+      "value_state": "explicitly_unknown",
+      "discoverable_value": null,
+      "discoverable_from": "the UDI-DI is printed on the label and appears in support attachment photographs; it was never typed into a field"
+     }
+    ],
+    "reply": {
+     "sent": true,
+     "date": "2026-02-18"
+    },
+    "date_of_event": null
+   },
+   "context": {
+    "site": "SITE-11",
+    "org": "ORG-05",
+    "country_of_use": "AU",
+    "intake_channel": "email",
+    "status": "reopened",
+    "symptom_code": "adhesive_lift"
+   },
+   "true_device_facts": {
+    "serial": null,
+    "hw_rev": null,
+    "comms_module_lot": null,
+    "sw_version_at_event": null,
+    "ward": null,
+    "note": "The true device facts are what the world knows. A product may only assert the subset a source record actually states, and must cite it."
+   },
+   "explicitly_unknown": [
+    "device_identifiers.lot",
+    "device_identifiers.udi_di"
+   ],
+   "not_yet_investigated": []
+  },
+  {
+   "complaint_no": "CMP-2026-0015",
+   "feedback_no": "FB-2026-0011",
+   "is_demo_complaint": false,
+   "mandated_fields": {
+    "date_received": {
+     "recorded": "2026-02-03",
+     "basis": "mailbox"
+    },
+    "complainant": {
+     "name": "Tanya Robinson",
+     "email": "tanya.robinson@brisbaneriverside.com.au",
+     "role": "healthcare_professional"
+    },
+    "allegation_verbatim": "patch edges lifting after about a day",
+    "product_model": "PP-72",
+    "device_identifiers": [
+     {
+      "scheme": "lot",
+      "value": "PP72-2541C",
+      "value_state": "value"
+     },
+     {
+      "scheme": "model",
+      "value": "PP-72",
+      "value_state": "value"
+     },
+     {
+      "scheme": "udi_di",
+      "value": null,
+      "value_state": "explicitly_unknown",
+      "discoverable_value": null,
+      "discoverable_from": "the UDI-DI is printed on the label and appears in support attachment photographs; it was never typed into a field"
+     }
+    ],
+    "reply": {
+     "sent": true,
+     "date": "2026-02-13"
+    },
+    "date_of_event": null
+   },
+   "context": {
+    "site": "SITE-09",
+    "org": "ORG-04",
+    "country_of_use": "AU",
+    "intake_channel": "email",
+    "status": "awaiting_information",
+    "symptom_code": "adhesive_lift"
+   },
+   "true_device_facts": {
+    "serial": null,
+    "hw_rev": null,
+    "comms_module_lot": null,
+    "sw_version_at_event": null,
+    "ward": null,
+    "note": "The true device facts are what the world knows. A product may only assert the subset a source record actually states, and must cite it."
+   },
+   "explicitly_unknown": [
+    "device_identifiers.udi_di"
+   ],
+   "not_yet_investigated": []
+  },
+  {
+   "complaint_no": "CMP-2026-0016",
+   "feedback_no": "FB-2026-0009",
+   "is_demo_complaint": false,
+   "mandated_fields": {
+    "date_received": {
+     "recorded": "2026-02-02",
+     "basis": "ticket"
+    },
+    "complainant": {
+     "name": "Devan Patil",
+     "email": "devan.patil@adelaidemetrohealth.org.au",
+     "role": "biomed_engineer"
+    },
+    "allegation_verbatim": "readings stopped updating for a short period, no alarm heard",
+    "product_model": "P1-100",
+    "device_identifiers": [
+     {
+      "scheme": "serial",
+      "value": "SN-1077",
+      "value_state": "value"
+     },
+     {
+      "scheme": "model",
+      "value": "P1-100",
+      "value_state": "value"
+     },
+     {
+      "scheme": "udi_di",
+      "value": null,
+      "value_state": "not_yet_investigated",
+      "discoverable_value": null,
+      "discoverable_from": "the UDI-DI is printed on the label and appears in support attachment photographs; it was never typed into a field"
+     },
+     {
+      "scheme": "software_version",
+      "value": null,
+      "value_state": "not_yet_investigated",
+      "discoverable_value": "1.1.1",
+      "discoverable_from": "installed-base/version-observations.csv, by serial and date"
+     }
+    ],
+    "reply": {
+     "sent": true,
+     "date": "2026-02-23"
+    },
+    "date_of_event": null
+   },
+   "context": {
+    "site": "SITE-10",
+    "org": "ORG-05",
+    "country_of_use": "AU",
+    "intake_channel": "support_portal",
+    "status": "closed",
+    "symptom_code": "link_dropout"
+   },
+   "true_device_facts": {
+    "serial": "SN-1077",
+    "hw_rev": "H1",
+    "comms_module_lot": "CM-4390",
+    "sw_version_at_event": "1.1.1",
+    "ward": "Ward 3",
+    "note": "The true device facts are what the world knows. A product may only assert the subset a source record actually states, and must cite it."
+   },
+   "explicitly_unknown": [],
+   "not_yet_investigated": [
+    "device_identifiers.udi_di",
+    "device_identifiers.software_version"
+   ]
+  },
+  {
+   "complaint_no": "CMP-2026-0017",
+   "feedback_no": "FB-2026-0013",
+   "is_demo_complaint": false,
+   "mandated_fields": {
+    "date_received": {
+     "recorded": "2026-02-09",
+     "basis": "ticket"
+    },
+    "complainant": {
+     "name": "Ingrid Solberg",
+     "email": "ingrid.solberg@adelaidemetrohealth.org.au",
+     "role": "healthcare_professional"
+    },
+    "allegation_verbatim": "monitor showed stale readings then reconnected a minute later",
+    "product_model": "P1-100",
+    "device_identifiers": [
+     {
+      "scheme": "serial",
+      "value": "SN-2243",
+      "value_state": "value"
+     },
+     {
+      "scheme": "model",
+      "value": "P1-100",
+      "value_state": "value"
+     },
+     {
+      "scheme": "udi_di",
+      "value": null,
+      "value_state": "not_yet_investigated",
+      "discoverable_value": null,
+      "discoverable_from": "the UDI-DI is printed on the label and appears in support attachment photographs; it was never typed into a field"
+     },
+     {
+      "scheme": "software_version",
+      "value": "1.1.1",
+      "value_state": "not_yet_investigated"
+     }
+    ],
+    "reply": {
+     "sent": false,
+     "date": null
+    },
+    "date_of_event": null
+   },
+   "context": {
+    "site": "SITE-11",
+    "org": "ORG-05",
+    "country_of_use": "AU",
+    "intake_channel": "email",
+    "status": "awaiting_information",
+    "symptom_code": "link_dropout"
+   },
+   "true_device_facts": {
+    "serial": "SN-2243",
+    "hw_rev": "H2",
+    "comms_module_lot": "CM-4390",
+    "sw_version_at_event": "1.1.1",
+    "ward": "Surgical Unit A",
+    "note": "The true device facts are what the world knows. A product may only assert the subset a source record actually states, and must cite it."
+   },
+   "explicitly_unknown": [],
+   "not_yet_investigated": [
+    "device_identifiers.udi_di",
+    "device_identifiers.software_version"
+   ]
+  },
+  {
+   "complaint_no": "CMP-2026-0018",
+   "feedback_no": "FB-2026-0018",
+   "is_demo_complaint": false,
+   "mandated_fields": {
+    "date_received": {
+     "recorded": "2026-02-18",
+     "basis": "mailbox"
+    },
+    "complainant": {
+     "name": "Nadia Haddad",
+     "email": "nadia.haddad@schg.com.au",
+     "role": "healthcare_professional"
+    },
+    "allegation_verbatim": "alarm volume too low to hear from the corridor",
+    "product_model": "P1-100",
+    "device_identifiers": [
+     {
+      "scheme": "serial",
+      "value": "SN-2183",
+      "value_state": "value"
+     },
+     {
+      "scheme": "model",
+      "value": "P1-100",
+      "value_state": "value"
+     },
+     {
+      "scheme": "udi_di",
+      "value": null,
+      "value_state": "not_yet_investigated",
+      "discoverable_value": null,
+      "discoverable_from": "the UDI-DI is printed on the label and appears in support attachment photographs; it was never typed into a field"
+     },
+     {
+      "scheme": "software_version",
+      "value": null,
+      "value_state": "not_yet_investigated",
+      "discoverable_value": "1.1.1",
+      "discoverable_from": "installed-base/version-observations.csv, by serial and date"
+     }
+    ],
+    "reply": {
+     "sent": true,
+     "date": "2026-03-05"
+    },
+    "date_of_event": null
+   },
+   "context": {
+    "site": "SITE-06",
+    "org": "ORG-03",
+    "country_of_use": "AU",
+    "intake_channel": "phone",
+    "status": "closed",
+    "symptom_code": "misc_device"
+   },
+   "true_device_facts": {
+    "serial": "SN-2183",
+    "hw_rev": "H2",
+    "comms_module_lot": "CM-4390",
+    "sw_version_at_event": "1.1.1",
+    "ward": "Ward 7 East",
+    "note": "The true device facts are what the world knows. A product may only assert the subset a source record actually states, and must cite it."
+   },
+   "explicitly_unknown": [],
+   "not_yet_investigated": [
+    "device_identifiers.udi_di",
+    "device_identifiers.software_version"
+   ]
+  },
+  {
+   "complaint_no": "CMP-2026-0019",
+   "feedback_no": "FB-2026-0014",
+   "is_demo_complaint": false,
+   "mandated_fields": {
+    "date_received": {
+     "recorded": "2026-02-13",
+     "basis": "mailbox"
+    },
+    "complainant": {
+     "name": "Louise Pham",
+     "email": "louise.pham@yarravalleyhealth.org.au",
+     "role": "healthcare_professional"
+    },
+    "allegation_verbatim": "patch came away during a shower",
+    "product_model": "PP-72",
+    "device_identifiers": [
+     {
+      "scheme": "lot",
+      "value": null,
+      "value_state": "explicitly_unknown"
+     },
+     {
+      "scheme": "model",
+      "value": "PP-72",
+      "value_state": "value"
+     },
+     {
+      "scheme": "udi_di",
+      "value": null,
+      "value_state": "explicitly_unknown",
+      "discoverable_value": null,
+      "discoverable_from": "the UDI-DI is printed on the label and appears in support attachment photographs; it was never typed into a field"
+     }
+    ],
+    "reply": {
+     "sent": true,
+     "date": "2026-03-10"
+    },
+    "date_of_event": null
+   },
+   "context": {
+    "site": "SITE-05",
+    "org": "ORG-02",
+    "country_of_use": "AU",
+    "intake_channel": "email",
+    "status": "closed",
+    "symptom_code": "adhesive_lift"
+   },
+   "true_device_facts": {
+    "serial": null,
+    "hw_rev": null,
+    "comms_module_lot": null,
+    "sw_version_at_event": null,
+    "ward": null,
+    "note": "The true device facts are what the world knows. A product may only assert the subset a source record actually states, and must cite it."
+   },
+   "explicitly_unknown": [
+    "device_identifiers.lot",
+    "device_identifiers.udi_di"
+   ],
+   "not_yet_investigated": []
+  },
+  {
+   "complaint_no": "CMP-2026-0020",
+   "feedback_no": "FB-2026-0020",
+   "is_demo_complaint": false,
+   "mandated_fields": {
+    "date_received": {
+     "recorded": "2026-03-05",
+     "basis": "mailbox"
+    },
+    "complainant": {
+     "name": "Cheryl Novak",
+     "email": "cheryl.novak@adelaidemetrohealth.org.au",
+     "role": "healthcare_professional"
+    },
+    "allegation_verbatim": "patch came away during a shower",
+    "product_model": "PP-72",
+    "device_identifiers": [
+     {
+      "scheme": "lot",
+      "value": null,
+      "value_state": "explicitly_unknown"
+     },
+     {
+      "scheme": "model",
+      "value": "PP-72",
+      "value_state": "value"
+     },
+     {
+      "scheme": "udi_di",
+      "value": null,
+      "value_state": "explicitly_unknown",
+      "discoverable_value": null,
+      "discoverable_from": "the UDI-DI is printed on the label and appears in support attachment photographs; it was never typed into a field"
+     }
+    ],
+    "reply": {
+     "sent": true,
+     "date": "2026-03-17"
+    },
+    "date_of_event": null
+   },
+   "context": {
+    "site": "SITE-10",
+    "org": "ORG-05",
+    "country_of_use": "AU",
+    "intake_channel": "email",
+    "status": "closed",
+    "symptom_code": "adhesive_lift"
+   },
+   "true_device_facts": {
+    "serial": null,
+    "hw_rev": null,
+    "comms_module_lot": null,
+    "sw_version_at_event": null,
+    "ward": null,
+    "note": "The true device facts are what the world knows. A product may only assert the subset a source record actually states, and must cite it."
+   },
+   "explicitly_unknown": [
+    "device_identifiers.lot",
+    "device_identifiers.udi_di"
+   ],
+   "not_yet_investigated": []
+  },
+  {
+   "complaint_no": "CMP-2026-0021",
+   "feedback_no": "FB-2026-0022",
+   "is_demo_complaint": false,
+   "mandated_fields": {
+    "date_received": {
+     "recorded": "2026-03-24",
+     "basis": "record"
+    },
+    "complainant": {
+     "name": "Bianca Rossi",
+     "email": "bianca.rossi@schg.com.au",
+     "role": "healthcare_professional"
+    },
+    "allegation_verbatim": "unit not appearing on the nurses station dashboard",
+    "product_model": "P1-100",
+    "device_identifiers": [
+     {
+      "scheme": "serial",
+      "value": "SN-2015",
+      "value_state": "value"
+     },
+     {
+      "scheme": "model",
+      "value": "P1-100",
+      "value_state": "value"
+     },
+     {
+      "scheme": "udi_di",
+      "value": null,
+      "value_state": "not_yet_investigated",
+      "discoverable_value": null,
+      "discoverable_from": "the UDI-DI is printed on the label and appears in support attachment photographs; it was never typed into a field"
+     },
+     {
+      "scheme": "software_version",
+      "value": null,
+      "value_state": "not_yet_investigated",
+      "discoverable_value": "1.1.1",
+      "discoverable_from": "installed-base/version-observations.csv, by serial and date"
+     }
+    ],
+    "reply": {
+     "sent": true,
+     "date": "2026-04-24"
+    },
+    "date_of_event": null
+   },
+   "context": {
+    "site": "SITE-07",
+    "org": "ORG-03",
+    "country_of_use": "AU",
+    "intake_channel": "email",
+    "status": "reopened",
+    "symptom_code": "misc_device"
+   },
+   "true_device_facts": {
+    "serial": "SN-2015",
+    "hw_rev": "H2",
+    "comms_module_lot": "CM-4390",
+    "sw_version_at_event": "1.1.1",
+    "ward": "Level 3 Surgical",
+    "note": "The true device facts are what the world knows. A product may only assert the subset a source record actually states, and must cite it."
+   },
+   "explicitly_unknown": [],
+   "not_yet_investigated": [
+    "device_identifiers.udi_di",
+    "device_identifiers.software_version"
+   ]
+  },
+  {
+   "complaint_no": "CMP-2026-0022",
+   "feedback_no": "FB-2026-0025",
+   "is_demo_complaint": false,
+   "mandated_fields": {
+    "date_received": {
+     "recorded": "2026-03-27",
+     "basis": "mailbox"
+    },
+    "complainant": {
+     "name": "Wayne Fletcher",
+     "email": "wayne.fletcher@adelaidemetrohealth.org.au",
+     "role": "other"
+    },
+    "allegation_verbatim": "battery warning within four hours of coming off the dock",
+    "product_model": "P1-100",
+    "device_identifiers": [
+     {
+      "scheme": "serial",
+      "value": "SN-2049",
+      "value_state": "value"
+     },
+     {
+      "scheme": "model",
+      "value": "P1-100",
+      "value_state": "value"
+     },
+     {
+      "scheme": "udi_di",
+      "value": null,
+      "value_state": "not_yet_investigated",
+      "discoverable_value": null,
+      "discoverable_from": "the UDI-DI is printed on the label and appears in support attachment photographs; it was never typed into a field"
+     },
+     {
+      "scheme": "software_version",
+      "value": null,
+      "value_state": "not_yet_investigated",
+      "discoverable_value": "1.2.0",
+      "discoverable_from": "installed-base/version-observations.csv, by serial and date"
+     }
+    ],
+    "reply": {
+     "sent": false,
+     "date": null
+    },
+    "date_of_event": null
+   },
+   "context": {
+    "site": "SITE-11",
+    "org": "ORG-05",
+    "country_of_use": "AU",
+    "intake_channel": "email",
+    "status": "open",
+    "symptom_code": "battery_short_runtime"
+   },
+   "true_device_facts": {
+    "serial": "SN-2049",
+    "hw_rev": "H2",
+    "comms_module_lot": "CM-4390",
+    "sw_version_at_event": "1.2.0",
+    "ward": "Surgical Unit A",
+    "note": "The true device facts are what the world knows. A product may only assert the subset a source record actually states, and must cite it."
+   },
+   "explicitly_unknown": [],
+   "not_yet_investigated": [
+    "device_identifiers.udi_di",
+    "device_identifiers.software_version"
+   ]
+  },
+  {
+   "complaint_no": "CMP-2026-0023",
+   "feedback_no": "FB-2026-0031",
+   "is_demo_complaint": false,
+   "mandated_fields": {
+    "date_received": {
+     "recorded": "2026-04-14",
+     "basis": "ticket"
+    },
+    "complainant": {
+     "name": "Dana Whitlock",
+     "email": "d.whitlock@meridianmedpartners.com",
+     "role": "distributor"
+    },
+    "allegation_verbatim": "patch connection lost intermittently, came back on its own",
+    "product_model": "P1-100",
+    "device_identifiers": [
+     {
+      "scheme": "serial",
+      "value": "SN-4227",
+      "value_state": "value"
+     },
+     {
+      "scheme": "model",
+      "value": "P1-100",
+      "value_state": "value"
+     },
+     {
+      "scheme": "udi_di",
+      "value": null,
+      "value_state": "not_yet_investigated",
+      "discoverable_value": null,
+      "discoverable_from": "the UDI-DI is printed on the label and appears in support attachment photographs; it was never typed into a field"
+     },
+     {
+      "scheme": "software_version",
+      "value": "1.2.1",
+      "value_state": "not_yet_investigated"
+     }
+    ],
+    "reply": {
+     "sent": false,
+     "date": null
+    },
+    "date_of_event": null
+   },
+   "context": {
+    "site": "SITE-16",
+    "org": "ORG-10",
+    "country_of_use": "US",
+    "intake_channel": "distributor",
+    "status": "closed",
+    "symptom_code": "link_dropout"
+   },
+   "true_device_facts": {
+    "serial": "SN-4227",
+    "hw_rev": "H2.1",
+    "comms_module_lot": "CM-4412",
+    "sw_version_at_event": "1.2.1",
+    "ward": "Surgical Recovery 3W",
+    "note": "The true device facts are what the world knows. A product may only assert the subset a source record actually states, and must cite it."
+   },
+   "explicitly_unknown": [],
+   "not_yet_investigated": [
+    "device_identifiers.udi_di",
+    "device_identifiers.software_version"
+   ]
+  },
+  {
+   "complaint_no": "CMP-2026-0024",
+   "feedback_no": "FB-2026-0024",
+   "is_demo_complaint": false,
+   "mandated_fields": {
+    "date_received": {
+     "recorded": "2026-03-24",
+     "basis": "ticket"
+    },
+    "complainant": {
+     "name": "Nadia Haddad",
+     "email": "nadia.haddad@schg.com.au",
+     "role": "healthcare_professional"
+    },
+    "allegation_verbatim": "unit lost contact with the patch for about a minute during the round",
+    "product_model": "P1-100",
+    "device_identifiers": [
+     {
+      "scheme": "serial",
+      "value": null,
+      "value_state": "explicitly_unknown"
+     },
+     {
+      "scheme": "model",
+      "value": "P1-100",
+      "value_state": "value"
+     },
+     {
+      "scheme": "udi_di",
+      "value": null,
+      "value_state": "not_yet_investigated",
+      "discoverable_value": null,
+      "discoverable_from": "the UDI-DI is printed on the label and appears in support attachment photographs; it was never typed into a field"
+     },
+     {
+      "scheme": "software_version",
+      "value": null,
+      "value_state": "not_yet_investigated",
+      "discoverable_value": "1.2.0",
+      "discoverable_from": "installed-base/version-observations.csv, by serial and date"
+     }
+    ],
+    "reply": {
+     "sent": false,
+     "date": null
+    },
+    "date_of_event": null
+   },
+   "context": {
+    "site": "SITE-06",
+    "org": "ORG-03",
+    "country_of_use": "AU",
+    "intake_channel": "email",
+    "status": "closed",
+    "symptom_code": "link_dropout"
+   },
+   "true_device_facts": {
+    "serial": "SN-1026",
+    "hw_rev": "H1",
+    "comms_module_lot": "CM-4390",
+    "sw_version_at_event": "1.2.0",
+    "ward": "Ward 7 East",
+    "note": "The true device facts are what the world knows. A product may only assert the subset a source record actually states, and must cite it."
+   },
+   "explicitly_unknown": [
+    "device_identifiers.serial"
+   ],
+   "not_yet_investigated": [
+    "device_identifiers.udi_di",
+    "device_identifiers.software_version"
+   ]
+  },
+  {
+   "complaint_no": "CMP-2026-0025",
+   "feedback_no": "FB-2026-0032",
+   "is_demo_complaint": false,
+   "mandated_fields": {
+    "date_received": {
+     "recorded": "2026-04-24",
+     "basis": "mailbox"
+    },
+    "complainant": {
+     "name": "Wayne Fletcher",
+     "email": "wayne.fletcher@adelaidemetrohealth.org.au",
+     "role": "other"
+    },
+    "allegation_verbatim": "pairing takes several attempts before it takes",
+    "product_model": "P1-100",
+    "device_identifiers": [
+     {
+      "scheme": "serial",
+      "value": "SN-1048",
+      "value_state": "value"
+     },
+     {
+      "scheme": "model",
+      "value": "P1-100",
+      "value_state": "value"
+     },
+     {
+      "scheme": "udi_di",
+      "value": null,
+      "value_state": "not_yet_investigated",
+      "discoverable_value": null,
+      "discoverable_from": "the UDI-DI is printed on the label and appears in support attachment photographs; it was never typed into a field"
+     },
+     {
+      "scheme": "software_version",
+      "value": null,
+      "value_state": "not_yet_investigated",
+      "discoverable_value": "1.2.0",
+      "discoverable_from": "installed-base/version-observations.csv, by serial and date"
+     }
+    ],
+    "reply": {
+     "sent": true,
+     "date": "2026-05-12"
+    },
+    "date_of_event": null
+   },
+   "context": {
+    "site": "SITE-11",
+    "org": "ORG-05",
+    "country_of_use": "AU",
+    "intake_channel": "email",
+    "status": "closed",
+    "symptom_code": "misc_device"
+   },
+   "true_device_facts": {
+    "serial": "SN-1048",
+    "hw_rev": "H1",
+    "comms_module_lot": "CM-4390",
+    "sw_version_at_event": "1.2.0",
+    "ward": "Surgical Unit A",
+    "note": "The true device facts are what the world knows. A product may only assert the subset a source record actually states, and must cite it."
+   },
+   "explicitly_unknown": [],
+   "not_yet_investigated": [
+    "device_identifiers.udi_di",
+    "device_identifiers.software_version"
+   ]
+  },
+  {
+   "complaint_no": "CMP-2026-0026",
+   "feedback_no": "FB-2026-0030",
+   "is_demo_complaint": false,
+   "mandated_fields": {
+    "date_received": {
+     "recorded": "2026-04-14",
+     "basis": "mailbox"
+    },
+    "complainant": {
+     "name": "Wayne Fletcher",
+     "email": "wayne.fletcher@adelaidemetrohealth.org.au",
+     "role": "other"
+    },
+    "allegation_verbatim": "unit will not hold charge for a full shift",
+    "product_model": "P1-100",
+    "device_identifiers": [
+     {
+      "scheme": "serial",
+      "value": "SN-2249",
+      "value_state": "value"
+     },
+     {
+      "scheme": "model",
+      "value": "P1-100",
+      "value_state": "value"
+     },
+     {
+      "scheme": "udi_di",
+      "value": null,
+      "value_state": "not_yet_investigated",
+      "discoverable_value": null,
+      "discoverable_from": "the UDI-DI is printed on the label and appears in support attachment photographs; it was never typed into a field"
+     },
+     {
+      "scheme": "software_version",
+      "value": null,
+      "value_state": "not_yet_investigated",
+      "discoverable_value": "1.2.0",
+      "discoverable_from": "installed-base/version-observations.csv, by serial and date"
+     }
+    ],
+    "reply": {
+     "sent": true,
+     "date": "2026-05-22"
+    },
+    "date_of_event": null
+   },
+   "context": {
+    "site": "SITE-11",
+    "org": "ORG-05",
+    "country_of_use": "AU",
+    "intake_channel": "email",
+    "status": "awaiting_information",
+    "symptom_code": "battery_short_runtime"
+   },
+   "true_device_facts": {
+    "serial": "SN-2249",
+    "hw_rev": "H2",
+    "comms_module_lot": "CM-4390",
+    "sw_version_at_event": "1.2.0",
+    "ward": "Surgical Unit A",
+    "note": "The true device facts are what the world knows. A product may only assert the subset a source record actually states, and must cite it."
+   },
+   "explicitly_unknown": [],
+   "not_yet_investigated": [
+    "device_identifiers.udi_di",
+    "device_identifiers.software_version"
+   ]
+  },
+  {
+   "complaint_no": "CMP-2026-0027",
+   "feedback_no": "FB-2026-0043",
+   "is_demo_complaint": false,
+   "mandated_fields": {
+    "date_received": {
+     "recorded": "2026-05-18",
+     "basis": "mailbox"
+    },
+    "complainant": {
+     "name": "Elliot Zhang",
+     "email": "biomed@schg.com.au",
+     "role": "internal"
+    },
+    "allegation_verbatim": "alarm volume too low to hear from the corridor",
+    "product_model": "P1-100",
+    "device_identifiers": [
+     {
+      "scheme": "serial",
+      "value": "SN-2026",
+      "value_state": "value"
+     },
+     {
+      "scheme": "model",
+      "value": "P1-100",
+      "value_state": "value"
+     },
+     {
+      "scheme": "udi_di",
+      "value": null,
+      "value_state": "not_yet_investigated",
+      "discoverable_value": null,
+      "discoverable_from": "the UDI-DI is printed on the label and appears in support attachment photographs; it was never typed into a field"
+     },
+     {
+      "scheme": "software_version",
+      "value": "1.2.1",
+      "value_state": "value"
+     }
+    ],
+    "reply": {
+     "sent": true,
+     "date": "2026-06-09"
+    },
+    "date_of_event": null
+   },
+   "context": {
+    "site": "SITE-06",
+    "org": "ORG-03",
+    "country_of_use": "AU",
+    "intake_channel": "service_visit",
+    "status": "closed",
+    "symptom_code": "misc_device"
+   },
+   "true_device_facts": {
+    "serial": "SN-2026",
+    "hw_rev": "H2",
+    "comms_module_lot": "CM-4390",
+    "sw_version_at_event": "1.2.1",
+    "ward": "Ward 7 West",
+    "note": "The true device facts are what the world knows. A product may only assert the subset a source record actually states, and must cite it."
+   },
+   "explicitly_unknown": [],
+   "not_yet_investigated": [
+    "device_identifiers.udi_di"
+   ]
+  },
+  {
+   "complaint_no": "CMP-2026-0028",
+   "feedback_no": "FB-2026-0039",
+   "is_demo_complaint": false,
+   "mandated_fields": {
+    "date_received": {
+     "recorded": "2026-05-06",
+     "basis": "ticket"
+    },
+    "complainant": {
+     "name": "Fiona Marsh",
+     "email": "fiona.marsh@northbridgehealth.org.au",
+     "role": "healthcare_professional"
+    },
+    "allegation_verbatim": "readings stopped updating for a short period, no alarm heard",
+    "product_model": "P1-100",
+    "device_identifiers": [
+     {
+      "scheme": "serial",
+      "value": null,
+      "value_state": "explicitly_unknown"
+     },
+     {
+      "scheme": "model",
+      "value": "P1-100",
+      "value_state": "value"
+     },
+     {
+      "scheme": "udi_di",
+      "value": null,
+      "value_state": "not_yet_investigated",
+      "discoverable_value": null,
+      "discoverable_from": "the UDI-DI is printed on the label and appears in support attachment photographs; it was never typed into a field"
+     },
+     {
+      "scheme": "software_version",
+      "value": null,
+      "value_state": "not_yet_investigated",
+      "discoverable_value": "1.2.1",
+      "discoverable_from": "installed-base/version-observations.csv, by serial and date"
+     }
+    ],
+    "reply": {
+     "sent": false,
+     "date": null
+    },
+    "date_of_event": null
+   },
+   "context": {
+    "site": "SITE-01",
+    "org": "ORG-01",
+    "country_of_use": "AU",
+    "intake_channel": "phone",
+    "status": "closed",
+    "symptom_code": "link_dropout"
+   },
+   "true_device_facts": {
+    "serial": "SN-4241",
+    "hw_rev": "H2.1",
+    "comms_module_lot": "CM-4412",
+    "sw_version_at_event": "1.2.1",
+    "ward": "Recovery",
+    "note": "The true device facts are what the world knows. A product may only assert the subset a source record actually states, and must cite it."
+   },
+   "explicitly_unknown": [
+    "device_identifiers.serial"
+   ],
+   "not_yet_investigated": [
+    "device_identifiers.udi_di",
+    "device_identifiers.software_version"
+   ]
+  },
+  {
+   "complaint_no": "CMP-2026-0029",
+   "feedback_no": "FB-2026-0044",
+   "is_demo_complaint": true,
+   "mandated_fields": {
+    "date_received": {
+     "recorded": "2026-05-21",
+     "basis": "ticket"
+    },
+    "complainant": {
+     "name": "Renee Alcott",
+     "email": "ralcott@lakeshoreregional.org",
+     "role": "healthcare_professional"
+    },
+    "allegation_verbatim": "monitor was not updating overnight, we found it showing old numbers on the 2am round",
+    "product_model": "P1-100",
+    "device_identifiers": [
+     {
+      "scheme": "serial",
+      "value": "SN-4125",
+      "value_state": "value"
+     },
+     {
+      "scheme": "model",
+      "value": "P1-100",
+      "value_state": "value"
+     },
+     {
+      "scheme": "udi_di",
+      "value": null,
+      "value_state": "explicitly_unknown",
+      "discoverable_value": null,
+      "discoverable_from": "the UDI-DI is printed on the label and appears in support attachment photographs; it was never typed into a field"
+     },
+     {
+      "scheme": "software_version",
+      "value": "1.2.1",
+      "value_state": "value"
+     }
+    ],
+    "reply": {
+     "sent": true,
+     "date": "2026-06-02"
+    },
+    "date_of_event": null
+   },
+   "context": {
+    "site": "SITE-16",
+    "org": "ORG-10",
+    "country_of_use": "US",
+    "intake_channel": "email",
+    "status": "closed",
+    "symptom_code": "link_dropout"
+   },
+   "true_device_facts": {
+    "serial": "SN-4125",
+    "hw_rev": "H2.1",
+    "comms_module_lot": "CM-4412",
+    "sw_version_at_event": "1.2.1",
+    "ward": "Surgical Recovery 3W",
+    "note": "The true device facts are what the world knows. A product may only assert the subset a source record actually states, and must cite it."
+   },
+   "explicitly_unknown": [
+    "device_identifiers.udi_di"
+   ],
+   "not_yet_investigated": [],
+   "date_received_candidates": [
+    "2026-05-20",
+    "2026-05-26",
+    "2026-05-27"
+   ],
+   "conflicting_claims": [],
+   "world_explicitly_unknown": [
+    "device_identifiers.udi_di"
+   ],
+   "world_not_yet_investigated": [
+    "reportability_criteria.causality"
+   ]
+  },
+  {
+   "complaint_no": "CMP-2026-0030",
+   "feedback_no": "FB-2026-0034",
+   "is_demo_complaint": false,
+   "mandated_fields": {
+    "date_received": {
+     "recorded": "2026-04-27",
+     "basis": "ticket"
+    },
+    "complainant": {
+     "name": "Dana Whitlock",
+     "email": "d.whitlock@meridianmedpartners.com",
+     "role": "distributor"
+    },
+    "allegation_verbatim": "patch edges lifting after about a day",
+    "product_model": "PP-72",
+    "device_identifiers": [
+     {
+      "scheme": "lot",
+      "value": null,
+      "value_state": "explicitly_unknown"
+     },
+     {
+      "scheme": "model",
+      "value": "PP-72",
+      "value_state": "value"
+     },
+     {
+      "scheme": "udi_di",
+      "value": null,
+      "value_state": "explicitly_unknown",
+      "discoverable_value": null,
+      "discoverable_from": "the UDI-DI is printed on the label and appears in support attachment photographs; it was never typed into a field"
+     }
+    ],
+    "reply": {
+     "sent": false,
+     "date": null
+    },
+    "date_of_event": null
+   },
+   "context": {
+    "site": "SITE-16",
+    "org": "ORG-10",
+    "country_of_use": "US",
+    "intake_channel": "distributor",
+    "status": "closed",
+    "symptom_code": "adhesive_lift"
+   },
+   "true_device_facts": {
+    "serial": null,
+    "hw_rev": null,
+    "comms_module_lot": null,
+    "sw_version_at_event": null,
+    "ward": null,
+    "note": "The true device facts are what the world knows. A product may only assert the subset a source record actually states, and must cite it."
+   },
+   "explicitly_unknown": [
+    "device_identifiers.lot",
+    "device_identifiers.udi_di"
+   ],
+   "not_yet_investigated": []
+  },
+  {
+   "complaint_no": "CMP-2026-0031",
+   "feedback_no": "FB-2026-0046",
+   "is_demo_complaint": false,
+   "mandated_fields": {
+    "date_received": {
+     "recorded": "2026-05-25",
+     "basis": "ticket"
+    },
+    "complainant": {
+     "name": "Ash Mehta",
+     "email": "ash.mehta@brisbaneriverside.com.au",
+     "role": "biomed_engineer"
+    },
+    "allegation_verbatim": "unit will not hold charge for a full shift",
+    "product_model": "P1-100",
+    "device_identifiers": [
+     {
+      "scheme": "serial",
+      "value": "SN-1027",
+      "value_state": "value"
+     },
+     {
+      "scheme": "model",
+      "value": "P1-100",
+      "value_state": "value"
+     },
+     {
+      "scheme": "udi_di",
+      "value": null,
+      "value_state": "not_yet_investigated",
+      "discoverable_value": null,
+      "discoverable_from": "the UDI-DI is printed on the label and appears in support attachment photographs; it was never typed into a field"
+     },
+     {
+      "scheme": "software_version",
+      "value": "1.2.1",
+      "value_state": "not_yet_investigated"
+     }
+    ],
+    "reply": {
+     "sent": false,
+     "date": null
+    },
+    "date_of_event": null
+   },
+   "context": {
+    "site": "SITE-09",
+    "org": "ORG-04",
+    "country_of_use": "AU",
+    "intake_channel": "support_ticket",
+    "status": "in_investigation",
+    "symptom_code": "battery_short_runtime"
+   },
+   "true_device_facts": {
+    "serial": "SN-1027",
+    "hw_rev": "H1",
+    "comms_module_lot": "CM-4390",
+    "sw_version_at_event": "1.2.1",
+    "ward": "4 North",
+    "note": "The true device facts are what the world knows. A product may only assert the subset a source record actually states, and must cite it."
+   },
+   "explicitly_unknown": [],
+   "not_yet_investigated": [
+    "device_identifiers.udi_di",
+    "device_identifiers.software_version"
+   ]
+  },
+  {
+   "complaint_no": "CMP-2026-0032",
+   "feedback_no": "FB-2026-0048",
+   "is_demo_complaint": false,
+   "mandated_fields": {
+    "date_received": {
+     "recorded": "2026-05-31",
+     "basis": "mailbox"
+    },
+    "complainant": {
+     "name": "Ingrid Solberg",
+     "email": "ingrid.solberg@adelaidemetrohealth.org.au",
+     "role": "healthcare_professional"
+    },
+    "allegation_verbatim": "date and time reset after a power outage",
+    "product_model": "P1-100",
+    "device_identifiers": [
+     {
+      "scheme": "serial",
+      "value": "SN-1130",
+      "value_state": "value"
+     },
+     {
+      "scheme": "model",
+      "value": "P1-100",
+      "value_state": "value"
+     },
+     {
+      "scheme": "udi_di",
+      "value": null,
+      "value_state": "not_yet_investigated",
+      "discoverable_value": null,
+      "discoverable_from": "the UDI-DI is printed on the label and appears in support attachment photographs; it was never typed into a field"
+     },
+     {
+      "scheme": "software_version",
+      "value": null,
+      "value_state": "value",
+      "discoverable_value": "1.2.0",
+      "discoverable_from": "installed-base/version-observations.csv, by serial and date"
+     }
+    ],
+    "reply": {
+     "sent": true,
+     "date": "2026-06-19"
+    },
+    "date_of_event": null
+   },
+   "context": {
+    "site": "SITE-11",
+    "org": "ORG-05",
+    "country_of_use": "AU",
+    "intake_channel": "email",
+    "status": "closed",
+    "symptom_code": "misc_device"
+   },
+   "true_device_facts": {
+    "serial": "SN-1130",
+    "hw_rev": "H1",
+    "comms_module_lot": "CM-4390",
+    "sw_version_at_event": "1.2.0",
+    "ward": "Surgical Unit B",
+    "note": "The true device facts are what the world knows. A product may only assert the subset a source record actually states, and must cite it."
+   },
+   "explicitly_unknown": [],
+   "not_yet_investigated": [
+    "device_identifiers.udi_di"
+   ]
+  },
+  {
+   "complaint_no": "CMP-2026-0033",
+   "feedback_no": "FB-2026-0036",
+   "is_demo_complaint": false,
+   "mandated_fields": {
+    "date_received": {
+     "recorded": "2026-04-28",
+     "basis": "mailbox"
+    },
+    "complainant": {
+     "name": "Fiona Marsh",
+     "email": "fiona.marsh@northbridgehealth.org.au",
+     "role": "healthcare_professional"
+    },
+    "allegation_verbatim": "hairline crack in the rear cover",
+    "product_model": "P1-100",
+    "device_identifiers": [
+     {
+      "scheme": "serial",
+      "value": null,
+      "value_state": "explicitly_unknown"
+     },
+     {
+      "scheme": "model",
+      "value": "P1-100",
+      "value_state": "value"
+     },
+     {
+      "scheme": "udi_di",
+      "value": null,
+      "value_state": "not_yet_investigated",
+      "discoverable_value": null,
+      "discoverable_from": "the UDI-DI is printed on the label and appears in support attachment photographs; it was never typed into a field"
+     },
+     {
+      "scheme": "software_version",
+      "value": null,
+      "value_state": "not_yet_investigated",
+      "discoverable_value": "1.2.0",
+      "discoverable_from": "installed-base/version-observations.csv, by serial and date"
+     }
+    ],
+    "reply": {
+     "sent": true,
+     "date": "2026-06-12"
+    },
+    "date_of_event": null
+   },
+   "context": {
+    "site": "SITE-01",
+    "org": "ORG-01",
+    "country_of_use": "AU",
+    "intake_channel": "phone",
+    "status": "closed",
+    "symptom_code": "misc_device"
+   },
+   "true_device_facts": {
+    "serial": "SN-1103",
+    "hw_rev": "H1",
+    "comms_module_lot": "CM-4390",
+    "sw_version_at_event": "1.2.0",
+    "ward": "Ward 4B Surgical",
+    "note": "The true device facts are what the world knows. A product may only assert the subset a source record actually states, and must cite it."
+   },
+   "explicitly_unknown": [
+    "device_identifiers.serial"
+   ],
+   "not_yet_investigated": [
+    "device_identifiers.udi_di",
+    "device_identifiers.software_version"
+   ]
+  },
+  {
+   "complaint_no": "CMP-2026-0034",
+   "feedback_no": "FB-2026-0052",
+   "is_demo_complaint": true,
+   "mandated_fields": {
+    "date_received": {
+     "recorded": "2026-06-12",
+     "basis": "mailbox"
+    },
+    "complainant": {
+     "name": "Aoife Gallagher",
+     "email": "aoife.gallagher@stbrendans.ie",
+     "role": "healthcare_professional"
+    },
+    "allegation_verbatim": "monitor showed stale readings then reconnected a minute later during post-operative monitoring",
+    "product_model": "P1-100",
+    "device_identifiers": [
+     {
+      "scheme": "serial",
+      "value": "SN-4471",
+      "value_state": "value"
+     },
+     {
+      "scheme": "model",
+      "value": "P1-100",
+      "value_state": "value"
+     },
+     {
+      "scheme": "udi_di",
+      "value": null,
+      "value_state": "explicitly_unknown",
+      "discoverable_value": null,
+      "discoverable_from": "the UDI-DI is printed on the label and appears in support attachment photographs; it was never typed into a field"
+     },
+     {
+      "scheme": "software_version",
+      "value": "1.2.1",
+      "value_state": "value"
+     }
+    ],
+    "reply": {
+     "sent": true,
+     "date": "2026-06-21"
+    },
+    "date_of_event": null
+   },
+   "context": {
+    "site": "SITE-13",
+    "org": "ORG-07",
+    "country_of_use": "IE",
+    "intake_channel": "sales",
+    "status": "in_investigation",
+    "symptom_code": "link_dropout"
+   },
+   "true_device_facts": {
+    "serial": "SN-4471",
+    "hw_rev": "H2.1",
+    "comms_module_lot": "CM-4412",
+    "sw_version_at_event": "1.2.1",
+    "ward": "St Anne's Ward",
+    "note": "The true device facts are what the world knows. A product may only assert the subset a source record actually states, and must cite it."
+   },
+   "explicitly_unknown": [
+    "device_identifiers.udi_di"
+   ],
+   "not_yet_investigated": [],
+   "date_received_candidates": [
+    "2026-06-12",
+    "2026-06-16"
+   ],
+   "conflicting_claims": [
+    {
+     "field": "serial",
+     "claims": [
+      "SN-4471",
+      "SN-4417"
+     ],
+     "true_value": "SN-4471",
+     "resolution": "human_gate_required"
+    }
+   ],
+   "world_explicitly_unknown": [
+    "device_identifiers.udi_di"
+   ],
+   "world_not_yet_investigated": [
+    "reportability_criteria.causality"
+   ]
+  },
+  {
+   "complaint_no": "CMP-2026-0035",
+   "feedback_no": "FB-2026-0055",
+   "is_demo_complaint": false,
+   "mandated_fields": {
+    "date_received": {
+     "recorded": "2026-06-22",
+     "basis": "ticket"
+    },
+    "complainant": {
+     "name": "Nadia Haddad",
+     "email": "nadia.haddad@schg.com.au",
+     "role": "healthcare_professional"
+    },
+    "allegation_verbatim": "readings stopped updating for a short period, no alarm heard",
+    "product_model": "P1-100",
+    "device_identifiers": [
+     {
+      "scheme": "serial",
+      "value": "SN-4315",
+      "value_state": "value"
+     },
+     {
+      "scheme": "model",
+      "value": "P1-100",
+      "value_state": "value"
+     },
+     {
+      "scheme": "udi_di",
+      "value": null,
+      "value_state": "not_yet_investigated",
+      "discoverable_value": null,
+      "discoverable_from": "the UDI-DI is printed on the label and appears in support attachment photographs; it was never typed into a field"
+     },
+     {
+      "scheme": "software_version",
+      "value": null,
+      "value_state": "value",
+      "discoverable_value": "1.2.1",
+      "discoverable_from": "installed-base/version-observations.csv, by serial and date"
+     }
+    ],
+    "reply": {
+     "sent": true,
+     "date": "2026-06-30"
+    },
+    "date_of_event": null
+   },
+   "context": {
+    "site": "SITE-06",
+    "org": "ORG-03",
+    "country_of_use": "AU",
+    "intake_channel": "support_portal",
+    "status": "closed",
+    "symptom_code": "link_dropout"
+   },
+   "true_device_facts": {
+    "serial": "SN-4315",
+    "hw_rev": "H2.1",
+    "comms_module_lot": "CM-4412",
+    "sw_version_at_event": "1.2.1",
+    "ward": "Ward 9",
+    "note": "The true device facts are what the world knows. A product may only assert the subset a source record actually states, and must cite it."
+   },
+   "explicitly_unknown": [],
+   "not_yet_investigated": [
+    "device_identifiers.udi_di"
+   ]
+  },
+  {
+   "complaint_no": "CMP-2026-0036",
+   "feedback_no": "FB-2026-0058",
+   "is_demo_complaint": false,
+   "mandated_fields": {
+    "date_received": {
+     "recorded": "2026-06-29",
+     "basis": "record"
+    },
+    "complainant": {
+     "name": "Renee Alcott",
+     "email": "ralcott@lakeshoreregional.org",
+     "role": "healthcare_professional"
+    },
+    "allegation_verbatim": "readings stopped updating for a short period, no alarm heard",
+    "product_model": "P1-100",
+    "device_identifiers": [
+     {
+      "scheme": "serial",
+      "value": null,
+      "value_state": "explicitly_unknown"
+     },
+     {
+      "scheme": "model",
+      "value": "P1-100",
+      "value_state": "value"
+     },
+     {
+      "scheme": "udi_di",
+      "value": null,
+      "value_state": "not_yet_investigated",
+      "discoverable_value": null,
+      "discoverable_from": "the UDI-DI is printed on the label and appears in support attachment photographs; it was never typed into a field"
+     },
+     {
+      "scheme": "software_version",
+      "value": null,
+      "value_state": "value",
+      "discoverable_value": "1.2.1",
+      "discoverable_from": "installed-base/version-observations.csv, by serial and date"
+     }
+    ],
+    "reply": {
+     "sent": true,
+     "date": "2026-07-17"
+    },
+    "date_of_event": null
+   },
+   "context": {
+    "site": "SITE-16",
+    "org": "ORG-10",
+    "country_of_use": "US",
+    "intake_channel": "support_ticket",
+    "status": "reopened",
+    "symptom_code": "link_dropout"
+   },
+   "true_device_facts": {
+    "serial": "SN-4156",
+    "hw_rev": "H2.1",
+    "comms_module_lot": "CM-4412",
+    "sw_version_at_event": "1.2.1",
+    "ward": "Surgical Recovery 3W",
+    "note": "The true device facts are what the world knows. A product may only assert the subset a source record actually states, and must cite it."
+   },
+   "explicitly_unknown": [
+    "device_identifiers.serial"
+   ],
+   "not_yet_investigated": [
+    "device_identifiers.udi_di"
+   ]
+  },
+  {
+   "complaint_no": "CMP-2026-0037",
+   "feedback_no": "FB-2026-0049",
+   "is_demo_complaint": false,
+   "mandated_fields": {
+    "date_received": {
+     "recorded": "2026-06-02",
+     "basis": "ticket"
+    },
+    "complainant": {
+     "name": "Ingrid Solberg",
+     "email": "ingrid.solberg@adelaidemetrohealth.org.au",
+     "role": "healthcare_professional"
+    },
+    "allegation_verbatim": "hairline crack in the rear cover",
+    "product_model": "P1-100",
+    "device_identifiers": [
+     {
+      "scheme": "serial",
+      "value": null,
+      "value_state": "explicitly_unknown"
+     },
+     {
+      "scheme": "model",
+      "value": "P1-100",
+      "value_state": "value"
+     },
+     {
+      "scheme": "udi_di",
+      "value": null,
+      "value_state": "not_yet_investigated",
+      "discoverable_value": null,
+      "discoverable_from": "the UDI-DI is printed on the label and appears in support attachment photographs; it was never typed into a field"
+     },
+     {
+      "scheme": "software_version",
+      "value": "1.2.1",
+      "value_state": "not_yet_investigated"
+     }
+    ],
+    "reply": {
+     "sent": true,
+     "date": "2026-07-20"
+    },
+    "date_of_event": null
+   },
+   "context": {
+    "site": "SITE-11",
+    "org": "ORG-05",
+    "country_of_use": "AU",
+    "intake_channel": "email",
+    "status": "closed",
+    "symptom_code": "misc_device"
+   },
+   "true_device_facts": {
+    "serial": "SN-2081",
+    "hw_rev": "H2",
+    "comms_module_lot": "CM-4390",
+    "sw_version_at_event": "1.2.1",
+    "ward": "Surgical Unit B",
+    "note": "The true device facts are what the world knows. A product may only assert the subset a source record actually states, and must cite it."
+   },
+   "explicitly_unknown": [
+    "device_identifiers.serial"
+   ],
+   "not_yet_investigated": [
+    "device_identifiers.udi_di",
+    "device_identifiers.software_version"
+   ]
+  },
+  {
+   "complaint_no": "CMP-2026-0038",
+   "feedback_no": "FB-2026-0057",
+   "is_demo_complaint": false,
+   "mandated_fields": {
+    "date_received": {
+     "recorded": "2026-06-27",
+     "basis": "mailbox"
+    },
+    "complainant": {
+     "name": "Bianca Rossi",
+     "email": "bianca.rossi@schg.com.au",
+     "role": "healthcare_professional"
+    },
+    "allegation_verbatim": "unit will not seat properly in the dock",
+    "product_model": "P1-100",
+    "device_identifiers": [
+     {
+      "scheme": "serial",
+      "value": null,
+      "value_state": "explicitly_unknown"
+     },
+     {
+      "scheme": "model",
+      "value": "P1-100",
+      "value_state": "value"
+     },
+     {
+      "scheme": "udi_di",
+      "value": null,
+      "value_state": "not_yet_investigated",
+      "discoverable_value": null,
+      "discoverable_from": "the UDI-DI is printed on the label and appears in support attachment photographs; it was never typed into a field"
+     },
+     {
+      "scheme": "software_version",
+      "value": "1.1.1",
+      "value_state": "value"
+     }
+    ],
+    "reply": {
+     "sent": true,
+     "date": "2026-07-21"
+    },
+    "date_of_event": null
+   },
+   "context": {
+    "site": "SITE-07",
+    "org": "ORG-03",
+    "country_of_use": "AU",
+    "intake_channel": "phone",
+    "status": "awaiting_information",
+    "symptom_code": "dock_connector_damage"
+   },
+   "true_device_facts": {
+    "serial": "SN-2019",
+    "hw_rev": "H2",
+    "comms_module_lot": "CM-4390",
+    "sw_version_at_event": "1.1.1",
+    "ward": "Level 4 Ortho",
+    "note": "The true device facts are what the world knows. A product may only assert the subset a source record actually states, and must cite it."
+   },
+   "explicitly_unknown": [
+    "device_identifiers.serial"
+   ],
+   "not_yet_investigated": [
+    "device_identifiers.udi_di"
+   ]
+  },
+  {
+   "complaint_no": "CMP-2026-0039",
+   "feedback_no": "FB-2026-0060",
+   "is_demo_complaint": false,
+   "mandated_fields": {
+    "date_received": {
+     "recorded": "2026-07-17",
+     "basis": "ticket"
+    },
+    "complainant": {
+     "name": "Niamh Cassidy",
+     "email": "niamh.cassidy@stbrendans.ie",
+     "role": "healthcare_professional"
+    },
+    "allegation_verbatim": "alarm volume too low to hear from the corridor",
+    "product_model": "P1-100",
+    "device_identifiers": [
+     {
+      "scheme": "serial",
+      "value": "SN-2259",
+      "value_state": "value"
+     },
+     {
+      "scheme": "model",
+      "value": "P1-100",
+      "value_state": "value"
+     },
+     {
+      "scheme": "udi_di",
+      "value": null,
+      "value_state": "not_yet_investigated",
+      "discoverable_value": null,
+      "discoverable_from": "the UDI-DI is printed on the label and appears in support attachment photographs; it was never typed into a field"
+     },
+     {
+      "scheme": "software_version",
+      "value": null,
+      "value_state": "not_yet_investigated",
+      "discoverable_value": "1.1.1",
+      "discoverable_from": "installed-base/version-observations.csv, by serial and date"
+     }
+    ],
+    "reply": {
+     "sent": true,
+     "date": "2026-07-29"
+    },
+    "date_of_event": null
+   },
+   "context": {
+    "site": "SITE-14",
+    "org": "ORG-07",
+    "country_of_use": "IE",
+    "intake_channel": "email",
+    "status": "open",
+    "symptom_code": "misc_device"
+   },
+   "true_device_facts": {
+    "serial": "SN-2259",
+    "hw_rev": "H2",
+    "comms_module_lot": "CM-4390",
+    "sw_version_at_event": "1.1.1",
+    "ward": "Ward 1 Surgical",
+    "note": "The true device facts are what the world knows. A product may only assert the subset a source record actually states, and must cite it."
+   },
+   "explicitly_unknown": [],
+   "not_yet_investigated": [
+    "device_identifiers.udi_di",
+    "device_identifiers.software_version"
+   ]
+  },
+  {
+   "complaint_no": "CMP-2026-0040",
+   "feedback_no": "FB-2026-0067",
+   "is_demo_complaint": false,
+   "mandated_fields": {
+    "date_received": {
+     "recorded": "2026-07-31",
+     "basis": "ticket"
+    },
+    "complainant": {
+     "name": "Amanda Sze",
+     "email": "amanda.sze@northbridgehealth.org.au",
+     "role": "healthcare_professional"
+    },
+    "allegation_verbatim": "hairline crack in the rear cover",
+    "product_model": "P1-100",
+    "device_identifiers": [
+     {
+      "scheme": "serial",
+      "value": "SN-4383",
+      "value_state": "value"
+     },
+     {
+      "scheme": "model",
+      "value": "P1-100",
+      "value_state": "value"
+     },
+     {
+      "scheme": "udi_di",
+      "value": null,
+      "value_state": "not_yet_investigated",
+      "discoverable_value": null,
+      "discoverable_from": "the UDI-DI is printed on the label and appears in support attachment photographs; it was never typed into a field"
+     },
+     {
+      "scheme": "software_version",
+      "value": null,
+      "value_state": "not_yet_investigated",
+      "discoverable_value": "1.2.1",
+      "discoverable_from": "installed-base/version-observations.csv, by serial and date"
+     }
+    ],
+    "reply": {
+     "sent": true,
+     "date": "2026-08-07"
+    },
+    "date_of_event": null
+   },
+   "context": {
+    "site": "SITE-02",
+    "org": "ORG-01",
+    "country_of_use": "AU",
+    "intake_channel": "phone",
+    "status": "awaiting_information",
+    "symptom_code": "misc_device"
+   },
+   "true_device_facts": {
+    "serial": "SN-4383",
+    "hw_rev": "H2.1",
+    "comms_module_lot": "CM-4428",
+    "sw_version_at_event": "1.2.1",
+    "ward": "Short Stay",
+    "note": "The true device facts are what the world knows. A product may only assert the subset a source record actually states, and must cite it."
+   },
+   "explicitly_unknown": [],
+   "not_yet_investigated": [
+    "device_identifiers.udi_di",
+    "device_identifiers.software_version"
+   ]
+  },
+  {
+   "complaint_no": "CMP-2026-0041",
+   "feedback_no": "FB-2026-0065",
+   "is_demo_complaint": false,
+   "mandated_fields": {
+    "date_received": {
+     "recorded": "2026-07-25",
+     "basis": "mailbox"
+    },
+    "complainant": {
+     "name": "Josh Tui'one",
+     "email": "josh.tuione@schg.com.au",
+     "role": "biomed_engineer"
+    },
+    "allegation_verbatim": "dock pins look bent, unit not charging",
+    "product_model": "P1-100",
+    "device_identifiers": [
+     {
+      "scheme": "serial",
+      "value": null,
+      "value_state": "explicitly_unknown"
+     },
+     {
+      "scheme": "model",
+      "value": "P1-100",
+      "value_state": "value"
+     },
+     {
+      "scheme": "udi_di",
+      "value": null,
+      "value_state": "not_yet_investigated",
+      "discoverable_value": null,
+      "discoverable_from": "the UDI-DI is printed on the label and appears in support attachment photographs; it was never typed into a field"
+     },
+     {
+      "scheme": "software_version",
+      "value": null,
+      "value_state": "value",
+      "discoverable_value": "1.2.1",
+      "discoverable_from": "installed-base/version-observations.csv, by serial and date"
+     }
+    ],
+    "reply": {
+     "sent": false,
+     "date": null
+    },
+    "date_of_event": null
+   },
+   "context": {
+    "site": "SITE-07",
+    "org": "ORG-03",
+    "country_of_use": "AU",
+    "intake_channel": "email",
+    "status": "open",
+    "symptom_code": "dock_connector_damage"
+   },
+   "true_device_facts": {
+    "serial": "SN-2040",
+    "hw_rev": "H2",
+    "comms_module_lot": "CM-4390",
+    "sw_version_at_event": "1.2.1",
+    "ward": "Level 3 Surgical",
+    "note": "The true device facts are what the world knows. A product may only assert the subset a source record actually states, and must cite it."
+   },
+   "explicitly_unknown": [
+    "device_identifiers.serial"
+   ],
+   "not_yet_investigated": [
+    "device_identifiers.udi_di"
+   ]
+  },
+  {
+   "complaint_no": "CMP-2026-0042",
+   "feedback_no": "FB-2026-0063",
+   "is_demo_complaint": false,
+   "mandated_fields": {
+    "date_received": {
+     "recorded": "2026-07-22",
+     "basis": "mailbox"
+    },
+    "complainant": {
+     "name": "Nadia Haddad",
+     "email": "nadia.haddad@schg.com.au",
+     "role": "healthcare_professional"
+    },
+    "allegation_verbatim": "unit lost contact with the patch for about a minute during the round",
+    "product_model": "P1-100",
+    "device_identifiers": [
+     {
+      "scheme": "serial",
+      "value": "SN-4329",
+      "value_state": "value"
+     },
+     {
+      "scheme": "model",
+      "value": "P1-100",
+      "value_state": "value"
+     },
+     {
+      "scheme": "udi_di",
+      "value": null,
+      "value_state": "not_yet_investigated",
+      "discoverable_value": null,
+      "discoverable_from": "the UDI-DI is printed on the label and appears in support attachment photographs; it was never typed into a field"
+     },
+     {
+      "scheme": "software_version",
+      "value": null,
+      "value_state": "not_yet_investigated",
+      "discoverable_value": "1.3.0",
+      "discoverable_from": "installed-base/version-observations.csv, by serial and date"
+     }
+    ],
+    "reply": {
+     "sent": true,
+     "date": "2026-08-28"
+    },
+    "date_of_event": null
+   },
+   "context": {
+    "site": "SITE-06",
+    "org": "ORG-03",
+    "country_of_use": "AU",
+    "intake_channel": "email",
+    "status": "closed",
+    "symptom_code": "link_dropout"
+   },
+   "true_device_facts": {
+    "serial": "SN-4329",
+    "hw_rev": "H2.1",
+    "comms_module_lot": "CM-4412",
+    "sw_version_at_event": "1.3.0",
+    "ward": "Ward 9",
+    "note": "The true device facts are what the world knows. A product may only assert the subset a source record actually states, and must cite it."
+   },
+   "explicitly_unknown": [],
+   "not_yet_investigated": [
+    "device_identifiers.udi_di",
+    "device_identifiers.software_version"
+   ]
+  },
+  {
+   "complaint_no": "CMP-2026-0043",
+   "feedback_no": "FB-2026-0068",
+   "is_demo_complaint": false,
+   "mandated_fields": {
+    "date_received": {
+     "recorded": "2026-07-31",
+     "basis": "record"
+    },
+    "complainant": {
+     "name": "Amanda Sze",
+     "email": "amanda.sze@northbridgehealth.org.au",
+     "role": "healthcare_professional"
+    },
+    "allegation_verbatim": "patch connection lost intermittently, came back on its own",
+    "product_model": "P1-100",
+    "device_identifiers": [
+     {
+      "scheme": "serial",
+      "value": "SN-4103",
+      "value_state": "value"
+     },
+     {
+      "scheme": "model",
+      "value": "P1-100",
+      "value_state": "value"
+     },
+     {
+      "scheme": "udi_di",
+      "value": null,
+      "value_state": "not_yet_investigated",
+      "discoverable_value": null,
+      "discoverable_from": "the UDI-DI is printed on the label and appears in support attachment photographs; it was never typed into a field"
+     },
+     {
+      "scheme": "software_version",
+      "value": null,
+      "value_state": "not_yet_investigated",
+      "discoverable_value": "1.2.1",
+      "discoverable_from": "installed-base/version-observations.csv, by serial and date"
+     }
+    ],
+    "reply": {
+     "sent": true,
+     "date": "2026-09-03"
+    },
+    "date_of_event": null
+   },
+   "context": {
+    "site": "SITE-02",
+    "org": "ORG-01",
+    "country_of_use": "AU",
+    "intake_channel": "support_ticket",
+    "status": "awaiting_information",
+    "symptom_code": "link_dropout"
+   },
+   "true_device_facts": {
+    "serial": "SN-4103",
+    "hw_rev": "H2.1",
+    "comms_module_lot": "CM-4412",
+    "sw_version_at_event": "1.2.1",
+    "ward": "Short Stay",
+    "note": "The true device facts are what the world knows. A product may only assert the subset a source record actually states, and must cite it."
+   },
+   "explicitly_unknown": [],
+   "not_yet_investigated": [
+    "device_identifiers.udi_di",
+    "device_identifiers.software_version"
+   ]
+  }
+ ],
+ "demo_complaint_detail": [
+  {
+   "complaint_no": "CMP-2026-0034",
+   "journey": "St Brendan's Dublin, 12 June 2026",
+   "fields": [
+    {
+     "field": "allegation_verbatim",
+     "defensible_value": "monitor showed stale readings then reconnected a minute later during post-operative monitoring",
+     "state": "value",
+     "locators": [
+      "mock-company/email/sales/20260612-064-01-patient-monitor-dropped-out-on-st-anne-s.eml"
+     ],
+     "note": "The complainant's own words. A normalised summary is a claim, not this field.",
+     "locator_check": [
+      {
+       "locator": "mock-company/email/sales/20260612-064-01-patient-monitor-dropped-out-on-st-anne-s.eml",
+       "exists": true
+      }
+     ]
+    },
+    {
+     "field": "date_received",
+     "defensible_value": "2026-06-12",
+     "state": "value",
+     "competing_values": [
+      "2026-06-15",
+      "2026-06-16",
+      "2026-06-17"
+     ],
+     "locators": [
+      "mock-company/email/sales/20260612-064-01-patient-monitor-dropped-out-on-st-anne-s.eml",
+      "mock-company/email/sales/20260615-064-02-patient-monitor-dropped-out-on-st-anne-s.eml",
+      "mock-company/email/service/20260616-038-01-unit-on-st-anne-s-ward-patch-link-dropout.eml"
+     ],
+     "note": "Earliest evidence of the report reaching Asteria is the Friday 18:40 +01:00 email to the account manager. The other arrivals are real and must be disclosed.",
+     "locator_check": [
+      {
+       "locator": "mock-company/email/sales/20260612-064-01-patient-monitor-dropped-out-on-st-anne-s.eml",
+       "exists": true
+      },
+      {
+       "locator": "mock-company/email/sales/20260615-064-02-patient-monitor-dropped-out-on-st-anne-s.eml",
+       "exists": true
+      },
+      {
+       "locator": "mock-company/email/service/20260616-038-01-unit-on-st-anne-s-ward-patch-link-dropout.eml",
+       "exists": true
+      }
+     ]
+    },
+    {
+     "field": "complainant",
+     "defensible_value": "Aoife Gallagher, CNM2 Surgical Ward, St Brendan's Dublin",
+     "state": "value",
+     "locators": [
+      "mock-company/email/sales/20260612-064-01-patient-monitor-dropped-out-on-st-anne-s.eml"
+     ],
+     "note": "From the signature block. The second reporter, Cormac Byrne, is a different person and a different arrival.",
+     "locator_check": [
+      {
+       "locator": "mock-company/email/sales/20260612-064-01-patient-monitor-dropped-out-on-st-anne-s.eml",
+       "exists": true
+      }
+     ]
+    },
+    {
+     "field": "device_identifiers.serial",
+     "defensible_value": "conflict: SN-4417 as written, SN-4471 on the balance of evidence",
+     "state": "value_with_unresolved_conflict",
+     "locators": [
+      "mock-company/email/service/20260616-038-01-unit-on-st-anne-s-ward-patch-link-dropout.eml",
+      "mock-company/installed-base/device-units.csv",
+      "mock-company/installed-base/version-observations.csv"
+     ],
+     "note": "See entity-truth.json AMB-02. Silent resolution is the failure mode.",
+     "locator_check": [
+      {
+       "locator": "mock-company/email/service/20260616-038-01-unit-on-st-anne-s-ward-patch-link-dropout.eml",
+       "exists": true
+      },
+      {
+       "locator": "mock-company/installed-base/device-units.csv",
+       "exists": true
+      },
+      {
+       "locator": "mock-company/installed-base/version-observations.csv",
+       "exists": true
+      }
+     ]
+    },
+    {
+     "field": "device_identifiers.udi_di",
+     "defensible_value": null,
+     "state": "explicitly_unknown",
+     "locators": [
+      "mock-company/qms/complaints/CMP-2026-0034 - monitor showed stale readings then reconnected a min.docx"
+     ],
+     "note": "The record states the reporter did not read the identifier from the label. Someone looked; the answer is that it is not obtainable from this reporter. A product that reads the UDI off a label photograph has done something no human did, and must say so rather than presenting it as the recorded value.",
+     "locator_check": [
+      {
+       "locator": "mock-company/qms/complaints/CMP-2026-0034 - monitor showed stale readings then reconnected a min.docx",
+       "exists": true
+      }
+     ]
+    },
+    {
+     "field": "device_identifiers.software_version",
+     "defensible_value": "1.2.1",
+     "state": "value",
+     "locators": [
+      "mock-company/email/service/20260616-038-01-unit-on-st-anne-s-ward-patch-link-dropout.eml",
+      "mock-company/installed-base/version-observations.csv"
+     ],
+     "note": "Stated by the biomedical engineer and corroborated by the installed-base observation for SN-4471.",
+     "locator_check": [
+      {
+       "locator": "mock-company/email/service/20260616-038-01-unit-on-st-anne-s-ward-patch-link-dropout.eml",
+       "exists": true
+      },
+      {
+       "locator": "mock-company/installed-base/version-observations.csv",
+       "exists": true
+      }
+     ]
+    },
+    {
+     "field": "reportability_criteria.causality",
+     "defensible_value": null,
+     "state": "not_yet_investigated",
+     "locators": [
+      "mock-company/qms/investigations/INV-2026-016 (CMP-2026-0034) - monitor showed stale readings then reconnect.docx"
+     ],
+     "note": "The investigation is open and records no conclusion. This is not explicitly_unknown: nobody has finished looking.",
+     "locator_check": [
+      {
+       "locator": "mock-company/qms/investigations/INV-2026-016 (CMP-2026-0034) - monitor showed stale readings then reconnect.docx",
+       "exists": true
+      }
+     ]
+    },
+    {
+     "field": "harm",
+     "defensible_value": "not known",
+     "state": "explicitly_unknown",
+     "locators": [
+      "mock-company/qms/complaints/CMP-2026-0034 - monitor showed stale readings then reconnected a min.docx"
+     ],
+     "note": "Harm was not stated either way in the report received, and the record says so. Filling this with 'no harm' is inventing a clinical fact.",
+     "locator_check": [
+      {
+       "locator": "mock-company/qms/complaints/CMP-2026-0034 - monitor showed stale readings then reconnected a min.docx",
+       "exists": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "complaint_no": "CMP-2026-0029",
+   "journey": "Lakeshore Regional Medical Center, 19 May 2026",
+   "fields": [
+    {
+     "field": "date_received",
+     "defensible_value": "2026-05-21",
+     "state": "value",
+     "competing_values": [
+      "2026-05-20",
+      "2026-05-26",
+      "2026-05-27"
+     ],
+     "note": "Two reporters six days apart, and a forwarded chain from the importer whose From: header is the importer, not the hospital. The reporter is the nurse manager; the importer is a separate party with its own 803.40 obligations."
+    },
+    {
+     "field": "complainant",
+     "defensible_value": "Renee Alcott, Nurse Manager, Surgical Recovery, Lakeshore Regional Medical Center",
+     "state": "value",
+     "note": "Not Meridian. A forwarded chain that strips headers does not change who reported."
+    },
+    {
+     "field": "device_identifiers.udi_di",
+     "defensible_value": null,
+     "state": "explicitly_unknown"
+    },
+    {
+     "field": "reportability_criteria.causality",
+     "defensible_value": null,
+     "state": "not_yet_investigated"
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,191 @@
+{
+  "rule_set_id": "eu-mdr-art87",
+  "rule_version": "eu-mdr-art87/mdcg-2023-3-rev2@1.0.0",
+  "schema_version": "1.0.0",
+  "effective_from": "2025-01-01",
+  "effective_to": null,
+  "effective_from_basis": "The validity window of THIS ENCODING, not a regulatory commencement date. It is set to cover the V0 simulation window (2025-03-01 to 2026-08-31). MDR 2017/745 Art. 87 and MDCG 2023-3 Rev.2 both predate it. REGISTER-SHAPES-V0.md 5.3 requires the version to be a first-class field precisely because MDCG guidance is revised: a due date computed under Rev.2 must stay explainable after Rev.3 exists. Superseding this file means adding a new rule_version with a later effective_from, never editing this one in place.",
+  "guidance_revision": "MDCG 2023-3 Rev.2",
+  "jurisdiction_scope": ["IE", "NL"],
+  "jurisdiction_scope_note": "MDR Art. 87 applies across the Union, but MDCG 2023-3 Q14's roll-forward is NATIONAL -- 'a public holiday in the relevant Member State'. A due date therefore cannot be computed for a Member State whose public-holiday calendar is not loaded. V0 loads IE and NL only. See jurisdictions.json.",
+  "applicable_regulation": "mdr_art_87",
+  "authority": "National competent authority of the Member State in which the serious incident occurred (Art. 87(11))",
+  "awareness_definition": {
+    "citation": "MDCG 2023-3 Rev.2 Q15",
+    "quote": "the 'manufacturer awareness date' of the incident is the date when the first employee or representative of the manufacturer's organisation (i.e. any natural or legal person acting on behalf of the manufacturer) receives information regarding the potentially serious incident. If the handling of this information is performed by the authorised representative or if the manufacturer has outsourced its complaint and incident handling activities to another natural or legal person (e.g. a subcontractor), then reference to 'manufacturer's organisation' in the context of the awareness date will also apply to that organisation.",
+    "not_after_investigation_citation": "MDCG 2023-3 Rev.2 Q14",
+    "not_after_investigation_quote": "The awareness date (day=0) refers to the date when the manufacturer is first made aware or receives information of the occurrence of the (potentially) serious incident, and not after it has conducted its investigation.",
+    "contrast_with_us": "Broader than the US on one axis -- it reaches authorised representatives and outsourced complaint handlers, not just employees -- and narrower on none, because it has NO seniority carve-out. Every employee class starts every EU clock.",
+    "starts_clock_employee_classes": [
+      "any_employee",
+      "mgmt_over_reg_sci_tech",
+      "ae_collection_duties",
+      "authorised_representative",
+      "outsourced_handler"
+    ]
+  },
+  "day_zero_selection": {
+    "statement": "Which of the two MIR awareness dates is day 0.",
+    "options": [
+      {
+        "field": "awareness_date_incident",
+        "mir_field": "1.2(c)",
+        "when": "The normal case.",
+        "confidence": "verified"
+      },
+      {
+        "field": "awareness_date_reportability",
+        "mir_field": "1.2(d)",
+        "when": "ONLY the exceptional case where the manufacturer initially determined the incident was not reportable and later received new information changing that determination.",
+        "citation": "MDCG 2023-3 Rev.2 Q14",
+        "quote": "the period of reporting begins on the date the manufacturer received the information that determined that the incident is reportable.",
+        "confidence": "verified",
+        "note": "MIR 1.2(d) is new in MIR v7.3.1, mandatory from 1 May 2026. MDCG Q15 requires any difference between 1.2.c and 1.2.d to be explained in MIR section 5."
+      }
+    ]
+  },
+  "counting_rules": {
+    "citation": "MDCG 2023-3 Rev.2 Q14, with its footnoted basis in Regulation (EEC, Euratom) No 1182/71",
+    "calendar_days_quote": "The timelines for reporting serious incidents must be considered as calendar days, meaning the reporting periods include weekdays, public holidays, Saturdays and Sundays.",
+    "period_start_quote": "As a general rule, the reporting period begins on the day after the awareness date of a potentially serious incident at 00:00:01 AM.",
+    "period_end_quote": "In both situations i.e., the general rule and the exceptional case, the period ends on the 15th, 2nd or 10th day thereafter (more specifically at 11:59:59 PM). However, if this (last) day is a public holiday, Saturday or Sunday the deadline is moved to the following working day automatically.",
+    "two_working_days_quote": "Any period of two days or more shall include at least two working days",
+    "two_working_days_citation": "Regulation (EEC, Euratom) No 1182/71 Art. 3(4), cited by MDCG 2023-3 Rev.2 Q14",
+    "minimum_quote": "In conclusion, it is the earliest date of reporting which should be considered.",
+    "algorithm": [
+      "day_zero = governing awareness date, taken in the LOCAL date of the awareness timestamp's zone",
+      "period_start = day_zero + 1 day, at 00:00:01 local",
+      "nominal_due_date = day_zero + N days (N = 2, 10 or 15)",
+      "while nominal_due_date is a Saturday, a Sunday, or a public holiday in that Member State: nominal_due_date += 1 day",
+      "while the working days in [period_start_date .. due_date] inclusive number fewer than 2: advance due_date to the next working day",
+      "due_at = due_date at 23:59:59 local",
+      "if several clocks apply: due_at = MIN(all applicable due_at)"
+    ],
+    "local_time_matters": "The period starts 00:00:01 and ends 23:59:59 LOCAL. An awareness timestamp 40 minutes either side of local midnight changes day zero and therefore moves the deadline by a day."
+  },
+  "rollforward_rule": {
+    "applies": true,
+    "non_working_days": ["saturday", "sunday", "public_holiday_in_member_state"],
+    "direction": "forward, to the following working day",
+    "holiday_calendar_is_national": true,
+    "confidence": "verified"
+  },
+  "minimum_working_days_rule": {
+    "applies": true,
+    "minimum": 2,
+    "applies_when": "N >= 2, which is every EU clock here.",
+    "measured_over": "[period_start_date .. due_date] inclusive",
+    "extension": "Advance the due date to successive working days until the period contains at least two working days.",
+    "bites_hardest_on": "The 2-day serious-public-health-threat clock.",
+    "confidence": "verified"
+  },
+  "multiple_clocks_rule": {
+    "applies": true,
+    "statement": "due = MIN(all applicable due dates)",
+    "citation": "MDCG 2023-3 Rev.2 Q14",
+    "quote": "it is the earliest date of reporting which should be considered.",
+    "confidence": "verified"
+  },
+  "recomputation_rule": {
+    "statement": "A due date in this register can move EARLIER. Recomputation on new information is required, and the recomputed due_at may lie in the past relative to the previous computation.",
+    "worked_example": "A 15-day other-serious-incident clock is running. Two days later the patient dies. The obligation is now an Art. 87(5) death, N = 10 from the SAME day zero -- five days earlier than the 15-day due date, and possibly already elapsed.",
+    "why_same_day_zero": "Art. 87(5) reads 'not later than 10 days after the date on which the manufacturer becomes aware of the serious incident'. It re-anchors on awareness of the incident, not on awareness of the death. Day zero does not move; N does.",
+    "citation": "MDR Art. 87(5); MDCG 2023-3 Rev.2 Q14 variant example; REGISTER-SHAPES-V0.md 5.3 consequence 4",
+    "implication_for_storage": "due_at is a computed binding with its own history (due_at_history[]), never a frozen cell. Every entry carries the rule_version it was computed under.",
+    "confidence": "verified"
+  },
+  "clocks": [
+    {
+      "clock_class": "serious_public_health_threat",
+      "label": "2 days -- serious public health threat",
+      "citation": "MDR 2017/745 Art. 87(4)",
+      "quote": "Notwithstanding paragraph 3, in the event of a serious public health threat the report referred to in paragraph 1 shall be provided immediately, and not later than 2 days after the manufacturer becomes aware of that threat.",
+      "count_unit": "calendar_days",
+      "n": 2,
+      "selection_note": "Selected by the incident class 'serious public health threat', not by patient outcome. It overrides the 15-day clock rather than replacing the obligation.",
+      "day_zero": "awareness of the threat",
+      "implemented_in_v0": true,
+      "confidence": "verified"
+    },
+    {
+      "clock_class": "death",
+      "label": "10 days -- death",
+      "citation": "MDR 2017/745 Art. 87(5)",
+      "quote": "Notwithstanding paragraph 3, in the event of death or an unanticipated serious deterioration in a person's state of health the report shall be provided immediately after the manufacturer has established or as soon as it suspects a causal relationship between the device and the serious incident but not later than 10 days after the date on which the manufacturer becomes aware of the serious incident.",
+      "count_unit": "calendar_days",
+      "n": 10,
+      "day_zero": "awareness of the serious incident",
+      "implemented_in_v0": true,
+      "confidence": "verified"
+    },
+    {
+      "clock_class": "unanticipated_serious_deterioration",
+      "label": "10 days -- unanticipated serious deterioration in a person's state of health",
+      "citation": "MDR 2017/745 Art. 87(5)",
+      "quote": "Notwithstanding paragraph 3, in the event of death or an unanticipated serious deterioration in a person's state of health the report shall be provided immediately after the manufacturer has established or as soon as it suspects a causal relationship between the device and the serious incident but not later than 10 days after the date on which the manufacturer becomes aware of the serious incident.",
+      "count_unit": "calendar_days",
+      "n": 10,
+      "day_zero": "awareness of the serious incident",
+      "implemented_in_v0": true,
+      "confidence": "verified"
+    },
+    {
+      "clock_class": "other_serious_incident",
+      "label": "15 days -- any other serious incident",
+      "citation": "MDR 2017/745 Art. 87(3)",
+      "quote": "Manufacturers shall report any serious incident as referred to in point (a) of paragraph 1 immediately after they have established the causal relationship between that incident and their device or that such causal relationship is reasonably possible and not later than 15 days after they become aware of the incident.",
+      "count_unit": "calendar_days",
+      "n": 15,
+      "day_zero": "awareness of the incident",
+      "implemented_in_v0": true,
+      "confidence": "verified",
+      "note": "The residual clock. Art. 87(4) and 87(5) are both expressed as 'notwithstanding paragraph 3', so they displace this one for their incident classes."
+    },
+    {
+      "clock_class": "fsca",
+      "label": "Field safety corrective action -- no date arithmetic",
+      "citation": "MDR 2017/745 Art. 87(8)",
+      "quote": "Except in cases of urgency in which the manufacturer needs to undertake field safety corrective action immediately, the manufacturer shall, without undue delay, report the field safety corrective action referred to in point (b) of paragraph 1 in advance of the field safety corrective action being undertaken.",
+      "count_unit": "not_a_period",
+      "n": null,
+      "due_date_computable": false,
+      "not_computable_reason": "The deadline is defined by a FUTURE EVENT -- the undertaking of the FSCA -- not by an offset from awareness. There is no arithmetic that produces a date. A UI must show 'in advance of the action', not a calculated day.",
+      "implemented_in_v0": false,
+      "confidence": "verified"
+    },
+    {
+      "clock_class": "trend_art_88",
+      "label": "Trend report -- no deadline is stated",
+      "citation": "MDR 2017/745 Art. 88(1)",
+      "count_unit": "not_a_period",
+      "n": null,
+      "due_date_computable": false,
+      "not_computable_reason": "Art. 88(1) requires reporting of a statistically significant increase but SETS NO PERIOD. The only timing is the observation period and methodology the manufacturer is required to specify in its own PMS plan. Displaying an Art. 88 due date as if the regulation set one would be a fabricated deadline.",
+      "implemented_in_v0": false,
+      "confidence": "verified_as_absence"
+    }
+  ],
+  "notes": [
+    {
+      "topic": "Delay is not excused",
+      "citation": "MDCG 2023-3 Rev.2 Q14",
+      "quote": "A delay in submitting an initial report e.g. due to incomplete information provided by the healthcare facility, end user or other relevant parties, is not deemed justified.",
+      "product_consequence": "Art. 87(6) gives the alternative -- submit an incomplete initial report and follow it with a complete one. The engine never extends a deadline because information is missing; the missing information is recorded on the obligation instead (vig_missing_information)."
+    },
+    {
+      "topic": "Eudamed VGL module",
+      "statement": "The Post-market surveillance and Vigilance module was not among the modules that became mandatory on 28 May 2026 and is not available for voluntary use. Submissions in the V0 window go through national processes and the Eudamed reference is blank. This affects the submission channel, not the clock.",
+      "citation": "MDCG 2023-3 Rev.2 Q21"
+    }
+  ],
+  "not_encoded": [
+    {
+      "item": "Which incident class applies to a given event",
+      "reason": "Selecting between serious_public_health_threat / death / unanticipated_serious_deterioration / other_serious_incident is a reportability assessment, which is a human decision row (REGISTER-SHAPES-V0.md 4.8). This file says what each class costs in days; it does not classify."
+    },
+    {
+      "item": "Member States other than IE and NL",
+      "reason": "The Art. 87 clocks apply Union-wide, but Q14's roll-forward needs a national public-holiday calendar. Without one there is no honest due date. See jurisdictions.json."
+    }
+  ]
+}

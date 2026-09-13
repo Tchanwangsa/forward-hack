@@ -1,0 +1,129 @@
+{
+  "schema_version": "1.0.0",
+  "rule_version": "jurisdictions@1.0.0",
+  "effective_from": "2025-01-01",
+  "effective_to": null,
+  "effective_from_basis": "The validity window of THIS ENCODING. Adding a jurisdiction, or flipping one to clock_rules_available: true, means a new rule_version with a later effective_from -- not an edit in place -- so that a due date (or a recorded absence of one) stays explainable afterwards. REGISTER-SHAPES-V0.md 5.3.",
+  "governing_rule": {
+    "citation": "REGISTER-SHAPES-V0.md 5.4",
+    "statement": "V0 implements clock rules for US (21 CFR 803) and EU (MDR Art. 87) only, because those are the two regimes the reference actually verified. For any other jurisdiction, clock_rules_available = false and the product shows NO due date and says why.",
+    "why": "A product that shows no due date and says why is telling the truth; one that invents a TGA deadline is not. An absent due date with a stated reason is a better demo than a fabricated deadline."
+  },
+  "availability_test": {
+    "statement": "clock_rules_available is true only when BOTH conditions hold.",
+    "conditions": [
+      "A rule set file exists in reference-data/clock-rules/ for this jurisdiction's applicable regulation.",
+      "A public-holiday calendar exists in reference-data/holidays/ for this jurisdiction, IF the rule set's roll-forward or work-day counting needs one."
+    ],
+    "note": "The second condition is why an EU Member State can have a fully loaded rule set and still be unavailable: MDCG 2023-3 Q14's roll-forward is national. See DE below."
+  },
+  "jurisdictions": [
+    {
+      "code": "US",
+      "name": "United States",
+      "authority": "U.S. Food and Drug Administration",
+      "applicable_regulation": "21_cfr_803",
+      "clock_rules_available": true,
+      "rule_set_id": "us-21cfr803",
+      "rule_version": "us-21cfr803@1.0.0",
+      "holiday_calendar_id": "us-federal",
+      "default_timezone": null,
+      "default_timezone_note": "Several zones; the awareness timestamp supplies its own. The engine requires an explicit zone for US computations.",
+      "clock_classes": [
+        "30_calendar_day",
+        "5_work_day_803_53_a",
+        "5_work_day_803_53_b",
+        "supplemental_30_calendar_day"
+      ],
+      "clock_classes_declared_not_computed": ["vmsr_quarterly"],
+      "in_scope_for_asteria": true,
+      "in_scope_note": "Per REGISTER-SHAPES-V0.md 10 decision 1, Asteria has a small US presence (US market entry 2026-02-09 per the generation contract). This is what unlocks the 803.3(b)(2) employee-class asymmetry."
+    },
+    {
+      "code": "IE",
+      "name": "Ireland",
+      "authority": "Health Products Regulatory Authority (HPRA)",
+      "applicable_regulation": "mdr_art_87",
+      "clock_rules_available": true,
+      "rule_set_id": "eu-mdr-art87",
+      "rule_version": "eu-mdr-art87/mdcg-2023-3-rev2@1.0.0",
+      "holiday_calendar_id": "ie",
+      "default_timezone": "Europe/Dublin",
+      "clock_classes": [
+        "serious_public_health_threat",
+        "death",
+        "unanticipated_serious_deterioration",
+        "other_serious_incident"
+      ],
+      "clock_classes_declared_not_computed": ["fsca", "trend_art_88"],
+      "in_scope_for_asteria": true
+    },
+    {
+      "code": "NL",
+      "name": "Netherlands",
+      "authority": "Inspectie Gezondheidszorg en Jeugd (IGJ)",
+      "applicable_regulation": "mdr_art_87",
+      "clock_rules_available": true,
+      "rule_set_id": "eu-mdr-art87",
+      "rule_version": "eu-mdr-art87/mdcg-2023-3-rev2@1.0.0",
+      "holiday_calendar_id": "nl",
+      "default_timezone": "Europe/Amsterdam",
+      "clock_classes": [
+        "serious_public_health_threat",
+        "death",
+        "unanticipated_serious_deterioration",
+        "other_serious_incident"
+      ],
+      "clock_classes_declared_not_computed": ["fsca", "trend_art_88"],
+      "in_scope_for_asteria": true
+    },
+    {
+      "code": "AU",
+      "name": "Australia",
+      "authority": "Therapeutic Goods Administration (TGA)",
+      "applicable_regulation": "tga",
+      "clock_rules_available": false,
+      "rule_set_id": null,
+      "rule_version": null,
+      "holiday_calendar_id": "au-vic",
+      "default_timezone": "Australia/Melbourne",
+      "clock_classes": [],
+      "unavailable_reason": "No TGA clock rules are loaded. REGISTER-SHAPES-V0.md 5.4 scopes V0 to the two regimes the complaint-vigilance reference actually verified (US 21 CFR 803 and EU MDR Art. 87); TGA reporting timeframes were not researched and are not encoded. The product must show no due date for AU and state this reason.",
+      "unavailable_reason_short": "TGA clock rules not loaded in V0 -- no due date can be computed.",
+      "holiday_calendar_purpose": "au-vic is loaded as Asteria's OWN working calendar (internal target dates, meeting scheduling, who was in the office). Its presence must not be read as regulatory clock support. A loaded calendar is a necessary, not a sufficient, condition -- see availability_test.",
+      "in_scope_for_asteria": true
+    },
+    {
+      "code": "DE",
+      "name": "Germany",
+      "authority": "Bundesinstitut für Arzneimittel und Medizinprodukte (BfArM)",
+      "applicable_regulation": "mdr_art_87",
+      "clock_rules_available": false,
+      "rule_set_id": "eu-mdr-art87",
+      "rule_version": null,
+      "holiday_calendar_id": null,
+      "default_timezone": "Europe/Berlin",
+      "clock_classes": [],
+      "unavailable_reason": "The MDR Art. 87 rule set IS loaded and applies here, but no German public-holiday calendar is loaded. MDCG 2023-3 Q14's roll-forward is national -- the complaint-vigilance reference states plainly that the due date for the same event differs between Germany and Ireland -- so without a German calendar there is no honest due date, only a plausible one. Load a DE calendar and this flips to true with no rule-set work.",
+      "unavailable_reason_short": "MDR rules loaded, but no German public-holiday calendar -- the Q14 roll-forward is national.",
+      "in_scope_for_asteria": false,
+      "why_listed": "Listed to make the availability_test visible: a jurisdiction can have a complete, verified rule set and still be unavailable. It is the cheapest demonstration that clock_rules_available is a data question, not a regime question."
+    }
+  ],
+  "fallback_for_unlisted": {
+    "clock_rules_available": false,
+    "unavailable_reason": "This jurisdiction is not in the V0 jurisdiction enum. No clock rules are loaded for it and none may be inferred.",
+    "unavailable_reason_short": "Jurisdiction not supported in V0 -- no clock rules loaded.",
+    "statement": "Any jurisdiction code not listed above resolves to this entry. There is no default rule set and no nearest-neighbour guess: an unlisted jurisdiction NEVER receives a computed due date."
+  },
+  "register_mapping": {
+    "note": "How this file lands on the register.",
+    "vigilance_obligation.jurisdiction": "code",
+    "vigilance_obligation.applicable_regulation": "applicable_regulation",
+    "vigilance_obligation.clock_rules_available": "clock_rules_available",
+    "vigilance_obligation.rule_version": "rule_version (null when unavailable)",
+    "vigilance_obligation.period_start_at": "computed, null when unavailable",
+    "vigilance_obligation.due_at": "computed, null when unavailable",
+    "ui_contract": "When clock_rules_available is false, render unavailable_reason_short next to the empty due date. Never render a blank due date with no explanation, and never substitute an internal target date for a statutory one (REGISTER-SHAPES-V0.md 2.6: internal_target_due is a separate field for exactly this reason)."
+  }
+}

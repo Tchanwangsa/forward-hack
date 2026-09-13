@@ -1,0 +1,151 @@
+{
+  "rule_set_id": "us-21cfr803",
+  "rule_version": "us-21cfr803@1.0.0",
+  "schema_version": "1.0.0",
+  "effective_from": "2025-01-01",
+  "effective_to": null,
+  "effective_from_basis": "The validity window of THIS ENCODING, not a regulatory commencement date. It is set to cover the V0 simulation window (2025-03-01 to 2026-08-31). 21 CFR Part 803 long predates it. REGISTER-SHAPES-V0.md 5.3 requires the version to be a first-class field so that a due date computed under one encoding stays explainable after the encoding is revised; superseding this file means adding a new rule_version with a later effective_from, never editing this one in place.",
+  "jurisdiction": "US",
+  "applicable_regulation": "21_cfr_803",
+  "authority": "U.S. Food and Drug Administration",
+  "holiday_calendar_id": "us-federal",
+  "timezone_rule": {
+    "statement": "Part 803 fixes no time zone. The awareness timestamp supplies its own local zone and all day arithmetic is performed in that zone.",
+    "confidence": "verified_as_absence",
+    "note": "Recorded as an absence rather than as a rule, because inventing a zone would be inventing a rule."
+  },
+  "awareness_definition": {
+    "citation": "21 CFR 803.3(b)",
+    "quote": "Become aware means that an employee of the entity required to report has acquired information that reasonably suggests a reportable adverse event has occurred.",
+    "manufacturer_split_citation": "21 CFR 803.3(b)(2)",
+    "manufacturer_split_quote": "If you are a manufacturer, you are considered to have become aware of an event when any of your employees becomes aware of a reportable event that is required to be reported within 30 calendar days or that is required to be reported within 5 work days because we had requested reports in accordance with 803.53(b). You are also considered to have become aware of an event when any of your employees with management or supervisory responsibilities over persons with regulatory, scientific, or technical responsibilities, or whose duties relate to the collection and reporting of adverse events, becomes aware, from any information, including any trend analysis, that a reportable MDR event or events necessitates remedial action to prevent an unreasonable risk of substantial harm to the public health.",
+    "the_asymmetry": "This is the single most important thing in this file. Not every awareness event starts every clock. An awareness_event whose employee_class is not in a clock's starts_clock_employee_classes CANNOT be that clock's governing awareness event, however early it is.",
+    "employee_classes": {
+      "any_employee": "Any employee of the manufacturer. 803.3(b)(2) first sentence.",
+      "mgmt_over_reg_sci_tech": "An employee with management or supervisory responsibilities over persons with regulatory, scientific, or technical responsibilities. 803.3(b)(2) second sentence.",
+      "ae_collection_duties": "An employee whose duties relate to the collection and reporting of adverse events. 803.3(b)(2) second sentence.",
+      "authorised_representative": "EU concept (MDCG 2023-3 Q15). Present in the shared awareness_event enum; NOT a US clock starter under 803.3(b)(2), which speaks only of employees.",
+      "outsourced_handler": "EU concept (MDCG 2023-3 Q15). Present in the shared awareness_event enum; NOT a US clock starter under 803.3(b)(2)."
+    },
+    "worked_example": "A sales rep reads a customer email on Friday at 18:40. That starts the 30-calendar-day clock (any employee) and the 803.53(b) 5-work-day clock (any employee). It does NOT start the 803.53(a) 5-work-day clock. That clock starts only when the information reaches someone in mgmt_over_reg_sci_tech or ae_collection_duties -- on Monday. Two clocks, two awareness events, one email."
+  },
+  "work_day_definition": {
+    "citation": "21 CFR 803.3(y)",
+    "quote": "Work day means Monday through Friday, except Federal holidays.",
+    "holiday_calendar_id": "us-federal",
+    "applies_to_clocks": ["5_work_day_803_53_a", "5_work_day_803_53_b"]
+  },
+  "counting_rules": {
+    "day_zero": "The day the manufacturer becomes aware, per 803.3(b)(2), in the local zone of the awareness timestamp.",
+    "period_start": "day_zero + 1 day at 00:00:01 local.",
+    "period_start_basis": "803.50(a) and 803.53 both say 'after the day that you ... become aware', so counting begins the day after day zero. The 00:00:01 / 23:59:59 boundary framing is carried over from MDCG 2023-3 Q14 for consistency across jurisdictions; Part 803 states no clock time of day. See rollforward_rule for what is NOT carried over.",
+    "period_end": "23:59:59 local on the due date."
+  },
+  "rollforward_rule": {
+    "calendar_day_clocks": {
+      "applies": false,
+      "statement": "21 CFR Part 803 provides NO rule moving a 30-calendar-day deadline that lands on a Saturday, Sunday or Federal holiday to the next working day, and the complaint-vigilance reference did not verify one. This encoding therefore does not roll calendar-day deadlines forward.",
+      "confidence": "verified_as_absence",
+      "why_stated_explicitly": "REGISTER-SHAPES-V0.md 5.4: we do not invent rules we have not loaded. The EU roll-forward is quoted guidance (MDCG 2023-3 Q14); importing it into the US clock would be a fabricated rule with a plausible shape, which is the exact failure mode 5.4 exists to prevent."
+    },
+    "work_day_clocks": {
+      "applies": "n/a",
+      "statement": "A 5-work-day deadline cannot land on a non-working day by construction, because only work days are counted."
+    }
+  },
+  "minimum_working_days_rule": {
+    "applies": false,
+    "statement": "The 'at least two working days' extension of Regulation (EEC, Euratom) No 1182/71 Art. 3(4) is EU law and has no US analogue. Not applied here.",
+    "confidence": "verified_as_absence"
+  },
+  "multiple_clocks_rule": {
+    "statement": "Where more than one US clock applies to the same obligation, the earliest due date governs. A 5-work-day obligation does not displace the 30-calendar-day obligation; it sits in front of it.",
+    "confidence": "derived",
+    "derivation": "Not a quoted US rule. It follows from each clock being an independent 'no later than' obligation under 803.50(a) and 803.53, so the binding deadline is the earliest of them. MDCG 2023-3 Q14 reaches the same conclusion explicitly for the EU ('it is the earliest date of reporting which should be considered'); the US encoding applies the same MIN because breaching the earlier deadline is a breach regardless of the later one."
+  },
+  "clocks": [
+    {
+      "clock_class": "30_calendar_day",
+      "label": "30 calendar days (21 CFR 803.50)",
+      "citation": "21 CFR 803.50(a)",
+      "quote": "report ... no later than 30 calendar days after the day that you receive or otherwise become aware of information, from any source, that reasonably suggests that a device that you market: (1) May have caused or contributed to a death or serious injury or (2) Has malfunctioned and this device or a similar device that you market would be likely to cause or contribute to a death or serious injury, if the malfunction were to recur.",
+      "count_unit": "calendar_days",
+      "n": 30,
+      "starts_clock_employee_classes": ["any_employee", "mgmt_over_reg_sci_tech", "ae_collection_duties"],
+      "starts_clock_basis": "803.3(b)(2) first sentence: 'any of your employees'.",
+      "rollforward": false,
+      "implemented_in_v0": true,
+      "confidence": "verified"
+    },
+    {
+      "clock_class": "5_work_day_803_53_a",
+      "label": "5 work days -- remedial action necessitated (21 CFR 803.53(a))",
+      "citation": "21 CFR 803.53(a)",
+      "quote": "no later than 5 work days after the day that you become aware that: (a) An MDR reportable event necessitates remedial action to prevent an unreasonable risk of substantial harm to the public health. You may become aware of the need for remedial action from any information, including any trend analysis",
+      "count_unit": "work_days",
+      "n": 5,
+      "starts_clock_employee_classes": ["mgmt_over_reg_sci_tech", "ae_collection_duties"],
+      "starts_clock_basis": "803.3(b)(2) second sentence. NOTE THE EXCLUSION: any_employee is deliberately absent. A sales rep's knowledge does not start this clock.",
+      "rollforward": "n/a",
+      "awareness_basis_note": "803.53(a) names trend analysis explicitly, which wires a trend-detection workflow directly into a statutory 5-work-day clock.",
+      "implemented_in_v0": true,
+      "confidence": "verified"
+    },
+    {
+      "clock_class": "5_work_day_803_53_b",
+      "label": "5 work days -- FDA written request (21 CFR 803.53(b))",
+      "citation": "21 CFR 803.53(b)",
+      "quote": "no later than 5 work days after the day that you become aware that: ... (b) We have made a written request for the submission of a 5-day report.",
+      "count_unit": "work_days",
+      "n": 5,
+      "starts_clock_employee_classes": ["any_employee", "mgmt_over_reg_sci_tech", "ae_collection_duties"],
+      "starts_clock_basis": "803.3(b)(2) first sentence names 803.53(b) explicitly alongside the 30-day clock: 'any of your employees'.",
+      "rollforward": "n/a",
+      "implemented_in_v0": true,
+      "confidence": "verified"
+    },
+    {
+      "clock_class": "supplemental_30_calendar_day",
+      "label": "30 calendar days for supplemental / follow-up information (21 CFR 803.56)",
+      "citation": "21 CFR 803.56",
+      "quote": "you must submit the supplemental information to us within 30 calendar days of the day that you receive this information.",
+      "count_unit": "calendar_days",
+      "n": 30,
+      "day_zero_override": "receipt of the new information, NOT the original awareness date. Each new fact starts its own clock.",
+      "starts_clock_employee_classes": ["any_employee", "mgmt_over_reg_sci_tech", "ae_collection_duties"],
+      "starts_clock_basis": "803.56 speaks of the manufacturer receiving information and is not carved out by 803.3(b)(2)'s seniority sentence.",
+      "rollforward": false,
+      "implemented_in_v0": true,
+      "confidence": "verified"
+    },
+    {
+      "clock_class": "vmsr_quarterly",
+      "label": "Voluntary Malfunction Summary Reporting -- fixed quarterly deadlines",
+      "citation": "FDA VMSR programme, as recorded in the complaint-vigilance reference 3.6.2",
+      "count_unit": "fixed_calendar_deadline",
+      "n": null,
+      "quarters": [
+        {"awareness_window": ["01-01", "03-31"], "due": "04-30"},
+        {"awareness_window": ["04-01", "06-30"], "due": "07-31"},
+        {"awareness_window": ["07-01", "09-30"], "due": "10-31"},
+        {"awareness_window": ["10-01", "12-31"], "due": "01-31"}
+      ],
+      "starts_clock_employee_classes": ["any_employee", "mgmt_over_reg_sci_tech", "ae_collection_duties"],
+      "starts_clock_basis": "803.3(b)(2) first sentence: VMSR covers malfunctions otherwise reportable under the 30-calendar-day clock, which any employee's knowledge starts.",
+      "rollforward": false,
+      "implemented_in_v0": false,
+      "not_implemented_reason": "This is not an offset from an awareness date; it is a fixed calendar deadline selected by the quarter the awareness falls in. It is recorded here so the clock_class enum in REGISTER-SHAPES-V0.md 4.7 is complete and so a V0 UI can say 'VMSR quarterly deadline, not computed by this engine' rather than showing nothing. Whether an obligation is eligible for VMSR at all is a separate reportability question this file does not encode.",
+      "confidence": "verified"
+    }
+  ],
+  "not_encoded": [
+    {
+      "item": "21 CFR Part 806 correction/removal reports",
+      "reason": "806.10(b) runs 10 working days from INITIATION OF THE ACTION, not from awareness. It is a structurally different clock on a different register (advisory notices / FSCA) and is out of V0 scope."
+    },
+    {
+      "item": "Whether a given event is reportable at all",
+      "reason": "This file turns an awareness event into a due date. It does not decide reportability. That is a human decision row (REGISTER-SHAPES-V0.md 4.8)."
+    }
+  ]
+}

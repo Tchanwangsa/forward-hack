@@ -1,0 +1,1292 @@
+{
+ "_provenance": {
+  "derived_from": "plan/mock/asteria/world/world.json",
+  "world_dataset_version": "0.1.0",
+  "world_seed": 20260901,
+  "world_generated_at": "2026-09-10T09:00:00+10:00",
+  "dataset_as_at": "2026-09-10",
+  "verified_against": "mock-company/ as rendered (read-only)",
+  "builder": "tools/eval/build_eval.py",
+  "repo_head_at_build": "72cb2aa13643e87de7fe46bc64c885dadc5fc02c",
+  "warning": "Answer key. Never place this file, or any part of it, inside mock-company/. A product run must not be able to read it.",
+  "what": "Governing awareness event and computed due date per (event x device x jurisdiction).",
+  "computed_with": "tools/clock (vigilance_clock), against reference-data/clock-rules and reference-data/holidays",
+  "recompute": "uv run --directory tools/clock python -c ... , or python3 tools/eval/build_eval.py",
+  "scoring": "See SCORING.md, measures C1-C4."
+ },
+ "counts": {
+  "obligations": 21,
+  "with_a_computed_due_date": 5,
+  "unavailable": 16
+ },
+ "timezone_basis": {
+  "IE": "Europe/Dublin - Art. 87 periods run in the Member State's local time",
+  "NL": "Europe/Amsterdam - same",
+  "US": "Australia/Melbourne - Part 803 counts calendar days and states no local-time rule; the manufacturer's own timezone is used, which is what the rendered register did. A product that computes in a US timezone and says so is not wrong, but it must say so.",
+  "AU": "Australia/Melbourne - immaterial, because no TGA rules are loaded"
+ },
+ "jurisdictions_loaded": {
+  "AU": {
+   "clock_rules_available": false,
+   "rule_version": null,
+   "unavailable_reason": "No TGA clock rules are loaded. REGISTER-SHAPES-V0.md 5.4 scopes V0 to the two regimes the complaint-vigilance reference actually verified (US 21 CFR 803 and EU MDR Art. 87); TGA reporting timeframes were not researched and are not encoded. The product must show no due date for AU and state this reason."
+  },
+  "DE": {
+   "clock_rules_available": false,
+   "rule_version": null,
+   "unavailable_reason": "The MDR Art. 87 rule set IS loaded and applies here, but no German public-holiday calendar is loaded. MDCG 2023-3 Q14's roll-forward is national -- the complaint-vigilance reference states plainly that the due date for the same event differs between Germany and Ireland -- so without a German calendar there is no honest due date, only a plausible one. Load a DE calendar and this flips to true with no rule-set work."
+  },
+  "IE": {
+   "clock_rules_available": true,
+   "rule_version": "eu-mdr-art87/mdcg-2023-3-rev2@1.0.0",
+   "unavailable_reason": null
+  },
+  "NL": {
+   "clock_rules_available": true,
+   "rule_version": "eu-mdr-art87/mdcg-2023-3-rev2@1.0.0",
+   "unavailable_reason": null
+  },
+  "US": {
+   "clock_rules_available": true,
+   "rule_version": "us-21cfr803@1.0.0",
+   "unavailable_reason": null
+  }
+ },
+ "obligations": [
+  {
+   "vig_no": "VIG-2025-0001",
+   "complaint_no": "CMP-2025-0001",
+   "feedback_no": "FB-2025-0002",
+   "jurisdiction": "AU",
+   "jurisdiction_name": "Australia",
+   "applicable_regulation": "tga",
+   "governing_awareness_event": "EVENT-000261",
+   "governing_awareness_at": "2025-03-20T09:52:00+11:00",
+   "governing_person": "Jarrah Nguyen",
+   "governing_employee_class": "any_employee",
+   "governing_basis": "ticket_created",
+   "clock_class_on_record": "not_reportable",
+   "reportable": "no",
+   "status": "20_not_reportable",
+   "rule_version_on_record": "MDCG 2023-3 Rev.1",
+   "clock_rules_available_on_record": true,
+   "clock_rules_actually_loaded": false,
+   "timezone_used": "Australia/Melbourne",
+   "timezone_sensitivity": null,
+   "computed": {
+    "available": false,
+    "reason_code": "no_clock_applies",
+    "unavailable_reason": "The determination is that no reporting clock applies to this obligation.",
+    "due_at": null,
+    "rule_version": null
+   },
+   "as_rendered_in_the_register": {
+    "present": true,
+    "due_cell": "No AU clock rules loaded",
+    "due_cell_parsed": null,
+    "computed_due_date": null,
+    "agrees": true,
+    "clock_class_cell": "No reporting clock applies",
+    "clock_rules_available_cell": "No",
+    "rule_version_applied_cell": "Not applicable",
+    "rule_set_loaded_cell": "None loaded"
+   },
+   "correct_answer": {
+    "due_date": null,
+    "must_state": "No TGA clock rules are loaded, so no due date can be computed. The product must show the absence and the reason, and must not produce a date.",
+    "scored_as": "refusal"
+   }
+  },
+  {
+   "vig_no": "VIG-2025-0002",
+   "complaint_no": "CMP-2025-0001",
+   "feedback_no": "FB-2025-0002",
+   "jurisdiction": "US",
+   "jurisdiction_name": "United States",
+   "applicable_regulation": "21_cfr_803",
+   "governing_awareness_event": "EVENT-000261",
+   "governing_awareness_at": "2025-03-20T09:52:00+11:00",
+   "governing_person": "Jarrah Nguyen",
+   "governing_employee_class": "any_employee",
+   "governing_basis": "ticket_created",
+   "clock_class_on_record": null,
+   "reportable": "no",
+   "status": "90_not_applicable",
+   "rule_version_on_record": null,
+   "clock_rules_available_on_record": false,
+   "clock_rules_actually_loaded": true,
+   "timezone_used": "Australia/Melbourne",
+   "timezone_sensitivity": null,
+   "computed": {
+    "available": false,
+    "reason_code": "no_clock_applies",
+    "unavailable_reason": "The determination is that no reporting clock applies to this obligation.",
+    "due_at": null,
+    "rule_version": null
+   },
+   "as_rendered_in_the_register": {
+    "present": true,
+    "due_cell": "Not applicable",
+    "due_cell_parsed": null,
+    "computed_due_date": null,
+    "agrees": true,
+    "clock_class_cell": "Not applicable",
+    "clock_rules_available_cell": "Yes",
+    "rule_version_applied_cell": "Not applicable",
+    "rule_set_loaded_cell": "us-21cfr803@1.0.0"
+   },
+   "correct_answer": {
+    "due_date": null,
+    "must_state": "The determination is that no reporting clock applies to this obligation.",
+    "scored_as": "refusal"
+   }
+  },
+  {
+   "vig_no": "VIG-2025-0003",
+   "complaint_no": "CMP-2025-0002",
+   "feedback_no": "FB-2025-0004",
+   "jurisdiction": "AU",
+   "jurisdiction_name": "Australia",
+   "applicable_regulation": "tga",
+   "governing_awareness_event": "EVENT-000350",
+   "governing_awareness_at": "2025-04-03T12:00:00+11:00",
+   "governing_person": "Mei-Ling Tan",
+   "governing_employee_class": "mgmt_over_reg_sci_tech",
+   "governing_basis": "ticket_created",
+   "clock_class_on_record": "other_serious_incident",
+   "reportable": "uncertain_reporting_anyway",
+   "status": "40_submitted",
+   "rule_version_on_record": "MDCG 2023-3 Rev.1",
+   "clock_rules_available_on_record": true,
+   "clock_rules_actually_loaded": false,
+   "timezone_used": "Australia/Melbourne",
+   "timezone_sensitivity": null,
+   "computed": {
+    "available": false,
+    "reason_code": "jurisdiction_unsupported",
+    "unavailable_reason": "TGA clock rules not loaded in V0 -- no due date can be computed.",
+    "period_start": null,
+    "due_at": null,
+    "due_date": null,
+    "rule_version": null,
+    "day_zero": null,
+    "nominal_due_date": null,
+    "rolled_forward_days": 0,
+    "working_days_used": null,
+    "holiday_calendar_id": null,
+    "trace": [
+     "jurisdiction AU: clock_rules_available = false"
+    ]
+   },
+   "as_rendered_in_the_register": {
+    "present": true,
+    "due_cell": "No AU clock rules loaded",
+    "due_cell_parsed": null,
+    "computed_due_date": null,
+    "agrees": true,
+    "clock_class_cell": "Serious incident, 15 days (MDR Art. 87(3))",
+    "clock_rules_available_cell": "No",
+    "rule_version_applied_cell": "Not applicable",
+    "rule_set_loaded_cell": "None loaded"
+   },
+   "correct_answer": {
+    "due_date": null,
+    "must_state": "No TGA clock rules are loaded, so no due date can be computed. The product must show the absence and the reason, and must not produce a date.",
+    "scored_as": "refusal"
+   }
+  },
+  {
+   "vig_no": "VIG-2025-0004",
+   "complaint_no": "CMP-2025-0002",
+   "feedback_no": "FB-2025-0004",
+   "jurisdiction": "US",
+   "jurisdiction_name": "United States",
+   "applicable_regulation": "21_cfr_803",
+   "governing_awareness_event": "EVENT-000350",
+   "governing_awareness_at": "2025-04-03T12:00:00+11:00",
+   "governing_person": "Mei-Ling Tan",
+   "governing_employee_class": "mgmt_over_reg_sci_tech",
+   "governing_basis": "ticket_created",
+   "clock_class_on_record": null,
+   "reportable": "no",
+   "status": "90_not_applicable",
+   "rule_version_on_record": null,
+   "clock_rules_available_on_record": false,
+   "clock_rules_actually_loaded": true,
+   "timezone_used": "Australia/Melbourne",
+   "timezone_sensitivity": null,
+   "computed": {
+    "available": false,
+    "reason_code": "no_clock_applies",
+    "unavailable_reason": "The determination is that no reporting clock applies to this obligation.",
+    "due_at": null,
+    "rule_version": null
+   },
+   "as_rendered_in_the_register": {
+    "present": true,
+    "due_cell": "Not applicable",
+    "due_cell_parsed": null,
+    "computed_due_date": null,
+    "agrees": true,
+    "clock_class_cell": "Not applicable",
+    "clock_rules_available_cell": "Yes",
+    "rule_version_applied_cell": "Not applicable",
+    "rule_set_loaded_cell": "us-21cfr803@1.0.0"
+   },
+   "correct_answer": {
+    "due_date": null,
+    "must_state": "The determination is that no reporting clock applies to this obligation.",
+    "scored_as": "refusal"
+   }
+  },
+  {
+   "vig_no": "VIG-2025-0005",
+   "complaint_no": "CMP-2025-0010",
+   "feedback_no": "FB-2025-0018",
+   "jurisdiction": "US",
+   "jurisdiction_name": "United States",
+   "applicable_regulation": "21_cfr_803",
+   "governing_awareness_event": "EVENT-001234",
+   "governing_awareness_at": "2025-09-05T12:25:00+10:00",
+   "governing_person": "Mei-Ling Tan",
+   "governing_employee_class": "mgmt_over_reg_sci_tech",
+   "governing_basis": "ticket_created",
+   "clock_class_on_record": null,
+   "reportable": "no",
+   "status": "90_not_applicable",
+   "rule_version_on_record": null,
+   "clock_rules_available_on_record": false,
+   "clock_rules_actually_loaded": true,
+   "timezone_used": "Australia/Melbourne",
+   "timezone_sensitivity": null,
+   "computed": {
+    "available": false,
+    "reason_code": "no_clock_applies",
+    "unavailable_reason": "The determination is that no reporting clock applies to this obligation.",
+    "due_at": null,
+    "rule_version": null
+   },
+   "as_rendered_in_the_register": {
+    "present": true,
+    "due_cell": "Not applicable",
+    "due_cell_parsed": null,
+    "computed_due_date": null,
+    "agrees": true,
+    "clock_class_cell": "Not applicable",
+    "clock_rules_available_cell": "Yes",
+    "rule_version_applied_cell": "Not applicable",
+    "rule_set_loaded_cell": "us-21cfr803@1.0.0"
+   },
+   "correct_answer": {
+    "due_date": null,
+    "must_state": "The determination is that no reporting clock applies to this obligation.",
+    "scored_as": "refusal"
+   }
+  },
+  {
+   "vig_no": "VIG-2025-0006",
+   "complaint_no": "CMP-2025-0010",
+   "feedback_no": "FB-2025-0018",
+   "jurisdiction": "AU",
+   "jurisdiction_name": "Australia",
+   "applicable_regulation": "tga",
+   "governing_awareness_event": "EVENT-001234",
+   "governing_awareness_at": "2025-09-05T12:25:00+10:00",
+   "governing_person": "Mei-Ling Tan",
+   "governing_employee_class": "mgmt_over_reg_sci_tech",
+   "governing_basis": "ticket_created",
+   "clock_class_on_record": "other_serious_incident",
+   "reportable": "uncertain_reporting_anyway",
+   "status": "40_submitted",
+   "rule_version_on_record": "MDCG 2023-3 Rev.1",
+   "clock_rules_available_on_record": true,
+   "clock_rules_actually_loaded": false,
+   "timezone_used": "Australia/Melbourne",
+   "timezone_sensitivity": null,
+   "computed": {
+    "available": false,
+    "reason_code": "jurisdiction_unsupported",
+    "unavailable_reason": "TGA clock rules not loaded in V0 -- no due date can be computed.",
+    "period_start": null,
+    "due_at": null,
+    "due_date": null,
+    "rule_version": null,
+    "day_zero": null,
+    "nominal_due_date": null,
+    "rolled_forward_days": 0,
+    "working_days_used": null,
+    "holiday_calendar_id": null,
+    "trace": [
+     "jurisdiction AU: clock_rules_available = false"
+    ]
+   },
+   "as_rendered_in_the_register": {
+    "present": true,
+    "due_cell": "No AU clock rules loaded",
+    "due_cell_parsed": null,
+    "computed_due_date": null,
+    "agrees": true,
+    "clock_class_cell": "Serious incident, 15 days (MDR Art. 87(3))",
+    "clock_rules_available_cell": "No",
+    "rule_version_applied_cell": "Not applicable",
+    "rule_set_loaded_cell": "None loaded"
+   },
+   "correct_answer": {
+    "due_date": null,
+    "must_state": "No TGA clock rules are loaded, so no due date can be computed. The product must show the absence and the reason, and must not produce a date.",
+    "scored_as": "refusal"
+   }
+  },
+  {
+   "vig_no": "VIG-2025-0007",
+   "complaint_no": "CMP-2025-0018",
+   "feedback_no": "FB-2025-0030",
+   "jurisdiction": "US",
+   "jurisdiction_name": "United States",
+   "applicable_regulation": "21_cfr_803",
+   "governing_awareness_event": "EVENT-001827",
+   "governing_awareness_at": "2025-11-21T11:19:00+11:00",
+   "governing_person": "Tom Beckett",
+   "governing_employee_class": "any_employee",
+   "governing_basis": "ticket_created",
+   "clock_class_on_record": null,
+   "reportable": "no",
+   "status": "90_not_applicable",
+   "rule_version_on_record": null,
+   "clock_rules_available_on_record": false,
+   "clock_rules_actually_loaded": true,
+   "timezone_used": "Australia/Melbourne",
+   "timezone_sensitivity": null,
+   "computed": {
+    "available": false,
+    "reason_code": "no_clock_applies",
+    "unavailable_reason": "The determination is that no reporting clock applies to this obligation.",
+    "due_at": null,
+    "rule_version": null
+   },
+   "as_rendered_in_the_register": {
+    "present": true,
+    "due_cell": "Not applicable",
+    "due_cell_parsed": null,
+    "computed_due_date": null,
+    "agrees": true,
+    "clock_class_cell": "Not applicable",
+    "clock_rules_available_cell": "Yes",
+    "rule_version_applied_cell": "Not applicable",
+    "rule_set_loaded_cell": "us-21cfr803@1.0.0"
+   },
+   "correct_answer": {
+    "due_date": null,
+    "must_state": "The determination is that no reporting clock applies to this obligation.",
+    "scored_as": "refusal"
+   }
+  },
+  {
+   "vig_no": "VIG-2025-0008",
+   "complaint_no": "CMP-2025-0018",
+   "feedback_no": "FB-2025-0030",
+   "jurisdiction": "AU",
+   "jurisdiction_name": "Australia",
+   "applicable_regulation": "tga",
+   "governing_awareness_event": "EVENT-001827",
+   "governing_awareness_at": "2025-11-21T11:19:00+11:00",
+   "governing_person": "Tom Beckett",
+   "governing_employee_class": "any_employee",
+   "governing_basis": "ticket_created",
+   "clock_class_on_record": "not_reportable",
+   "reportable": "no",
+   "status": "20_not_reportable",
+   "rule_version_on_record": "MDCG 2023-3 Rev.1",
+   "clock_rules_available_on_record": true,
+   "clock_rules_actually_loaded": false,
+   "timezone_used": "Australia/Melbourne",
+   "timezone_sensitivity": null,
+   "computed": {
+    "available": false,
+    "reason_code": "no_clock_applies",
+    "unavailable_reason": "The determination is that no reporting clock applies to this obligation.",
+    "due_at": null,
+    "rule_version": null
+   },
+   "as_rendered_in_the_register": {
+    "present": true,
+    "due_cell": "No AU clock rules loaded",
+    "due_cell_parsed": null,
+    "computed_due_date": null,
+    "agrees": true,
+    "clock_class_cell": "No reporting clock applies",
+    "clock_rules_available_cell": "No",
+    "rule_version_applied_cell": "Not applicable",
+    "rule_set_loaded_cell": "None loaded"
+   },
+   "correct_answer": {
+    "due_date": null,
+    "must_state": "No TGA clock rules are loaded, so no due date can be computed. The product must show the absence and the reason, and must not produce a date.",
+    "scored_as": "refusal"
+   }
+  },
+  {
+   "vig_no": "VIG-2026-0001",
+   "complaint_no": "CMP-2026-0006",
+   "feedback_no": "FB-2026-0002",
+   "jurisdiction": "US",
+   "jurisdiction_name": "United States",
+   "applicable_regulation": "21_cfr_803",
+   "governing_awareness_event": "EVENT-002405",
+   "governing_awareness_at": "2026-01-12T09:03:00+11:00",
+   "governing_person": "Tom Beckett",
+   "governing_employee_class": "any_employee",
+   "governing_basis": "ticket_created",
+   "clock_class_on_record": null,
+   "reportable": "no",
+   "status": "90_not_applicable",
+   "rule_version_on_record": null,
+   "clock_rules_available_on_record": false,
+   "clock_rules_actually_loaded": true,
+   "timezone_used": "Australia/Melbourne",
+   "timezone_sensitivity": null,
+   "computed": {
+    "available": false,
+    "reason_code": "no_clock_applies",
+    "unavailable_reason": "The determination is that no reporting clock applies to this obligation.",
+    "due_at": null,
+    "rule_version": null
+   },
+   "as_rendered_in_the_register": {
+    "present": true,
+    "due_cell": "Not applicable",
+    "due_cell_parsed": null,
+    "computed_due_date": null,
+    "agrees": true,
+    "clock_class_cell": "Not applicable",
+    "clock_rules_available_cell": "Yes",
+    "rule_version_applied_cell": "Not applicable",
+    "rule_set_loaded_cell": "us-21cfr803@1.0.0"
+   },
+   "correct_answer": {
+    "due_date": null,
+    "must_state": "The determination is that no reporting clock applies to this obligation.",
+    "scored_as": "refusal"
+   }
+  },
+  {
+   "vig_no": "VIG-2026-0002",
+   "complaint_no": "CMP-2026-0006",
+   "feedback_no": "FB-2026-0002",
+   "jurisdiction": "AU",
+   "jurisdiction_name": "Australia",
+   "applicable_regulation": "tga",
+   "governing_awareness_event": "EVENT-002405",
+   "governing_awareness_at": "2026-01-12T09:03:00+11:00",
+   "governing_person": "Tom Beckett",
+   "governing_employee_class": "any_employee",
+   "governing_basis": "ticket_created",
+   "clock_class_on_record": "not_reportable",
+   "reportable": "no",
+   "status": "20_not_reportable",
+   "rule_version_on_record": "MDCG 2023-3 Rev.1",
+   "clock_rules_available_on_record": true,
+   "clock_rules_actually_loaded": false,
+   "timezone_used": "Australia/Melbourne",
+   "timezone_sensitivity": null,
+   "computed": {
+    "available": false,
+    "reason_code": "no_clock_applies",
+    "unavailable_reason": "The determination is that no reporting clock applies to this obligation.",
+    "due_at": null,
+    "rule_version": null
+   },
+   "as_rendered_in_the_register": {
+    "present": true,
+    "due_cell": "No AU clock rules loaded",
+    "due_cell_parsed": null,
+    "computed_due_date": null,
+    "agrees": true,
+    "clock_class_cell": "No reporting clock applies",
+    "clock_rules_available_cell": "No",
+    "rule_version_applied_cell": "Not applicable",
+    "rule_set_loaded_cell": "None loaded"
+   },
+   "correct_answer": {
+    "due_date": null,
+    "must_state": "No TGA clock rules are loaded, so no due date can be computed. The product must show the absence and the reason, and must not produce a date.",
+    "scored_as": "refusal"
+   }
+  },
+  {
+   "vig_no": "VIG-2026-0003",
+   "complaint_no": "CMP-2026-0016",
+   "feedback_no": "FB-2026-0009",
+   "jurisdiction": "US",
+   "jurisdiction_name": "United States",
+   "applicable_regulation": "21_cfr_803",
+   "governing_awareness_event": "EVENT-002650",
+   "governing_awareness_at": "2026-02-02T11:08:00+11:00",
+   "governing_person": "Jarrah Nguyen",
+   "governing_employee_class": "any_employee",
+   "governing_basis": "ticket_created",
+   "clock_class_on_record": null,
+   "reportable": "no",
+   "status": "90_not_applicable",
+   "rule_version_on_record": null,
+   "clock_rules_available_on_record": false,
+   "clock_rules_actually_loaded": true,
+   "timezone_used": "Australia/Melbourne",
+   "timezone_sensitivity": null,
+   "computed": {
+    "available": false,
+    "reason_code": "no_clock_applies",
+    "unavailable_reason": "The determination is that no reporting clock applies to this obligation.",
+    "due_at": null,
+    "rule_version": null
+   },
+   "as_rendered_in_the_register": {
+    "present": true,
+    "due_cell": "Not applicable",
+    "due_cell_parsed": null,
+    "computed_due_date": null,
+    "agrees": true,
+    "clock_class_cell": "Not applicable",
+    "clock_rules_available_cell": "Yes",
+    "rule_version_applied_cell": "Not applicable",
+    "rule_set_loaded_cell": "us-21cfr803@1.0.0"
+   },
+   "correct_answer": {
+    "due_date": null,
+    "must_state": "The determination is that no reporting clock applies to this obligation.",
+    "scored_as": "refusal"
+   }
+  },
+  {
+   "vig_no": "VIG-2026-0004",
+   "complaint_no": "CMP-2026-0016",
+   "feedback_no": "FB-2026-0009",
+   "jurisdiction": "AU",
+   "jurisdiction_name": "Australia",
+   "applicable_regulation": "tga",
+   "governing_awareness_event": "EVENT-002650",
+   "governing_awareness_at": "2026-02-02T11:08:00+11:00",
+   "governing_person": "Jarrah Nguyen",
+   "governing_employee_class": "any_employee",
+   "governing_basis": "ticket_created",
+   "clock_class_on_record": "other_serious_incident",
+   "reportable": "uncertain_reporting_anyway",
+   "status": "40_submitted",
+   "rule_version_on_record": "MDCG 2023-3 Rev.1",
+   "clock_rules_available_on_record": true,
+   "clock_rules_actually_loaded": false,
+   "timezone_used": "Australia/Melbourne",
+   "timezone_sensitivity": null,
+   "computed": {
+    "available": false,
+    "reason_code": "jurisdiction_unsupported",
+    "unavailable_reason": "TGA clock rules not loaded in V0 -- no due date can be computed.",
+    "period_start": null,
+    "due_at": null,
+    "due_date": null,
+    "rule_version": null,
+    "day_zero": null,
+    "nominal_due_date": null,
+    "rolled_forward_days": 0,
+    "working_days_used": null,
+    "holiday_calendar_id": null,
+    "trace": [
+     "jurisdiction AU: clock_rules_available = false"
+    ]
+   },
+   "as_rendered_in_the_register": {
+    "present": true,
+    "due_cell": "No AU clock rules loaded",
+    "due_cell_parsed": null,
+    "computed_due_date": null,
+    "agrees": true,
+    "clock_class_cell": "Serious incident, 15 days (MDR Art. 87(3))",
+    "clock_rules_available_cell": "No",
+    "rule_version_applied_cell": "Not applicable",
+    "rule_set_loaded_cell": "None loaded"
+   },
+   "correct_answer": {
+    "due_date": null,
+    "must_state": "No TGA clock rules are loaded, so no due date can be computed. The product must show the absence and the reason, and must not produce a date.",
+    "scored_as": "refusal"
+   }
+  },
+  {
+   "vig_no": "VIG-2026-0005",
+   "complaint_no": "CMP-2026-0029",
+   "feedback_no": "FB-2026-0044",
+   "jurisdiction": "US",
+   "jurisdiction_name": "United States",
+   "applicable_regulation": "21_cfr_803",
+   "governing_awareness_event": "EVENT-003830",
+   "governing_awareness_at": "2026-05-21T09:05:00+10:00",
+   "governing_person": "Tom Beckett",
+   "governing_employee_class": "any_employee",
+   "governing_basis": "ticket_created",
+   "clock_class_on_record": "30_calendar_day",
+   "reportable": "yes",
+   "status": "40_submitted",
+   "rule_version_on_record": "21 CFR 803 (2024 edition)",
+   "clock_rules_available_on_record": true,
+   "clock_rules_actually_loaded": true,
+   "timezone_used": "Australia/Melbourne",
+   "timezone_sensitivity": {
+    "Australia/Melbourne": {
+     "day_zero": "2026-05-21",
+     "due_date": "2026-06-20",
+     "reason_code": "ok"
+    },
+    "America/Chicago": {
+     "day_zero": "2026-05-20",
+     "due_date": "2026-06-19",
+     "reason_code": "ok"
+    },
+    "moves_with_timezone": true,
+    "note": "Part 803 counts calendar days from the day of awareness and states no local-time rule. Day zero therefore depends on the timezone the clock is read in, and for an awareness event at 18:40 +01:00 the two readings differ by a day. Either is defensible; asserting one without naming the basis is not. The rendered register used Australia/Melbourne."
+   },
+   "computed": {
+    "available": true,
+    "reason_code": "ok",
+    "unavailable_reason": null,
+    "period_start": "2026-05-22T00:00:01+10:00",
+    "due_at": "2026-06-20T23:59:59+10:00",
+    "due_date": "2026-06-20",
+    "rule_version": "us-21cfr803@1.0.0",
+    "day_zero": "2026-05-21",
+    "nominal_due_date": "2026-06-20",
+    "rolled_forward_days": 0,
+    "working_days_used": 19,
+    "holiday_calendar_id": "us-federal",
+    "trace": [
+     "rule_version = us-21cfr803@1.0.0",
+     "awareness 2026-05-21T09:05:00+10:00 -> local 2026-05-21T09:05:00+10:00 in Australia/Melbourne; day 0 = 2026-05-21",
+     "period start = 2026-05-22T00:00:01+10:00 (day 0 + 1, 00:00:01 local)",
+     "nominal due = day 0 + 30 = 2026-06-20",
+     "us-21cfr803 states no roll-forward for calendar-day clocks; due date left as the nominal day",
+     "due_at = 2026-06-20T23:59:59+10:00 (23:59:59 local); 19 working day(s) in the period"
+    ]
+   },
+   "as_rendered_in_the_register": {
+    "present": true,
+    "due_cell": "20 Jun 2026",
+    "due_cell_parsed": "2026-06-20",
+    "computed_due_date": "2026-06-20",
+    "agrees": true,
+    "clock_class_cell": "30 calendar days (21 CFR 803.50)",
+    "clock_rules_available_cell": "Yes",
+    "rule_version_applied_cell": "21 CFR 803 (2024 edition)",
+    "rule_set_loaded_cell": "us-21cfr803@1.0.0"
+   },
+   "correct_answer": {
+    "due_date": "2026-06-20",
+    "must_state": "due 2026-06-20 under us-21cfr803@1.0.0, computed from the governing awareness event",
+    "scored_as": "date"
+   }
+  },
+  {
+   "vig_no": "VIG-2026-0006",
+   "complaint_no": "CMP-2026-0030",
+   "feedback_no": "FB-2026-0034",
+   "jurisdiction": "US",
+   "jurisdiction_name": "United States",
+   "applicable_regulation": "21_cfr_803",
+   "governing_awareness_event": "EVENT-003535",
+   "governing_awareness_at": "2026-04-27T10:57:00+10:00",
+   "governing_person": "Mei-Ling Tan",
+   "governing_employee_class": "mgmt_over_reg_sci_tech",
+   "governing_basis": "ticket_created",
+   "clock_class_on_record": "5_work_day",
+   "reportable": "yes",
+   "status": "40_submitted",
+   "rule_version_on_record": "21 CFR 803 (2024 edition)",
+   "clock_rules_available_on_record": true,
+   "clock_rules_actually_loaded": true,
+   "timezone_used": "Australia/Melbourne",
+   "timezone_sensitivity": {
+    "Australia/Melbourne": {
+     "day_zero": null,
+     "due_date": null,
+     "reason_code": "clock_class_unknown_for_jurisdiction"
+    },
+    "America/Chicago": {
+     "day_zero": null,
+     "due_date": null,
+     "reason_code": "clock_class_unknown_for_jurisdiction"
+    },
+    "moves_with_timezone": false,
+    "note": "Part 803 counts calendar days from the day of awareness and states no local-time rule. Day zero therefore depends on the timezone the clock is read in, and for an awareness event at 18:40 +01:00 the two readings differ by a day. Either is defensible; asserting one without naming the basis is not. The rendered register used Australia/Melbourne."
+   },
+   "computed": {
+    "available": false,
+    "reason_code": "clock_class_unknown_for_jurisdiction",
+    "unavailable_reason": "clock class '5_work_day' is not defined for US under us-21cfr803@1.0.0",
+    "period_start": null,
+    "due_at": null,
+    "due_date": null,
+    "rule_version": "us-21cfr803@1.0.0",
+    "day_zero": null,
+    "nominal_due_date": null,
+    "rolled_forward_days": 0,
+    "working_days_used": null,
+    "holiday_calendar_id": null,
+    "trace": [
+     "rule_version = us-21cfr803@1.0.0"
+    ]
+   },
+   "as_rendered_in_the_register": {
+    "present": true,
+    "due_cell": "clock class '5_work_day' is not defined for US under us-21cfr803@1.0.0",
+    "due_cell_parsed": null,
+    "computed_due_date": null,
+    "agrees": true,
+    "clock_class_cell": "5 working days (21 CFR 803.53)",
+    "clock_rules_available_cell": "Yes",
+    "rule_version_applied_cell": "21 CFR 803 (2024 edition)",
+    "rule_set_loaded_cell": "us-21cfr803@1.0.0"
+   },
+   "correct_answer": {
+    "due_date": null,
+    "must_state": "clock class '5_work_day' is not defined for US under us-21cfr803@1.0.0",
+    "scored_as": "refusal"
+   }
+  },
+  {
+   "vig_no": "VIG-2026-0007",
+   "complaint_no": "CMP-2026-0032",
+   "feedback_no": "FB-2026-0048",
+   "jurisdiction": "AU",
+   "jurisdiction_name": "Australia",
+   "applicable_regulation": "tga",
+   "governing_awareness_event": "EVENT-003940",
+   "governing_awareness_at": "2026-06-01T10:26:00+10:00",
+   "governing_person": "Tom Beckett",
+   "governing_employee_class": "any_employee",
+   "governing_basis": "ticket_created",
+   "clock_class_on_record": "other_serious_incident",
+   "reportable": "uncertain_reporting_anyway",
+   "status": "40_submitted",
+   "rule_version_on_record": "MDCG 2023-3 Rev.1",
+   "clock_rules_available_on_record": true,
+   "clock_rules_actually_loaded": false,
+   "timezone_used": "Australia/Melbourne",
+   "timezone_sensitivity": null,
+   "computed": {
+    "available": false,
+    "reason_code": "jurisdiction_unsupported",
+    "unavailable_reason": "TGA clock rules not loaded in V0 -- no due date can be computed.",
+    "period_start": null,
+    "due_at": null,
+    "due_date": null,
+    "rule_version": null,
+    "day_zero": null,
+    "nominal_due_date": null,
+    "rolled_forward_days": 0,
+    "working_days_used": null,
+    "holiday_calendar_id": null,
+    "trace": [
+     "jurisdiction AU: clock_rules_available = false"
+    ]
+   },
+   "as_rendered_in_the_register": {
+    "present": true,
+    "due_cell": "No AU clock rules loaded",
+    "due_cell_parsed": null,
+    "computed_due_date": null,
+    "agrees": true,
+    "clock_class_cell": "Serious incident, 15 days (MDR Art. 87(3))",
+    "clock_rules_available_cell": "No",
+    "rule_version_applied_cell": "Not applicable",
+    "rule_set_loaded_cell": "None loaded"
+   },
+   "correct_answer": {
+    "due_date": null,
+    "must_state": "No TGA clock rules are loaded, so no due date can be computed. The product must show the absence and the reason, and must not produce a date.",
+    "scored_as": "refusal"
+   }
+  },
+  {
+   "vig_no": "VIG-2026-0008",
+   "complaint_no": "CMP-2026-0032",
+   "feedback_no": "FB-2026-0048",
+   "jurisdiction": "US",
+   "jurisdiction_name": "United States",
+   "applicable_regulation": "21_cfr_803",
+   "governing_awareness_event": "EVENT-003940",
+   "governing_awareness_at": "2026-06-01T10:26:00+10:00",
+   "governing_person": "Tom Beckett",
+   "governing_employee_class": "any_employee",
+   "governing_basis": "ticket_created",
+   "clock_class_on_record": "30_calendar_day",
+   "reportable": "yes",
+   "status": "40_submitted",
+   "rule_version_on_record": "21 CFR 803 (2024 edition)",
+   "clock_rules_available_on_record": true,
+   "clock_rules_actually_loaded": true,
+   "timezone_used": "Australia/Melbourne",
+   "timezone_sensitivity": {
+    "Australia/Melbourne": {
+     "day_zero": "2026-06-01",
+     "due_date": "2026-07-01",
+     "reason_code": "ok"
+    },
+    "America/Chicago": {
+     "day_zero": "2026-05-31",
+     "due_date": "2026-06-30",
+     "reason_code": "ok"
+    },
+    "moves_with_timezone": true,
+    "note": "Part 803 counts calendar days from the day of awareness and states no local-time rule. Day zero therefore depends on the timezone the clock is read in, and for an awareness event at 18:40 +01:00 the two readings differ by a day. Either is defensible; asserting one without naming the basis is not. The rendered register used Australia/Melbourne."
+   },
+   "computed": {
+    "available": true,
+    "reason_code": "ok",
+    "unavailable_reason": null,
+    "period_start": "2026-06-02T00:00:01+10:00",
+    "due_at": "2026-07-01T23:59:59+10:00",
+    "due_date": "2026-07-01",
+    "rule_version": "us-21cfr803@1.0.0",
+    "day_zero": "2026-06-01",
+    "nominal_due_date": "2026-07-01",
+    "rolled_forward_days": 0,
+    "working_days_used": 21,
+    "holiday_calendar_id": "us-federal",
+    "trace": [
+     "rule_version = us-21cfr803@1.0.0",
+     "awareness 2026-06-01T10:26:00+10:00 -> local 2026-06-01T10:26:00+10:00 in Australia/Melbourne; day 0 = 2026-06-01",
+     "period start = 2026-06-02T00:00:01+10:00 (day 0 + 1, 00:00:01 local)",
+     "nominal due = day 0 + 30 = 2026-07-01",
+     "us-21cfr803 states no roll-forward for calendar-day clocks; due date left as the nominal day",
+     "due_at = 2026-07-01T23:59:59+10:00 (23:59:59 local); 21 working day(s) in the period"
+    ]
+   },
+   "as_rendered_in_the_register": {
+    "present": true,
+    "due_cell": "01 Jul 2026",
+    "due_cell_parsed": "2026-07-01",
+    "computed_due_date": "2026-07-01",
+    "agrees": true,
+    "clock_class_cell": "30 calendar days (21 CFR 803.50)",
+    "clock_rules_available_cell": "Yes",
+    "rule_version_applied_cell": "21 CFR 803 (2024 edition)",
+    "rule_set_loaded_cell": "us-21cfr803@1.0.0"
+   },
+   "correct_answer": {
+    "due_date": "2026-07-01",
+    "must_state": "due 2026-07-01 under us-21cfr803@1.0.0, computed from the governing awareness event",
+    "scored_as": "date"
+   }
+  },
+  {
+   "vig_no": "VIG-2026-0009",
+   "complaint_no": "CMP-2026-0034",
+   "feedback_no": "FB-2026-0052",
+   "jurisdiction": "IE",
+   "jurisdiction_name": "Ireland",
+   "applicable_regulation": "mdr_art_87",
+   "governing_awareness_event": "EVENT-004106",
+   "governing_awareness_at": "2026-06-12T18:38:00+01:00",
+   "governing_person": "Lotte Janssen",
+   "governing_employee_class": "authorised_representative",
+   "governing_basis": "mailbox_delivery",
+   "clock_class_on_record": "other_serious_incident",
+   "reportable": "uncertain_reporting_anyway",
+   "status": "40_submitted",
+   "rule_version_on_record": "MDCG 2023-3 Rev.1",
+   "clock_rules_available_on_record": true,
+   "clock_rules_actually_loaded": true,
+   "timezone_used": "Europe/Dublin",
+   "timezone_sensitivity": null,
+   "computed": {
+    "available": true,
+    "reason_code": "ok",
+    "unavailable_reason": null,
+    "period_start": "2026-06-13T00:00:01+01:00",
+    "due_at": "2026-06-29T23:59:59+01:00",
+    "due_date": "2026-06-29",
+    "rule_version": "eu-mdr-art87/mdcg-2023-3-rev2@1.0.0",
+    "day_zero": "2026-06-12",
+    "nominal_due_date": "2026-06-27",
+    "rolled_forward_days": 2,
+    "working_days_used": 11,
+    "holiday_calendar_id": "ie",
+    "trace": [
+     "rule_version = eu-mdr-art87/mdcg-2023-3-rev2@1.0.0",
+     "awareness 2026-06-12T18:38:00+01:00 -> local 2026-06-12T18:38:00+01:00 in Europe/Dublin; day 0 = 2026-06-12",
+     "period start = 2026-06-13T00:00:01+01:00 (day 0 + 1, 00:00:01 local)",
+     "nominal due = day 0 + 15 = 2026-06-27",
+     "nominal due is not a working day in IE; rolled forward 2 day(s) to 2026-06-29",
+     "due_at = 2026-06-29T23:59:59+01:00 (23:59:59 local); 11 working day(s) in the period"
+    ]
+   },
+   "as_rendered_in_the_register": {
+    "present": true,
+    "due_cell": "29 Jun 2026",
+    "due_cell_parsed": "2026-06-29",
+    "computed_due_date": "2026-06-29",
+    "agrees": true,
+    "clock_class_cell": "Serious incident, 15 days (MDR Art. 87(3))",
+    "clock_rules_available_cell": "Yes",
+    "rule_version_applied_cell": "MDCG 2023-3 Rev.1",
+    "rule_set_loaded_cell": "eu-mdr-art87/mdcg-2023-3-rev2@1.0.0"
+   },
+   "correct_answer": {
+    "due_date": "2026-06-29",
+    "must_state": "due 2026-06-29 under eu-mdr-art87/mdcg-2023-3-rev2@1.0.0, computed from the governing awareness event",
+    "scored_as": "date"
+   }
+  },
+  {
+   "vig_no": "VIG-2026-0010",
+   "complaint_no": "CMP-2026-0034",
+   "feedback_no": "FB-2026-0052",
+   "jurisdiction": "NL",
+   "jurisdiction_name": "Netherlands",
+   "applicable_regulation": "mdr_art_87",
+   "governing_awareness_event": "EVENT-004106",
+   "governing_awareness_at": "2026-06-12T18:38:00+01:00",
+   "governing_person": "Lotte Janssen",
+   "governing_employee_class": "authorised_representative",
+   "governing_basis": "mailbox_delivery",
+   "clock_class_on_record": null,
+   "reportable": "no",
+   "status": "90_not_applicable",
+   "rule_version_on_record": null,
+   "clock_rules_available_on_record": false,
+   "clock_rules_actually_loaded": true,
+   "timezone_used": "Europe/Amsterdam",
+   "timezone_sensitivity": null,
+   "computed": {
+    "available": false,
+    "reason_code": "no_clock_applies",
+    "unavailable_reason": "The determination is that no reporting clock applies to this obligation.",
+    "due_at": null,
+    "rule_version": null
+   },
+   "as_rendered_in_the_register": {
+    "present": true,
+    "due_cell": "Not applicable",
+    "due_cell_parsed": null,
+    "computed_due_date": null,
+    "agrees": true,
+    "clock_class_cell": "Not applicable",
+    "clock_rules_available_cell": "Yes",
+    "rule_version_applied_cell": "Not applicable",
+    "rule_set_loaded_cell": "eu-mdr-art87/mdcg-2023-3-rev2@1.0.0"
+   },
+   "correct_answer": {
+    "due_date": null,
+    "must_state": "The determination is that no reporting clock applies to this obligation.",
+    "scored_as": "refusal"
+   }
+  },
+  {
+   "vig_no": "VIG-2026-0011",
+   "complaint_no": "CMP-2026-0034",
+   "feedback_no": "FB-2026-0052",
+   "jurisdiction": "US",
+   "jurisdiction_name": "United States",
+   "applicable_regulation": "21_cfr_803",
+   "governing_awareness_event": "EVENT-004110",
+   "governing_awareness_at": "2026-06-13T03:40:00+10:00",
+   "governing_person": "Hamish Doyle",
+   "governing_employee_class": "any_employee",
+   "governing_basis": "mailbox_delivery",
+   "clock_class_on_record": "30_calendar_day",
+   "reportable": "no",
+   "status": "20_not_reportable",
+   "rule_version_on_record": "21 CFR 803 (2024 edition)",
+   "clock_rules_available_on_record": true,
+   "clock_rules_actually_loaded": true,
+   "timezone_used": "Australia/Melbourne",
+   "timezone_sensitivity": {
+    "Australia/Melbourne": {
+     "day_zero": "2026-06-13",
+     "due_date": "2026-07-13",
+     "reason_code": "ok"
+    },
+    "America/Chicago": {
+     "day_zero": "2026-06-12",
+     "due_date": "2026-07-12",
+     "reason_code": "ok"
+    },
+    "moves_with_timezone": true,
+    "note": "Part 803 counts calendar days from the day of awareness and states no local-time rule. Day zero therefore depends on the timezone the clock is read in, and for an awareness event at 18:40 +01:00 the two readings differ by a day. Either is defensible; asserting one without naming the basis is not. The rendered register used Australia/Melbourne."
+   },
+   "computed": {
+    "available": true,
+    "reason_code": "ok",
+    "unavailable_reason": null,
+    "period_start": "2026-06-14T00:00:01+10:00",
+    "due_at": "2026-07-13T23:59:59+10:00",
+    "due_date": "2026-07-13",
+    "rule_version": "us-21cfr803@1.0.0",
+    "day_zero": "2026-06-13",
+    "nominal_due_date": "2026-07-13",
+    "rolled_forward_days": 0,
+    "working_days_used": 19,
+    "holiday_calendar_id": "us-federal",
+    "trace": [
+     "rule_version = us-21cfr803@1.0.0",
+     "awareness 2026-06-13T03:40:00+10:00 -> local 2026-06-13T03:40:00+10:00 in Australia/Melbourne; day 0 = 2026-06-13",
+     "period start = 2026-06-14T00:00:01+10:00 (day 0 + 1, 00:00:01 local)",
+     "nominal due = day 0 + 30 = 2026-07-13",
+     "us-21cfr803 states no roll-forward for calendar-day clocks; due date left as the nominal day",
+     "due_at = 2026-07-13T23:59:59+10:00 (23:59:59 local); 19 working day(s) in the period"
+    ]
+   },
+   "as_rendered_in_the_register": {
+    "present": true,
+    "due_cell": "13 Jul 2026",
+    "due_cell_parsed": "2026-07-13",
+    "computed_due_date": "2026-07-13",
+    "agrees": true,
+    "clock_class_cell": "30 calendar days (21 CFR 803.50)",
+    "clock_rules_available_cell": "Yes",
+    "rule_version_applied_cell": "21 CFR 803 (2024 edition)",
+    "rule_set_loaded_cell": "us-21cfr803@1.0.0"
+   },
+   "correct_answer": {
+    "due_date": "2026-07-13",
+    "must_state": "due 2026-07-13 under us-21cfr803@1.0.0, computed from the governing awareness event",
+    "scored_as": "date"
+   }
+  },
+  {
+   "vig_no": "VIG-2026-0012",
+   "complaint_no": "CMP-2026-0040",
+   "feedback_no": "FB-2026-0067",
+   "jurisdiction": "AU",
+   "jurisdiction_name": "Australia",
+   "applicable_regulation": "tga",
+   "governing_awareness_event": "EVENT-004680",
+   "governing_awareness_at": "2026-07-31T09:09:00+10:00",
+   "governing_person": "Tom Beckett",
+   "governing_employee_class": "any_employee",
+   "governing_basis": "ticket_created",
+   "clock_class_on_record": "not_reportable",
+   "reportable": "pending",
+   "status": "10_under_assessment",
+   "rule_version_on_record": "MDCG 2023-3 Rev.1",
+   "clock_rules_available_on_record": true,
+   "clock_rules_actually_loaded": false,
+   "timezone_used": "Australia/Melbourne",
+   "timezone_sensitivity": null,
+   "computed": {
+    "available": false,
+    "reason_code": "no_clock_applies",
+    "unavailable_reason": "The determination is that no reporting clock applies to this obligation.",
+    "due_at": null,
+    "rule_version": null
+   },
+   "as_rendered_in_the_register": {
+    "present": true,
+    "due_cell": "No AU clock rules loaded",
+    "due_cell_parsed": null,
+    "computed_due_date": null,
+    "agrees": true,
+    "clock_class_cell": "No reporting clock applies",
+    "clock_rules_available_cell": "No",
+    "rule_version_applied_cell": "Not applicable",
+    "rule_set_loaded_cell": "None loaded"
+   },
+   "correct_answer": {
+    "due_date": null,
+    "must_state": "No TGA clock rules are loaded, so no due date can be computed. The product must show the absence and the reason, and must not produce a date.",
+    "scored_as": "refusal"
+   }
+  },
+  {
+   "vig_no": "VIG-2026-0013",
+   "complaint_no": "CMP-2026-0040",
+   "feedback_no": "FB-2026-0067",
+   "jurisdiction": "US",
+   "jurisdiction_name": "United States",
+   "applicable_regulation": "21_cfr_803",
+   "governing_awareness_event": "EVENT-004680",
+   "governing_awareness_at": "2026-07-31T09:09:00+10:00",
+   "governing_person": "Tom Beckett",
+   "governing_employee_class": "any_employee",
+   "governing_basis": "ticket_created",
+   "clock_class_on_record": "30_calendar_day",
+   "reportable": "pending",
+   "status": "10_under_assessment",
+   "rule_version_on_record": "21 CFR 803 (2024 edition)",
+   "clock_rules_available_on_record": true,
+   "clock_rules_actually_loaded": true,
+   "timezone_used": "Australia/Melbourne",
+   "timezone_sensitivity": {
+    "Australia/Melbourne": {
+     "day_zero": "2026-07-31",
+     "due_date": "2026-08-30",
+     "reason_code": "ok"
+    },
+    "America/Chicago": {
+     "day_zero": "2026-07-30",
+     "due_date": "2026-08-29",
+     "reason_code": "ok"
+    },
+    "moves_with_timezone": true,
+    "note": "Part 803 counts calendar days from the day of awareness and states no local-time rule. Day zero therefore depends on the timezone the clock is read in, and for an awareness event at 18:40 +01:00 the two readings differ by a day. Either is defensible; asserting one without naming the basis is not. The rendered register used Australia/Melbourne."
+   },
+   "computed": {
+    "available": true,
+    "reason_code": "ok",
+    "unavailable_reason": null,
+    "period_start": "2026-08-01T00:00:01+10:00",
+    "due_at": "2026-08-30T23:59:59+10:00",
+    "due_date": "2026-08-30",
+    "rule_version": "us-21cfr803@1.0.0",
+    "day_zero": "2026-07-31",
+    "nominal_due_date": "2026-08-30",
+    "rolled_forward_days": 0,
+    "working_days_used": 20,
+    "holiday_calendar_id": "us-federal",
+    "trace": [
+     "rule_version = us-21cfr803@1.0.0",
+     "awareness 2026-07-31T09:09:00+10:00 -> local 2026-07-31T09:09:00+10:00 in Australia/Melbourne; day 0 = 2026-07-31",
+     "period start = 2026-08-01T00:00:01+10:00 (day 0 + 1, 00:00:01 local)",
+     "nominal due = day 0 + 30 = 2026-08-30",
+     "us-21cfr803 states no roll-forward for calendar-day clocks; due date left as the nominal day",
+     "due_at = 2026-08-30T23:59:59+10:00 (23:59:59 local); 20 working day(s) in the period"
+    ]
+   },
+   "as_rendered_in_the_register": {
+    "present": true,
+    "due_cell": "30 Aug 2026",
+    "due_cell_parsed": "2026-08-30",
+    "computed_due_date": "2026-08-30",
+    "agrees": true,
+    "clock_class_cell": "30 calendar days (21 CFR 803.50)",
+    "clock_rules_available_cell": "Yes",
+    "rule_version_applied_cell": "21 CFR 803 (2024 edition)",
+    "rule_set_loaded_cell": "us-21cfr803@1.0.0"
+   },
+   "correct_answer": {
+    "due_date": "2026-08-30",
+    "must_state": "due 2026-08-30 under us-21cfr803@1.0.0, computed from the governing awareness event",
+    "scored_as": "date"
+   }
+  }
+ ],
+ "awareness_asymmetry": {
+  "event": "the account manager reads the Friday 18:40 +01:00 email from the Dublin ward",
+  "awareness_timestamp": "2026-06-12T18:40:00+01:00",
+  "timezone_used": "Australia/Melbourne",
+  "clocks": [
+   {
+    "clock_class": "30_calendar_day",
+    "employee_class": "any_employee",
+    "starts_clock": true,
+    "available": true,
+    "due_date": "2026-07-13",
+    "reason_code": "ok",
+    "unavailable_reason": null
+   },
+   {
+    "clock_class": "30_calendar_day",
+    "employee_class": "ae_collection_duties",
+    "starts_clock": true,
+    "available": true,
+    "due_date": "2026-07-13",
+    "reason_code": "ok",
+    "unavailable_reason": null
+   },
+   {
+    "clock_class": "5_work_day_803_53_a",
+    "employee_class": "any_employee",
+    "starts_clock": false,
+    "available": false,
+    "due_date": null,
+    "reason_code": "employee_class_does_not_start_clock",
+    "unavailable_reason": "an awareness event whose employee_class is 'any_employee' does not start the 5_work_day_803_53_a clock; that clock is started only by ['ae_collection_duties', 'mgmt_over_reg_sci_tech']"
+   },
+   {
+    "clock_class": "5_work_day_803_53_a",
+    "employee_class": "ae_collection_duties",
+    "starts_clock": true,
+    "available": true,
+    "due_date": "2026-06-22",
+    "reason_code": "ok",
+    "unavailable_reason": null
+   },
+   {
+    "clock_class": "5_work_day_803_53_b",
+    "employee_class": "any_employee",
+    "starts_clock": true,
+    "available": true,
+    "due_date": "2026-06-22",
+    "reason_code": "ok",
+    "unavailable_reason": null
+   },
+   {
+    "clock_class": "5_work_day_803_53_b",
+    "employee_class": "ae_collection_duties",
+    "starts_clock": true,
+    "available": true,
+    "due_date": "2026-06-22",
+    "reason_code": "ok",
+    "unavailable_reason": null
+   }
+  ],
+  "why": "21 CFR 803.3(b)(2): any employee's knowledge starts the 30-calendar-day clock and the 803.53(b) FDA-requested clock; only management over regulatory, scientific or technical staff, or an employee with adverse-event collection duties, starts 803.53(a). One email, two answers. A register with a single awareness timestamp cannot express this."
+ },
+ "findings_the_product_should_surface": [
+  {
+   "id": "FIND-01",
+   "headline": "Australian TGA vigilance determinations are written in EU vocabulary: four cite MDR Article 87(7) in their rationale, four carry the EU clock class 'Serious incident, 15 days (MDR Art. 87(3))', and all seven cite MDCG 2023-3 Q15 to justify the governing awareness event.",
+   "why_it_matters": "REGISTER-SHAPES-V0.md 4.7 records that FDA cited a manufacturer under 21 CFR 803.17(a)(2) because its procedure combined language from other regulators' requirements with Part 803 'in a manner that will result in incomplete, inadequate, or even non-reporting'. This is that defect, in the other direction: EU reasoning applied to a TGA determination. The determinations may still be defensible on the merits, but the requirement relied on is the wrong one.",
+   "provenance": {
+    "designed": false,
+    "statement": "NOT PLANTED. This emerged from generation and was found while diagnosing the cross-jurisdiction divergence check. It is kept because it is realistic and because it is exactly the failure mode 803.17(a)(2) describes. No later reader should believe we designed it.",
+    "recorded_in": "plan/BUILD-STATUS.md, 'An accidental defect I decided to keep'"
+   },
+   "verified_in_sources": {
+    "au_vigilance_records_citing_MDR_Art_87_7": [
+     "mock-company/qms/vigilance/VIG-2025-0003 - Australia - CMP-2025-0002.docx",
+     "mock-company/qms/vigilance/VIG-2025-0006 - Australia - CMP-2025-0010.docx",
+     "mock-company/qms/vigilance/VIG-2026-0004 - Australia - CMP-2026-0016.docx",
+     "mock-company/qms/vigilance/VIG-2026-0007 - Australia - CMP-2026-0032.docx"
+    ],
+    "au_register_rows_with_an_eu_clock_class": [
+     "VIG-2025-0003",
+     "VIG-2025-0006",
+     "VIG-2026-0004",
+     "VIG-2026-0007"
+    ],
+    "au_records_examined": [
+     "mock-company/qms/vigilance/VIG-2025-0001 - Australia - CMP-2025-0001.pdf",
+     "mock-company/qms/vigilance/VIG-2025-0003 - Australia - CMP-2025-0002.docx",
+     "mock-company/qms/vigilance/VIG-2025-0006 - Australia - CMP-2025-0010.docx",
+     "mock-company/qms/vigilance/VIG-2025-0008 - Australia - CMP-2025-0018.pdf",
+     "mock-company/qms/vigilance/VIG-2026-0002 - Australia - CMP-2026-0006.pdf",
+     "mock-company/qms/vigilance/VIG-2026-0004 - Australia - CMP-2026-0016.docx",
+     "mock-company/qms/vigilance/VIG-2026-0007 - Australia - CMP-2026-0032.docx",
+     "mock-company/qms/vigilance/VIG-2026-0012 - Australia - CMP-2026-0040.pdf"
+    ]
+   },
+   "scoring": {
+    "full_marks": "surfaces the mismatch between the jurisdiction and the requirement cited, on the specific records, and frames it as a procedure/record-consistency finding",
+    "partial": "notices that AU rows carry EU clock classes without explaining why it matters",
+    "zero": "does not notice",
+    "negative": "silently normalises the AU rows to TGA language, which destroys the evidence that the determinations were made on the wrong basis"
+   }
+  },
+  {
+   "id": "FIND-04",
+   "headline": "VIG-2026-0006 records clock class '5 working days (21 CFR 803.53)' and the Due cell carries the computation's refusal: the class is not defined for the US under the loaded rule set, which distinguishes 803.53(a) from 803.53(b).",
+   "why_it_matters": "The refusal is correct behaviour reaching the data. The two 5-work-day clocks are not interchangeable: 803.53(a) turns on who became aware, 803.53(b) on an FDA request. This row's rationale says FDA requested the report, so 803.53(b) is the class and the record's own class value is under-specified.",
+   "provenance": {
+    "designed": false,
+    "statement": "NOT PLANTED. Observed while computing clock-truth.json."
+   },
+   "verified_in_sources": {
+    "register_row": "VIG-2026-0006"
+   },
+   "scoring": {
+    "full_marks": "names 803.53(b) from the rationale and explains why the recorded class cannot be computed",
+    "zero": "does not notice, or invents a date for it",
+    "negative": "produces a due date for a clock class the loaded rules do not define"
+   }
+  }
+ ]
+}

@@ -1,0 +1,255 @@
+{
+  "calendar_id": "us-federal",
+  "jurisdiction": "US",
+  "jurisdiction_name": "United States (federal holidays)",
+  "timezone": null,
+  "timezone_note": "The US spans several time zones and 21 CFR Part 803 fixes none of them. The awareness timestamp carries its own zone; this calendar supplies only the set of non-work days.",
+  "years_covered": [2025, 2026],
+  "weekend_days": ["saturday", "sunday"],
+  "schema_version": "1.0.0",
+  "purpose": "Supplies the 'except Federal holidays' term of 21 CFR 803.3(y): \"Work day means Monday through Friday, except Federal holidays.\" Used for the 5-work-day clocks of 803.53(a) and 803.53(b). It is NOT used for the 30-calendar-day clock of 803.50, which counts calendar days and has no roll-forward rule.",
+  "weekend_substitution_rule": {
+    "applies": true,
+    "statement": "Under 5 U.S.C. 6103(b), when a federal holiday falls on a Saturday the preceding Friday is treated as the holiday, and when it falls on a Sunday the following Monday is. The `date` field below is always the OBSERVED date — the day federal offices are closed — because that is the day 803.3(y) removes from the work-day count. `actual_date` records the statutory date where the two differ.",
+    "source": "opm-federal-holidays"
+  },
+  "sources": [
+    {
+      "key": "opm-federal-holidays",
+      "title": "Federal Holidays — Pay & Leave",
+      "url": "https://www.opm.gov/policy-data-oversight/pay-leave/federal-holidays/",
+      "publisher": "U.S. Office of Personnel Management (official)",
+      "retrieved": "2026-09-13",
+      "note": "Fetched successfully on 2026-09-13; every date in this file came from the OPM 2025 and 2026 tables verbatim."
+    }
+  ],
+  "caveats": [
+    "Inauguration Day (20 January, every fourth year) is a legal public holiday under 5 U.S.C. 6103(c) but only for federal employees in the Washington DC area. In 2025 it fell on the same day as Martin Luther King Jr. Day, so it changes nothing here. It is recorded on that entry rather than as a separate row.",
+    "21 CFR 803.3(y) says 'Federal holidays' without qualification. This file takes that to mean the days on OPM's federal-holiday table, observed."
+  ],
+  "holidays": [
+    {
+      "date": "2025-01-01",
+      "weekday": "Wednesday",
+      "name": "New Year's Day",
+      "jurisdiction": "US",
+      "type": "fixed",
+      "basis": "1 January",
+      "source": "opm-federal-holidays",
+      "confidence": "verified"
+    },
+    {
+      "date": "2025-01-20",
+      "weekday": "Monday",
+      "name": "Birthday of Martin Luther King, Jr.",
+      "jurisdiction": "US",
+      "type": "moveable",
+      "basis": "Third Monday in January.",
+      "source": "opm-federal-holidays",
+      "confidence": "verified",
+      "notes": "OPM's 2025 table labels this day 'Birthday of Martin Luther King, Jr. / Inauguration Day'. The two coincided in 2025."
+    },
+    {
+      "date": "2025-02-17",
+      "weekday": "Monday",
+      "name": "Washington's Birthday",
+      "jurisdiction": "US",
+      "type": "moveable",
+      "basis": "Third Monday in February.",
+      "source": "opm-federal-holidays",
+      "confidence": "verified"
+    },
+    {
+      "date": "2025-05-26",
+      "weekday": "Monday",
+      "name": "Memorial Day",
+      "jurisdiction": "US",
+      "type": "moveable",
+      "basis": "Last Monday in May.",
+      "source": "opm-federal-holidays",
+      "confidence": "verified"
+    },
+    {
+      "date": "2025-06-19",
+      "weekday": "Thursday",
+      "name": "Juneteenth National Independence Day",
+      "jurisdiction": "US",
+      "type": "fixed",
+      "basis": "19 June",
+      "source": "opm-federal-holidays",
+      "confidence": "verified"
+    },
+    {
+      "date": "2025-07-04",
+      "weekday": "Friday",
+      "name": "Independence Day",
+      "jurisdiction": "US",
+      "type": "fixed",
+      "basis": "4 July",
+      "source": "opm-federal-holidays",
+      "confidence": "verified"
+    },
+    {
+      "date": "2025-09-01",
+      "weekday": "Monday",
+      "name": "Labor Day",
+      "jurisdiction": "US",
+      "type": "moveable",
+      "basis": "First Monday in September.",
+      "source": "opm-federal-holidays",
+      "confidence": "verified"
+    },
+    {
+      "date": "2025-10-13",
+      "weekday": "Monday",
+      "name": "Columbus Day",
+      "jurisdiction": "US",
+      "type": "moveable",
+      "basis": "Second Monday in October.",
+      "source": "opm-federal-holidays",
+      "confidence": "verified"
+    },
+    {
+      "date": "2025-11-11",
+      "weekday": "Tuesday",
+      "name": "Veterans Day",
+      "jurisdiction": "US",
+      "type": "fixed",
+      "basis": "11 November",
+      "source": "opm-federal-holidays",
+      "confidence": "verified"
+    },
+    {
+      "date": "2025-11-27",
+      "weekday": "Thursday",
+      "name": "Thanksgiving Day",
+      "jurisdiction": "US",
+      "type": "moveable",
+      "basis": "Fourth Thursday in November.",
+      "source": "opm-federal-holidays",
+      "confidence": "verified"
+    },
+    {
+      "date": "2025-12-25",
+      "weekday": "Thursday",
+      "name": "Christmas Day",
+      "jurisdiction": "US",
+      "type": "fixed",
+      "basis": "25 December",
+      "source": "opm-federal-holidays",
+      "confidence": "verified"
+    },
+    {
+      "date": "2026-01-01",
+      "weekday": "Thursday",
+      "name": "New Year's Day",
+      "jurisdiction": "US",
+      "type": "fixed",
+      "basis": "1 January",
+      "source": "opm-federal-holidays",
+      "confidence": "verified"
+    },
+    {
+      "date": "2026-01-19",
+      "weekday": "Monday",
+      "name": "Birthday of Martin Luther King, Jr.",
+      "jurisdiction": "US",
+      "type": "moveable",
+      "basis": "Third Monday in January.",
+      "source": "opm-federal-holidays",
+      "confidence": "verified"
+    },
+    {
+      "date": "2026-02-16",
+      "weekday": "Monday",
+      "name": "Washington's Birthday",
+      "jurisdiction": "US",
+      "type": "moveable",
+      "basis": "Third Monday in February.",
+      "source": "opm-federal-holidays",
+      "confidence": "verified"
+    },
+    {
+      "date": "2026-05-25",
+      "weekday": "Monday",
+      "name": "Memorial Day",
+      "jurisdiction": "US",
+      "type": "moveable",
+      "basis": "Last Monday in May.",
+      "source": "opm-federal-holidays",
+      "confidence": "verified"
+    },
+    {
+      "date": "2026-06-19",
+      "weekday": "Friday",
+      "name": "Juneteenth National Independence Day",
+      "jurisdiction": "US",
+      "type": "fixed",
+      "basis": "19 June",
+      "source": "opm-federal-holidays",
+      "confidence": "verified"
+    },
+    {
+      "date": "2026-07-03",
+      "weekday": "Friday",
+      "name": "Independence Day (observed)",
+      "jurisdiction": "US",
+      "type": "fixed",
+      "basis": "4 July, observed on the preceding Friday because 2026-07-04 is a Saturday (5 U.S.C. 6103(b)).",
+      "actual_date": "2026-07-04",
+      "source": "opm-federal-holidays",
+      "confidence": "verified",
+      "notes": "OPM: 'In 2026, Independence Day falls on Saturday, July 4, so the preceding Friday will be treated as a holiday for pay and leave purposes.' This is the entry that makes a 5-work-day count over the 2026 July 4 weekend come out right."
+    },
+    {
+      "date": "2026-09-07",
+      "weekday": "Monday",
+      "name": "Labor Day",
+      "jurisdiction": "US",
+      "type": "moveable",
+      "basis": "First Monday in September.",
+      "source": "opm-federal-holidays",
+      "confidence": "verified"
+    },
+    {
+      "date": "2026-10-12",
+      "weekday": "Monday",
+      "name": "Columbus Day",
+      "jurisdiction": "US",
+      "type": "moveable",
+      "basis": "Second Monday in October.",
+      "source": "opm-federal-holidays",
+      "confidence": "verified"
+    },
+    {
+      "date": "2026-11-11",
+      "weekday": "Wednesday",
+      "name": "Veterans Day",
+      "jurisdiction": "US",
+      "type": "fixed",
+      "basis": "11 November",
+      "source": "opm-federal-holidays",
+      "confidence": "verified"
+    },
+    {
+      "date": "2026-11-26",
+      "weekday": "Thursday",
+      "name": "Thanksgiving Day",
+      "jurisdiction": "US",
+      "type": "moveable",
+      "basis": "Fourth Thursday in November.",
+      "source": "opm-federal-holidays",
+      "confidence": "verified"
+    },
+    {
+      "date": "2026-12-25",
+      "weekday": "Friday",
+      "name": "Christmas Day",
+      "jurisdiction": "US",
+      "type": "fixed",
+      "basis": "25 December",
+      "source": "opm-federal-holidays",
+      "confidence": "verified"
+    }
+  ]
+}

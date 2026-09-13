@@ -771,6 +771,8 @@ Each owner must generate against the shared world model and source contract with
 
 ## Immediate next deliverables
 
+The registers these must be able to reconstruct are defined in [`REGISTER-SHAPES-V0.md`](REGISTER-SHAPES-V0.md), whose §11 lists the imperfections the generator is required to produce.
+
 Before generating bulk records, create and review:
 
 1. `company-model.yaml` describing the fictional organisation and products.

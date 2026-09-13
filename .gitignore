@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+
+# macOS
+.DS_Store
+
+# Generator scratch — intermediate state, never part of the frozen dataset
+tools/**/_scratch/
+
+# Mock data
+mock-company/
+tools/

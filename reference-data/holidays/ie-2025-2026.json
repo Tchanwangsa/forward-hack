@@ -1,0 +1,246 @@
+{
+  "calendar_id": "ie",
+  "jurisdiction": "IE",
+  "jurisdiction_name": "Republic of Ireland",
+  "timezone": "Europe/Dublin",
+  "years_covered": [2025, 2026],
+  "weekend_days": ["saturday", "sunday"],
+  "schema_version": "1.0.0",
+  "weekend_substitution_rule": {
+    "applies": false,
+    "statement": "Irish law gives no automatic substitute weekday when a fixed-date public holiday falls on a Saturday or Sunday. The employee's entitlement is discharged by paid time off, an extra annual-leave day or extra pay, but the following Monday does not itself become a public holiday.",
+    "consequence_for_deadlines": "Saint Stephen's Day 2026-12-26 falls on a Saturday and Monday 2026-12-28 is NOT a public holiday in IE. A MDCG 2023-3 roll-forward therefore lands on 2026-12-28, not 2026-12-29.",
+    "source": "citizensinformation-public-holidays"
+  },
+  "sources": [
+    {
+      "key": "officeholidays-ie-2025",
+      "title": "Public Holidays in Ireland in 2025",
+      "url": "https://www.officeholidays.com/countries/ireland/2025",
+      "publisher": "Office Holidays (secondary)",
+      "retrieved": "2026-09-13"
+    },
+    {
+      "key": "websearch-ie-2026",
+      "title": "Consolidated search of Irish 2026 public-holiday listings (bankholidays.ie, publicholidays.ie, timeanddate.com)",
+      "url": "https://publicholidays.ie/",
+      "publisher": "Multiple secondary sources, cross-checked against the statutory rules in the Organisation of Working Time Act 1997 as amended",
+      "retrieved": "2026-09-13"
+    },
+    {
+      "key": "citizensinformation-public-holidays",
+      "title": "Public holidays (Republic of Ireland) — statutory list and weekend rule",
+      "url": "https://www.citizensinformation.ie/en/employment/employment-rights-and-conditions/leave-and-holidays/public-holidays/",
+      "publisher": "Citizens Information Board (official)",
+      "retrieved": "2026-09-13",
+      "note": "Page returned HTTP 403 to automated fetch on 2026-09-13; the statutory ten-holiday list and the no-automatic-substitute rule were taken from the secondary sources above, which agree with each other and with the statute's own moveable-feast rules."
+    }
+  ],
+  "caveats": [
+    "Good Friday is NOT a public holiday in the Republic of Ireland, despite being widely observed and despite being one in several neighbouring jurisdictions. It is deliberately absent from this file.",
+    "Easter Sunday is not a public holiday in IE either; only Easter Monday is.",
+    "No entry in this file was fetched from gov.ie directly — gov.ie and citizensinformation.ie both refused automated fetches. Every date below was confirmed against at least two independent listings AND is reproducible from the statutory moveable-feast rule stated in its `basis` field. The `tools/clock` test suite re-derives each moveable date from that rule."
+  ],
+  "holidays": [
+    {
+      "date": "2025-01-01",
+      "weekday": "Wednesday",
+      "name": "New Year's Day",
+      "jurisdiction": "IE",
+      "type": "fixed",
+      "basis": "1 January",
+      "source": "officeholidays-ie-2025",
+      "confidence": "verified"
+    },
+    {
+      "date": "2025-02-03",
+      "weekday": "Monday",
+      "name": "Saint Brigid's Day",
+      "jurisdiction": "IE",
+      "type": "moveable",
+      "basis": "1 February if 1 February is a Friday, otherwise the first Monday in February. 2025-02-01 is a Saturday, so the first Monday (2025-02-03) applies.",
+      "source": "officeholidays-ie-2025",
+      "confidence": "verified"
+    },
+    {
+      "date": "2025-03-17",
+      "weekday": "Monday",
+      "name": "Saint Patrick's Day",
+      "jurisdiction": "IE",
+      "type": "fixed",
+      "basis": "17 March",
+      "source": "officeholidays-ie-2025",
+      "confidence": "verified"
+    },
+    {
+      "date": "2025-04-21",
+      "weekday": "Monday",
+      "name": "Easter Monday",
+      "jurisdiction": "IE",
+      "type": "moveable",
+      "basis": "The Monday after Easter Sunday (Easter Sunday 2025 = 2025-04-20).",
+      "source": "officeholidays-ie-2025",
+      "confidence": "verified"
+    },
+    {
+      "date": "2025-05-05",
+      "weekday": "Monday",
+      "name": "May Day",
+      "jurisdiction": "IE",
+      "type": "moveable",
+      "basis": "First Monday in May.",
+      "source": "officeholidays-ie-2025",
+      "confidence": "verified"
+    },
+    {
+      "date": "2025-06-02",
+      "weekday": "Monday",
+      "name": "June Holiday",
+      "jurisdiction": "IE",
+      "type": "moveable",
+      "basis": "First Monday in June.",
+      "source": "officeholidays-ie-2025",
+      "confidence": "verified"
+    },
+    {
+      "date": "2025-08-04",
+      "weekday": "Monday",
+      "name": "August Holiday",
+      "jurisdiction": "IE",
+      "type": "moveable",
+      "basis": "First Monday in August.",
+      "source": "officeholidays-ie-2025",
+      "confidence": "verified"
+    },
+    {
+      "date": "2025-10-27",
+      "weekday": "Monday",
+      "name": "October Holiday",
+      "jurisdiction": "IE",
+      "type": "moveable",
+      "basis": "Last Monday in October.",
+      "source": "officeholidays-ie-2025",
+      "confidence": "verified"
+    },
+    {
+      "date": "2025-12-25",
+      "weekday": "Thursday",
+      "name": "Christmas Day",
+      "jurisdiction": "IE",
+      "type": "fixed",
+      "basis": "25 December",
+      "source": "officeholidays-ie-2025",
+      "confidence": "verified"
+    },
+    {
+      "date": "2025-12-26",
+      "weekday": "Friday",
+      "name": "Saint Stephen's Day",
+      "jurisdiction": "IE",
+      "type": "fixed",
+      "basis": "26 December",
+      "source": "officeholidays-ie-2025",
+      "confidence": "verified"
+    },
+    {
+      "date": "2026-01-01",
+      "weekday": "Thursday",
+      "name": "New Year's Day",
+      "jurisdiction": "IE",
+      "type": "fixed",
+      "basis": "1 January",
+      "source": "websearch-ie-2026",
+      "confidence": "verified"
+    },
+    {
+      "date": "2026-02-02",
+      "weekday": "Monday",
+      "name": "Saint Brigid's Day",
+      "jurisdiction": "IE",
+      "type": "moveable",
+      "basis": "1 February if 1 February is a Friday, otherwise the first Monday in February. 2026-02-01 is a Sunday, so the first Monday (2026-02-02) applies.",
+      "source": "websearch-ie-2026",
+      "confidence": "verified"
+    },
+    {
+      "date": "2026-03-17",
+      "weekday": "Tuesday",
+      "name": "Saint Patrick's Day",
+      "jurisdiction": "IE",
+      "type": "fixed",
+      "basis": "17 March",
+      "source": "websearch-ie-2026",
+      "confidence": "verified"
+    },
+    {
+      "date": "2026-04-06",
+      "weekday": "Monday",
+      "name": "Easter Monday",
+      "jurisdiction": "IE",
+      "type": "moveable",
+      "basis": "The Monday after Easter Sunday (Easter Sunday 2026 = 2026-04-05).",
+      "source": "websearch-ie-2026",
+      "confidence": "verified"
+    },
+    {
+      "date": "2026-05-04",
+      "weekday": "Monday",
+      "name": "May Day",
+      "jurisdiction": "IE",
+      "type": "moveable",
+      "basis": "First Monday in May.",
+      "source": "websearch-ie-2026",
+      "confidence": "verified"
+    },
+    {
+      "date": "2026-06-01",
+      "weekday": "Monday",
+      "name": "June Holiday",
+      "jurisdiction": "IE",
+      "type": "moveable",
+      "basis": "First Monday in June.",
+      "source": "websearch-ie-2026",
+      "confidence": "verified"
+    },
+    {
+      "date": "2026-08-03",
+      "weekday": "Monday",
+      "name": "August Holiday",
+      "jurisdiction": "IE",
+      "type": "moveable",
+      "basis": "First Monday in August.",
+      "source": "websearch-ie-2026",
+      "confidence": "verified"
+    },
+    {
+      "date": "2026-10-26",
+      "weekday": "Monday",
+      "name": "October Holiday",
+      "jurisdiction": "IE",
+      "type": "moveable",
+      "basis": "Last Monday in October.",
+      "source": "websearch-ie-2026",
+      "confidence": "verified"
+    },
+    {
+      "date": "2026-12-25",
+      "weekday": "Friday",
+      "name": "Christmas Day",
+      "jurisdiction": "IE",
+      "type": "fixed",
+      "basis": "25 December",
+      "source": "websearch-ie-2026",
+      "confidence": "verified"
+    },
+    {
+      "date": "2026-12-26",
+      "weekday": "Saturday",
+      "name": "Saint Stephen's Day",
+      "jurisdiction": "IE",
+      "type": "fixed",
+      "basis": "26 December. Falls on a Saturday in 2026; no substitute weekday is created — see weekend_substitution_rule.",
+      "source": "websearch-ie-2026",
+      "confidence": "verified"
+    }
+  ]
+}

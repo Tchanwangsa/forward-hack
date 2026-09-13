@@ -1,332 +1,134 @@
-# Quality Workflow Reference
+# PMS — the domain note
 
-**Purpose.** The canonical, citation-backed shape of the quality workflows this product sits on top of, and the specific points where an agent adds value. This is a reference, not a design doc — [`IDEA.md`](IDEA.md) is the product; this file is the domain it has to be correct about.
+**Purpose.** The minimum domain a reader needs to judge whether the product's shape is legitimate. This is not a compliance engine to be implemented — it is the justification for three design decisions: **indicator plus pre-committed threshold, over a computed denominator** (§2); **capture as a feedback-completeness obligation rather than a convenience** (§1); and **recommending a CAPA while leaving its execution alone** (§3.2).
 
-**Scope.** ISO 13485:2016 as the QMS backbone, with the US (FDA QMSR + 21 CFR 803) and EU (MDR 2017/745) obligations that attach to it. Every clause number below was verified against a source listed in [Citations](#citations).
-
-**Diagram.** The unified source-to-deliverable system map lives in [`DIAGRAMS.md`](DIAGRAMS.md).
-
-**Standing caveat.** ISO 13485 is a copyrighted standard. Clause numbers and titles are stated here; requirement text is paraphrased, not reproduced. Anyone implementing against this must read the actual standard. CFR and EU MDR text is public and is quoted directly.
+**Standing caveat.** ISO 13485 is copyrighted. Clause numbers and titles are stated; requirement text is paraphrased. EU MDR text is public and quoted.
 
 ---
 
-## 1. The correction
+## 1. What PMS is
 
-The earlier workflow diagram drew **complaint handling** and **nonconforming product control** as two lanes converging on a single "NCR opened" node, then ran one pipeline through containment, MRB disposition, and CAPA.
+Post-market surveillance is the planned, continuous activity of watching a device that is already in the field and deciding whether anything about its real-world behaviour has changed.
 
-That is wrong in one specific, load-bearing way: **it merged two separate clauses with separate registers, separate owners, and separate clocks into one record lifecycle.**
+It is **not** a reaction to a single complaint. It is an aggregation layer that sits above the operational registers, reads them on a schedule, and produces two things: periodic reports, and signals that something warrants a look. It also, if it is honest, has to reach *beneath* those registers — because the registers only contain what somebody found time to write down.
 
-| Old diagram | Reality |
-|---|---|
-| Complaint lane feeds into "NCR opened" | Complaint records live in the complaint register under §8.2.2. The complaint is the record. An NC record may be opened *alongside* it for affected product — it does not replace or absorb the complaint. |
-| Containment / MRB disposition sit downstream of a complaint | Containment and disposition are §8.3 activities about physical product under the organisation's control. A complaint about a device installed in a hospital in Hamburg has no product to quarantine. |
-| Reportability drawn as a stage inside the complaint pipeline | Reportability is its own clause (§8.2.3) and runs on a statutory clock in parallel with the investigation. It does not wait for the investigation to finish. |
-| CAPA drawn as the pipeline's terminus | CAPA (§8.5.2) is a shared downstream decision that four independent sources can feed. Most inputs never reach it. |
-| PMS drawn as a reaction to a complaint | PMS (§8.4 / MDR Art. 83–86) is a planned, continuous aggregation layer *above* the registers, not a step inside one. |
+The five clauses that survive the cut:
 
-**What the old diagram got right:** most of the individual nodes are real steps. The failure was topology and two labels, not invention.
-
-### 1.1 One refinement to the "complaints never open NCRs" claim
-
-That statement is close but slightly too strong, and an auditor would push on it. The precise position:
-
-ISO 13485:2016 §8.2.2 requires the complaint-handling procedure to cover **handling of complaint-related product**, and §8.3.3 exists specifically for *actions in response to nonconforming product detected after delivery*. So the link between the two lanes **is named in the standard** — it is a documented hand-off, not an ad-hoc practice.
-
-The distinction that matters:
-
-- A complaint **does not** automatically become an NC record.
-- When investigation confirms that product is nonconforming — the returned unit, remaining stock of the same lot, or units still in the field — that product is handled under §8.3, and an NC record is opened **for the product**.
-- Two linked records, two registers, two closure criteria. Not one merged record.
-
----
-
-## 2. The real topology
-
-Four independent doors into the quality system. Each has its own lifecycle and closes on its own terms. CAPA is a shared gate they can all feed.
-
-```text
-  COMPLAINTS          NONCONFORMING        INTERNAL AUDIT       ANALYSIS OF DATA
-   §8.2.2               PRODUCT §8.3          §8.2.4              §8.4  +  PMS
-  external            mostly internal       findings            (MDR Art. 83-86)
-  post-release        pre-delivery or                           trends, service,
-                      post-delivery                             supplier, returns
-       |                    |                    |                    |
-       |                    |                    |                    |
-       +----------+---------+---------+----------+----------+---------+
-                                      |
-                            +---------v---------+
-                            |   CAPA EVALUATION |   §8.5.2 / §8.5.3
-                            | "is this systemic?"|
-                            +---------+---------+
-                                      |
-                    +-----------------+-----------------+
-                    |                                   |
-            No CAPA needed                        CAPA opened
-        (rationale documented)              (the minority of inputs)
-
-
-  Running in parallel, on its own statutory clock, not gated by any of the above:
-
-            VIGILANCE / REGULATORY REPORTING
-            ISO 13485 §8.2.3 | 21 CFR 803 | MDR Art. 87-88
-```
-
-The vigilance clock is drawn outside the funnel deliberately. It starts on awareness, not on investigation completion, and it is the single most common place a real QMS gets a finding.
-
----
-
-## 3. Lane A — Complaint handling (§8.2.2)
-
-**Definition.** ISO 13485:2016 §3.4 defines a complaint as a written, electronic, or oral communication alleging deficiencies in the identity, quality, durability, reliability, usability, safety, or performance of a medical device that has been released from the organisation's control — or in a service affecting such a device's performance.
-
-Two consequences worth internalising:
-
-- **Released from control** is the boundary. Product still in the factory is §8.3 territory, not a complaint.
-- **Usability** is in the list. "The nurse couldn't read the display in theatre lighting" is a complaint. Use-error is not an automatic exclusion.
-
-### Steps
-
-| # | Step | Clause | Notes |
-|---|---|---|---|
-| A1 | **Feedback received and recorded** | §8.2.1 | *All* feedback is gathered from production and post-production, not only the subset that turns out to be complaints. §8.2.1 is the intake net; §8.2.2 is the filter. |
-| A2 | **Evaluate whether the feedback constitutes a complaint** | §8.2.2 | A formal, recorded decision with a named decider. "Shipment arrived late" — not a complaint. "Reading drifted mid-procedure" — complaint. This gate starts regulatory obligations, which is why it is deliberate rather than implicit. |
-| A3 | **Complaint record opened** | §8.2.2, QMSR §820.35(a) | Record content is mandated in the US: device name and identification numbers, date of receipt, complainant contact details, the nature and details of the complaint, corrective action taken, and reply to the complainant. |
-| A4 | **Reportability assessment** | §8.2.3, 21 CFR 803, MDR Art. 87 | Runs **in parallel**, on a statutory clock. See §5 below. Never a downstream step. |
-| A5 | **Decide whether investigation is required** | §8.2.2 | The standard permits deciding *not* to investigate — typically where a materially similar complaint was already investigated — but requires the justification to be documented. This is a real recorded decision, not a skip. |
-| A6 | **Investigate** | §8.2.2 | Recover the device where possible, examine and test, pull the device history record, check the lot, attempt reproduction. QMSR §820.35(a) requires the review, evaluation, and investigation to be recorded. |
-| A7 | **Handle complaint-related product** | §8.2.2 → §8.3.3 | The hand-off to Lane B. If product is confirmed nonconforming, §8.3.3 applies and an NC record is opened for the product. |
-| A8 | **Advisory notice / FSCA where warranted** | §8.3.3, MDR Art. 87(1)(b) | §8.3.3 requires documented procedures for issuing advisory notices, including records of issue, receipt, and the actions recommended. Field safety corrective actions are separately reportable in the EU. |
-| A9 | **Respond to the complainant** | QMSR §820.35(a) | The reply is part of the mandated record content in the US. |
-| A10 | **Determine need for correction and/or corrective action** | §8.2.2 → §8.5.2 | The shared CAPA gate. See §7. |
-| A11 | **Close with documented rationale** | §8.2.2 | Closure feeds §8.4 analysis of data and the PMS layer. |
-
-### Lane A as a diagram
-
-```mermaid
-flowchart TD
-    F["Feedback received<br/><small>§8.2.1 — all sources</small>"] --> G{"Is it a complaint?<br/><small>§8.2.2 — recorded decision</small>"}
-    G -->|No| LOG["Log as feedback<br/><small>still feeds §8.4</small>"]
-    G -->|Yes| REC["Complaint record opened<br/><small>§8.2.2 / QMSR §820.35(a)</small>"]
-    REC --> VIG["Reportability assessment<br/><small>§8.2.3 — statutory clock starts</small>"]
-    REC --> INV{"Investigation required?<br/><small>§8.2.2 — justify if not</small>"}
-    INV -->|No| JUST["Document justification"]
-    INV -->|Yes| DO["Investigate<br/><small>device, DHR, lot, reproduction</small>"]
-    DO --> PROD{"Product confirmed<br/>nonconforming?"}
-    PROD -->|Yes| NC["Open NC record for product<br/><small>§8.3.3 — linked, not merged</small>"]
-    PROD -->|No| RESP
-    NC --> ADV{"Advisory notice<br/>or FSCA?<br/><small>§8.3.3 / MDR 87(1)(b)</small>"}
-    ADV --> RESP["Respond to complainant<br/><small>QMSR §820.35(a)</small>"]
-    JUST --> RESP
-    RESP --> CAPA["CAPA evaluation<br/><small>§8.5.2 — shared gate</small>"]
-    CAPA --> CLOSE["Close with rationale<br/><small>feeds §8.4 + PMS</small>"]
-```
-
----
-
-## 4. Lane B — Control of nonconforming product (§8.3)
-
-Four subclauses, and the split is the whole point:
-
-| Subclause | Title |
-|---|---|
-| §8.3.1 | General |
-| §8.3.2 | Actions in response to nonconforming product detected **before** delivery |
-| §8.3.3 | Actions in response to nonconforming product detected **after** delivery |
-| §8.3.4 | Rework |
-
-### Steps
-
-| # | Step | Clause | Notes |
-|---|---|---|---|
-| B1 | **Detection** | §8.2.6, §8.3.1 | Incoming inspection, in-process, final release testing, batch record review, or returned-goods inspection. |
-| B2 | **Identify and segregate** | §8.3.1 | This is containment. Physically tag and quarantine so the product cannot be used or shipped. Identification and segregation are the point of the clause. |
-| B3 | **NC record raised** | §8.3.1 | What failed, against which specification, quantity, lot/serial, who detected it. |
-| B4 | **Evaluate extent** | §8.3.2 / §8.3.3 | How many units, same lot, adjacent lots, same tool, same supplier — and critically, **did any already ship?** If yes, §8.3.3 applies and the exposure is now post-delivery. |
-| B5 | **Disposition** | §8.3.2, §8.3.4 | The Material Review Board decision: use-as-is under concession, rework, repair, regrade, scrap, return to supplier. Records must capture the nature of the nonconformity, the justification for the disposition, and who authorised it. Rework has its own subclause (§8.3.4) because reworked product must be re-verified against original requirements and the rework's adverse effect assessed. |
-| B6 | **Execute and re-verify** | §8.3.4 | Reworked product is re-inspected. |
-| B7 | **Post-delivery actions where applicable** | §8.3.3 | Advisory notice, recall, field action. Procedures must be documented and the notices traceable. |
-| B8 | **CAPA evaluation** | §8.5.2 | Same shared gate. |
-| B9 | **Close** | §8.3.1 | Feeds §8.4. |
-
-### Lane B as a diagram
-
-```mermaid
-flowchart TD
-    D["Detection<br/><small>§8.2.6 — incoming, in-process,<br/>release, returns</small>"] --> SEG["Identify and segregate<br/><small>§8.3.1 — containment</small>"]
-    SEG --> NCR["NC record raised<br/><small>§8.3.1</small>"]
-    NCR --> EXT{"Any units<br/>already delivered?<br/><small>§8.3.2 vs §8.3.3</small>"}
-    EXT -->|No| MRB
-    EXT -->|Yes| POST["Post-delivery actions<br/><small>§8.3.3 — advisory notice,<br/>field action</small>"]
-    POST --> MRB["Disposition — MRB<br/><small>§8.3.2 — use-as-is, rework,<br/>repair, regrade, scrap, return</small>"]
-    MRB --> RW{"Rework?"}
-    RW -->|Yes| REW["Rework + re-verify<br/><small>§8.3.4 — assess adverse effect</small>"]
-    RW -->|No| CAPA
-    REW --> CAPA["CAPA evaluation<br/><small>§8.5.2 — shared gate</small>"]
-    CAPA --> CLOSE["Close<br/><small>feeds §8.4</small>"]
-```
-
----
-
-## 5. The vigilance clock (§8.2.3, 21 CFR 803, MDR Art. 87–88)
-
-Drawn separately because it behaves differently from everything else: **it starts on awareness and runs regardless of investigation progress.**
-
-ISO 13485 §8.2.3 requires documented procedures for notifying regulatory authorities where reporting is required by applicable regulation. The regulations themselves set the clocks.
-
-### United States — 21 CFR Part 803
-
-Part 803 remains a **separate regulation** and was *not* folded into the QMSR.
-
-| Report | Trigger | Deadline |
+| Clause | What it requires | What it justifies here |
 |---|---|---|
-| 30-day report (§803.50) | Device "may have caused or contributed to a death or serious injury", **or** has malfunctioned and that malfunction, if it recurred, would be likely to cause or contribute to a death or serious injury | "no later than 30 calendar days after the day that you receive or otherwise become aware of information" |
-| 5-day report (§803.53) | "An MDR reportable event necessitates remedial action to prevent an unreasonable risk of substantial harm to the public health", or FDA has made a written request | "no later than 5 work days after the day that you become aware" |
+| ISO 13485 §8.2.1 — Feedback | Gather data from production and post-production, as a documented process, and feed it into risk management and analysis. *All* feedback, not only the subset that turns out to be a complaint. | Tier 1 (capture) and tier 2's WF 1 — every source, not just the complaint inbox. |
+| ISO 13485 §8.2.2 — Complaint handling | Complaints are recorded, evaluated, and investigated, with documented justification when they are not investigated. | The Complaint Register as a record with a lifecycle of its own — see §3.1. |
+| ISO 13485 §8.4 — Analysis of data | Determine, collect, and analyse data demonstrating QMS suitability and effectiveness, including **characteristics and trends of processes and product**. | Tier 2's WF 2 exists at all. |
+| ISO 13485 §8.5.2 / §8.5.3 — Corrective and preventive action | Act to eliminate the *cause* of a nonconformity so it does not recur (8.5.2), and to prevent one that has not yet occurred (8.5.3). Both are documented procedures, and the action taken must be proportionate. | Tier 3 — the CAPA *recommendation*, and the reason executing one is out of scope. See §3.2. |
+| MDR Art. 83–88 | Plan a PMS system (83), document it in a PMS plan (84), report on it (85–86), and report a **statistically significant increase** in incident frequency or severity against a baseline **specified in the technical documentation** (88). | The indicator table, its baselines, and its pre-committed thresholds. |
 
-The manufacturer must obtain and submit all information that is "reasonably known", and where information is incomplete, explain why and describe the investigation undertaken.
+Art. 88 is the load-bearing one. It says the comparison baseline must be specified *in advance*, in a controlled document. That is precisely the shape of the `Indicators & Thresholds` sheet — a product, a code, a denominator, a trailing-12-month baseline, and an escalation threshold, approved before the data arrived.
 
-### European Union — MDR 2017/745 Art. 87
+### Why capture is an obligation and not a convenience
 
-| Situation | Deadline | Source |
-|---|---|---|
-| Serious public health threat | "immediately, and not later than **2 days** after the manufacturer becomes aware of that threat" | Art. 87(4) |
-| Death, or unanticipated serious deterioration in a person's state of health | "immediately after the manufacturer has established or as soon as it suspects a causal relationship... but not later than **10 days**" | Art. 87(5) |
-| Any other serious incident | "immediately after they have established the causal relationship... and not later than **15 days** after they become aware of the incident" | Art. 87(3) |
-| Field safety corrective action | Reportable in its own right | Art. 87(1)(b) |
+The easy reading of tier 1 is that it saves people typing. That is not the argument, and the regulation is the reason.
 
-### Trend reporting — MDR Art. 88
+§8.2.1 does not ask for a feedback *inbox*. It asks for a feedback *process*, documented, that gathers data from production and post-production activities and feeds it into risk management and into the analysis of §8.4. MDR Art. 83(2) is blunter and is public text: the PMS system must be suitable for "actively and systematically gathering, recording and analysing" relevant data on the quality, performance and safety of the device. **Actively** and **systematically** are doing work in that sentence. A process that records feedback only when a busy person finds time to transcribe it is neither.
 
-A distinct obligation, and one that maps almost perfectly onto what this product does. Manufacturers must report any **statistically significant increase** in the frequency or severity of incidents that are *not* serious incidents, or of expected undesirable side-effects, where that increase could significantly impact the benefit-risk analysis. The comparison baseline — the foreseeable frequency or severity — must be specified in the technical documentation and product information.
+And §8.4 asks the analysis to demonstrate the *effectiveness* of the quality management system — not the existence of one. A feedback process that can be shown to have missed 62 of 369 indicator events, 17% of what happened, has a demonstrable effectiveness problem, and it is the kind of problem an auditor can evidence directly from the company's own registers. So can a company's own trend report: the August 2026 working file is `Overdue`, noted *"Data pending from service team"*.
 
-Art. 88 is the clause that makes "we detected a trend across fragmented sources, with a defensible denominator" a **regulatory obligation** rather than a nice-to-have.
+Two boundaries on that argument, because it is easy to overreach:
+
+- **This is not a claim that the product makes anyone compliant.** Nothing here guarantees compliance, and a capture layer that is right most of the time is a capture layer that is wrong some of the time, at a rate somebody has to measure and a human has to catch. Every drafted row passes a human gate for exactly that reason.
+- **Completeness is not the same as reportability.** Recovering a missed event tells the company something happened. It does not decide whether the event is reportable, and it starts no clock. Vigilance and reporting to regulatory authorities — ISO 13485 §8.2.3 territory — stay out of scope in full.
 
 ---
 
-## 6. Lane D — Analysis of data and PMS (§8.4, MDR Art. 83–86)
+## 2. Why indicator-plus-threshold is the right shape
 
-### ISO 13485 §8.4 — Analysis of data
+Three properties, none of which a raw event count has:
 
-Documented procedures to determine, collect, and analyse data demonstrating QMS suitability and effectiveness. The analysis must cover feedback, conformity to product requirements, characteristics and trends of processes and product including opportunities for preventive action, and suppliers.
+**A denominator.** Fifteen link-loss events is not a number you can act on. Fifteen events per 100 unit-months in service, against a baseline of 1.3, is. Art. 86(1) requires the denominator and accepts that it is an estimate — which is exactly what "patches distributed" is.
 
-### EU MDR — the PMS framework
+**A baseline that predates the data.** The 2.0x multiplier was committed in PMS-PLAN-001 v3.0 by a named approver. Nobody chose it after seeing the rise. This is what separates a signal from a post-hoc story, and it is why the agent can compute a breach without anyone accusing it of p-hacking.
 
-| Article | Requirement |
+**A cohort.** A fleet-wide rate hides everything. The same rate computed per software version, per lot, per site and per ward is what turns "IND-04 is up" into "IND-04 is up on SW 1.1.0 across three organisations". Finding the tightest cohort that still breaches is the analytical work.
+
+The calculation is deterministic code. The model only ever *explains* a number it did not compute.
+
+---
+
+## 3. Product NC — what we mean, and what we don't
+
+A **nonconformity** is non-fulfilment of a requirement. A **product NC** here means: a confirmed deficiency in a device that has been released from the organisation's control — the fleet in the field, not stock in the building.
+
+That boundary comes from the §3.4 complaint definition, which turns on *released from the organisation's control*, and it decides everything we are not doing:
+
+| Not in scope | Why |
 |---|---|
-| Art. 83 | Plan, establish, document, implement, maintain, and update a PMS system as part of the QMS, proportionate to risk class and device type. Actively and systematically gather data on quality, performance, and safety across the device lifetime. |
-| Art. 84 | Document it in a PMS plan, addressing every element of Annex III Section 1.1. The plan is part of the technical documentation. |
-| Art. 85 | **Class I** — PMS report, updated when necessary, made available to the competent authority on request. |
-| Art. 86 | **PSUR** — Class IIa: updated when necessary and at least every two years. Class IIb and III: at least annually. Class III and implantables: submitted electronically to the notified body via Eudamed. |
+| Production / manufacturing NCs | There is no external signal an agent can monitor. Product still in the factory is a different clause and a different team. |
+| MRB and disposition of nonconforming stock | Physical product under the organisation's control. Nothing to watch. |
+| Vigilance, reportability, regulatory clocks | Deliberately out. No 2/10/15-day or 5/30-day deadlines, no reportability determination, no submissions. |
+| Advisory notices, FSCA, recalls | Downstream of a decision the product does not make. |
+| Audit findings, training, change control, supplier quality, management review | Internal, human-only, no external signal. |
+| CAPA **execution** | Tier 3 recommends opening one and drafts the argument. Running the investigation, implementing the action, verifying effectiveness and closing it are human work and out of scope. See §3.2. |
 
-Annex III Section 1.1 requires the plan to cover, among other things: data collection processes (complaints, healthcare professional reports, patient feedback, information on similar devices, publicly available information), methods for assessing the collected data, tools for investigating complaints and analysing field experience, **methods and protocols for managing trend reporting under Art. 88 including thresholds for statistically significant increases**, communication protocols with authorities and notified bodies, systematic procedures for corrective action, traceability for field actions, and the PMCF plan or a justification for its absence.
+The one distinction worth keeping from the CAPA world, because it prevents a specific and common error:
 
-**The structural point:** PMS is an aggregation layer sitting above the registers. It consumes complaints, NC records, service and return data, and external sources, and produces periodic reports and trend signals. It is *not* a step inside complaint handling.
-
----
-
-## 7. The shared CAPA gate (§8.5.1–§8.5.3)
-
-| Clause | Title |
-|---|---|
-| §8.5.1 | General (improvement) |
-| §8.5.2 | Corrective action |
-| §8.5.3 | Preventive action |
-
-§8.5.2 requires action to eliminate the cause of nonconformities in order to prevent recurrence, taken without undue delay and **proportionate to the effects of the nonconformities encountered**. §8.5.3 addresses potential nonconformities, using appropriate risk-assessment methods, proportionate to the potential impact.
-
-"Proportionate" is the word that justifies the gate existing at all. Not every nonconformity earns a CAPA — and a QMS that opens one for everything is as much a finding as one that opens none.
-
-### The distinction the whole domain rests on
-
-From ISO 9000:2015:
-
-| Term | Clause | Meaning |
+| Term | ISO 9000:2015 | Means |
 |---|---|---|
-| **Correction** | 3.12.2 | Action to eliminate a *detected nonconformity* — disposal, repair, reprocessing, regrading. Fixes this batch. |
-| **Corrective action** | 3.12.3 | Action to eliminate the *cause* of a nonconformity and prevent recurrence. |
+| **Correction** | 3.12.2 | Eliminates the *detected* nonconformity. Reflash the hub, replace the battery module. Fixes this unit. |
+| **Corrective action** | 3.12.3 | Eliminates the *cause*, prevents recurrence. Fix the alert logic in 1.1.2. |
 
-Correction can be made before, alongside, or after corrective action. Conflating the two is the single most common conceptual error in this domain, and it is the reason CAPA exists as a separate process rather than as the tail of a disposition.
+Twenty-four RMAs dispositioned "Repaired and returned" are twenty-four corrections. They are not a corrective action, and a Product NC closed on them alone is closed on the wrong thing. The register keeps them separate.
 
-### CAPA steps
+### 3.1 The complaint record — why it is not a comms-log row
 
-1. **Evaluate** — severity, recurrence, systemic scope, regulatory exposure, benefit-risk impact.
-2. **Decide** — open, or document why not. The negative decision is a record.
-3. **Investigate root cause** — and record the method.
-4. **Plan actions** — corrective and, where applicable, preventive; owners and dates.
-5. **Implement under change control** — including document revision and training where the change touches them.
-6. **Verify/validate** the actions do not adversely affect the ability to meet regulatory requirements or device safety and performance.
-7. **Effectiveness check** against criteria defined *before* implementation.
-8. **Close** with an evidence bundle. Feeds §8.4 and management review.
+§8.2.2 treats a complaint as a **record with a lifecycle**: received, evaluated, investigated or justifiably not investigated, and closed — with the justification documented when no investigation follows, and with a route to §8.2.3 reporting if the evaluation turns up something reportable. An owner, a decision, a rationale, a closure.
 
----
+A row in the client communications log with `Type = Complaint` is none of that. It is a note about a conversation, typed by whoever answered the mailbox, and in this register set the `Type` column is unreliable in both directions — real complaints filed as `Technical query`, and ordinary technical queries filed as `Complaint`. A label a support inbox applies for its own filing convenience is not an evaluated record, and treating it as one produces a complaint register that is simultaneously over-populated with grumpy emails and under-populated with the complaints that matter.
 
-## 8. Regulatory backdrop as of 2026
+So the two objects stay separate, and the boundary between them is a human gate. Tier 1 **recommends** a complaint with its reasoning and the sentences it relied on; a human classifies; the decision is a record either way, which is why `Declined` is a first-class status with a mandatory rationale. A complaint register with no declined rows is a register nobody is actually screening — the same logic as *Closed — no action* on a signal.
 
-**FDA QMSR.** Effective **2 February 2026**, 21 CFR Part 820 is the Quality Management System Regulation and incorporates ISO 13485:2016 by reference. Only six sections of substantive text remain in Part 820 — scope, definitions, incorporation by reference, QMS requirements, control of records, and device labeling and packaging controls. The old §820.198 complaint-files section is gone; complaint-handling requirements now come from ISO 13485 §8.2.2, with US-specific **record content** mandated by §820.35(a), which opens: "In addition to the requirements of Clause 4.2.5 in ISO 13485..."
+Two limits held deliberately. The agent never fills `Vigilance screen required (Y/N)`: the field exists to mark the §8.2.3 boundary rather than to hide it, and vigilance is out of scope. And `Complaint Description (as reported)` holds the customer's words, never a paraphrase, because the evaluation an auditor reads has to be an evaluation of what was actually alleged.
 
-**What this means for the product:** ISO 13485 is now the correct single backbone. There is no longer a need to model two divergent QMS clause structures for the US and EU — only the jurisdiction-specific reporting regimes (Part 803 vs MDR Art. 87–88) and the US record-content deltas in §820.35. Worth one sentence in the pitch; it signals currency.
+### 3.2 CAPA — recommending is legitimate, executing is out
 
-**§820.35 record-content deltas to model explicitly:**
+§8.5.2 requires action to eliminate the *cause* of a nonconformity so that it does not recur, proportionate to the effects encountered; §8.5.3 requires the same logic for a nonconformity that has not yet occurred. Both are documented procedures with a review step, and both begin with someone deciding that this problem warrants one.
 
-- §820.35(a) — complaint record fields, and records for complaints reportable under Part 803
-- §820.35(b) — servicing records: date of service, who performed it, service performed, test data
-- §820.35(c) — UDI recorded for each device or batch of devices
+That decision is the only part of the CAPA world this product touches, and it is defensible for a narrow reason: **the decision turns on evidence of recurrence, and evidence of recurrence is exactly what an aggregation layer over the registers can assemble and a person cannot.** The same failure mode appearing in the incident log, the RMA register and the ward checks; a cohort that reappears two quarters after a containment; a prior NC whose disposition was twenty-four repairs and no change to the product. Assembling that argument, naming the prior action and stating why it did not hold is retrieval and joining. It is the same work as the cohort slice in a signal, one level up.
+
+Everything after the decision is judgement, engineering and verification: root cause, the corrective action itself, the preventive action, the effectiveness check. None of it has an external signal an agent can monitor, and an effectiveness check drafted by the system whose analysis prompted the CAPA is a circularity nobody should accept. So tier 3 stops at a recommendation, and the CAPA Register's execution fields are left for a human — see [`REGISTERS.md`](REGISTERS.md) §4.3.
+
+One consequence worth stating plainly: a recommendation is not a finding, and `Declined` and `Deferred` are correct outcomes with rationales, exactly as on a signal or a complaint. A tier that recommends a CAPA on every recurrence it can construct an argument for is as useless as one that recommends none.
 
 ---
 
-## 9. Where the agent intervenes
+## 4. Vocabulary that matters
 
-Mapped to the autonomy levels defined in [`IDEA.md`](IDEA.md#action-permission-model).
-
-| # | Intervention | Lane / clause | Autonomy | Why an agent wins here |
-|---|---|---|---|---|
-| 1 | **Ingest and resolve** — dedupe across email, support, service, distributor; match free-text serials, lots, UDIs, software versions to canonical units | A1 · §8.2.1 | **Draft** — proposes links, never silently merges official records | The same event arrives through three channels as three records. Entity resolution across fragmented sources is the core pain and is genuinely hard for a human at volume. |
-| 2 | **Complaint triage recommendation** — apply the §3.4 definition against the text, surface the reasoning and the evidence | A2 · §8.2.2 | **Recommend** — human signs the classification | Consistency. The same judgement made the same way every time, with the rationale recorded. Final classification stays human — it starts regulatory obligations. |
-| 3 | **Reportability evidence assembly** — pull the facts a reportability decision needs, surface the applicable clock and its start date, flag jurisdictional divergence | A4 · §8.2.3 / Part 803 / Art. 87 | **Draft** — never decides reportability | The 2/10/15-day and 5/30-day clocks start on *awareness*, and awareness is scattered across inboxes. Surfacing the start of the clock is the highest-value thing here. The decision is always human. |
-| 4 | **Precedent lookup** — find materially similar prior complaints, their investigations, dispositions, and CAPAs | A5 · §8.2.2 | **Recommend** | §8.2.2 explicitly permits not investigating where a similar complaint was already investigated — but you have to *find* it and cite it. Retrieval over the full history is exactly what a human cannot do reliably. |
-| 5 | **Scope expansion** — same lot, same tool, same supplier, same software version; did any ship? | B4 · §8.3.2/§8.3.3 | **Draft** | The §8.3.2-vs-§8.3.3 fork turns on whether product was delivered. Getting that wrong is a serious finding. Requires joining ERP, shipment, and installed-base data. |
-| 6 | **Trend detection with defensible denominators** — rate per shipped unit, per installed base, per usage cycle; period and cohort comparison | D · §8.4 / Art. 88 | **Draft** — deterministic calculation, agent explains and cites | Art. 88 makes this a legal obligation with a threshold defined in the technical documentation. Calculations must be deterministic and reproducible; the model explains and cites, it does not compute. |
-| 7 | **Draft records** — NC record, investigation record, CAPA proposal, PMS/PSUR sections — prefilled from resolved context, every field citing its source | A3, B3, CAPA · §8.5.2 | **Draft** | Removes transcription, not judgement. The value is that every prefilled field carries provenance back to the original evidence. |
-| 8 | **Coordination** — identify the responsible owner, draft information requests, match replies and attachments back to open requests, chase deadlines | All lanes | **Execute with approval** (requests) / **Automatic** (routine reminders only) | This is where quality teams actually lose time. Low regulatory risk, high time saving. |
-| 9 | **Evidence bundle assembly** — reconstruct the full trail from source record to approved decision | All lanes | **Observe** | Audit preparation is a recurring, expensive, purely retrieval-shaped task. |
-
-### Hard human gates — never agent, regardless of confidence
-
-- Final complaint classification (§8.2.2)
-- Reportability determination (§8.2.3 / Part 803 / Art. 87)
-- Trend report submission decision (Art. 88)
-- MRB disposition (§8.3.2)
-- Advisory notice / FSCA decision (§8.3.3)
-- Opening, approving, and closing a CAPA (§8.5.2)
-- Root cause conclusion and effectiveness verdict (§8.5.2)
-- Controlled-document approval (§4.2.4)
-- Official record merges
-
----
-
-## 10. Vocabulary that auditors listen for
-
-| Term | Means | Common error |
+| Term | Means here | Common error |
 |---|---|---|
-| Feedback (§8.2.1) | All post-market information gathered | Treating only complaints as feedback |
-| Complaint (§3.4) | Alleged deficiency in a device released from the organisation's control | Excluding usability issues, or excluding oral reports |
-| Nonconformity | Non-fulfilment of a requirement | Using "nonconformity" and "complaint" interchangeably |
-| Correction (ISO 9000 3.12.2) | Eliminates the detected nonconformity | Calling containment a "corrective action" |
-| Corrective action (ISO 9000 3.12.3) | Eliminates the **cause**, prevents recurrence | Closing a CAPA on the correction alone |
-| Preventive action (§8.5.3) | Addresses a *potential* nonconformity | Mislabelling corrective action as preventive |
-| Concession / use-as-is (§8.3.2) | Authorised release of nonconforming product | Treating it as routine rather than exceptional and justified |
-| Advisory notice (§8.3.3) | Notice issued after delivery advising on use, modification, return, or destruction | Confusing with recall or FSCA |
-| Serious incident (MDR Art. 2) | Triggers Art. 87 vigilance reporting | Applying the FDA "serious injury" test to an EU determination |
+| Feedback (§8.2.1) | All post-market information, from any source | Treating only complaints as feedback |
+| Feedback completeness | Whether the process actually gathered what happened — measurable, and measured here at 53% | Assuming a register that exists is a register that is complete |
+| Capture | Drafting the register row from the artifact it should have been transcribed from | Calling it data entry. The classification and the resolution are the work; the typing is not. |
+| Complaint (§3.4) | Alleged deficiency in a device released from the organisation's control | Excluding usability issues — "the alarm wakes the patient" is a complaint |
+| Complaint record (§8.2.2) | An evaluated record with an owner, a lifecycle and a closure rationale | Treating a comms-log row labelled `Complaint` as one |
+| CAPA (§8.5.2 / §8.5.3) | Action on the cause, so it does not recur — or does not occur | Opening one per nonconformity, or calling a repair one |
+| Indicator | A named, coded failure mode with an approved denominator and baseline | Confusing it with an event code's *count* |
+| Baseline | The trailing-12-month rate stated in the PMS plan | Recomputing it from the current window, which defeats the point |
+| Threshold | The multiplier that defines escalation, committed in advance | Choosing it after seeing the data |
+| Denominator | Unit-months in service, or patches distributed | Using shipped units as a proxy for units in service |
+| Signal | A breach or cluster worth a human look | Treating it as a finding. Most signals close as no action. |
+| Product NC | Confirmed deficiency in released product | Using it for anything still under the organisation's control |
+| Correction (ISO 9000 3.12.2) | Fixes the unit | Calling a repair a corrective action |
+| Cohort | The slice a rate is computed over | Reporting only the fleet rate |
 
 ---
 
-## 11. What changes in the demo
+## 5. Where the agent sits
 
-Against the hackathon scope in [`IDEA.md`](IDEA.md#hackathon-product-scope):
+A PMS specialist already does all of this. The register set in the customer's own spreadsheets shows exactly how well: the August 2026 trend working file is marked `Overdue` with the note *"Data pending from service team"*, and the H1 2026 PMS report is at v0.4 with *"Reviewer on leave, due date at risk"*.
 
-1. **Two registers, not one pipeline.** The complaint record and any linked NC record are distinct objects with distinct lifecycles, visibly linked. This alone reads as domain competence.
-2. **The vigilance clock is a first-class UI element.** It starts on awareness, shows jurisdiction, and is visible from the moment a complaint record opens — not buried in an investigation step.
-3. **Trend detection cites Art. 88.** With an explicit denominator, an explicit baseline, and an explicit observation period. Deterministic calculation, model-written explanation.
-4. **Every agent output carries its autonomy level on its face.** Recommend / Draft / Execute-with-approval, shown in the UI, with the hard gates visibly un-automatable.
-5. **The correction-vs-corrective-action distinction is enforced in the data model.** A correction record and a corrective action record are different objects. Judges who know the domain will look for exactly this.
+The work is not hard. It is joining eleven tables, by hand, every month, and it does not get done when the person doing it is on leave. The agent watches continuously, computes the rates the plan already specifies, and raises what breaches. The specialist decides what it means.
+
+The harder half is upstream of that join and is not usually described as work at all: four of those tables are transcriptions, made late or not made, of things that happened in a telemetry stream, a mailbox, a ward round and a workshop. The specialist does not do that half either — the support inbox, the service bench and the ward do, in the gaps between their actual jobs, which is why 62 of 369 indicator events never got written down. Capture is the agent doing that half so that the join means something.
+
+Every gate that decides something stays human: confirming a drafted row, classifying a communication as a complaint, promoting a signal, approving an NC, the CAPA-considered call, opening a CAPA, and anything sent to a customer.
 
 ---
 
@@ -334,36 +136,22 @@ Against the hackathon scope in [`IDEA.md`](IDEA.md#hackathon-product-scope):
 
 Primary sources verified September 2026.
 
-**Standards (clause numbers verified; text paraphrased — ISO 13485 and ISO 9000 are copyrighted)**
+**Standards** (clause numbers verified; text paraphrased — ISO 13485 and ISO 9000 are copyrighted)
 
 - ISO 13485:2016 official listing — [iso.org/obp](https://www.iso.org/obp/ui/#iso:std:iso:13485:ed-3:v1:en)
-- §8.2 subclause structure (8.2.1 Feedback · 8.2.2 Complaint handling · 8.2.3 Reporting to regulatory authorities · 8.2.4 Internal audit · 8.2.5/8.2.6 Monitoring and measurement) — [13485quality.com](http://13485quality.com/iso-134852016-standard-8-2-1-feedback/), [Freyr Solutions](https://www.freyrsolutions.com/blog/understanding-medical-device-complaint-handling-as-per-iso-134852016)
+- §8.2.1 Feedback, §8.2.2 Complaint handling — [13485quality.com](http://13485quality.com/iso-134852016-standard-8-2-1-feedback/), [Advisera](https://advisera.com/13485academy/blog/2017/03/21/how-to-comply-with-iso-134852016-requirements-for-handling-complaints/)
 - §3.4 complaint definition — [Elsmar Cove](https://elsmar.com/elsmarqualityforum/threads/iso-13485-2016-complaint-definition-clarity.80094/)
-- §8.2.2 procedure content and the documented-justification-for-not-investigating requirement — [ISO 13485 Expert](https://iso13485expert.com/blog/complaint-handling-iso-13485-intake-to-regulatory-reporting/), [Advisera](https://advisera.com/13485academy/blog/2017/03/21/how-to-comply-with-iso-134852016-requirements-for-handling-complaints/)
-- §8.3.1–§8.3.4 subclause titles and restructure — [i3C Global](https://www.i3cglobal.com/iso-13485-control-of-nonconforming-product/), [Whittington & Associates](https://www.whittingtonassociates.com/2016/03/iso-134852016/)
-- §8.3.3 post-delivery actions and advisory notices — [Advisera](https://advisera.com/13485academy/blog/2017/04/11/iso-134852016-nonconforming-product-how-to-approach-the-post-delivery-actions/)
-- §8.3.4 rework — [i3C Global](https://www.i3cglobal.com/iso-13485-rework/)
-- §8.4 analysis of data, §8.5.1–§8.5.3 improvement/CAPA — [13485store.com](https://13485store.com/iso-13485-requirements/8-measurement-analysis-and-improvement/), [i3C Global](https://www.i3cglobal.com/iso-13485-corrective-and-preventive-action/)
-- ISO 9000:2015 §3.12.2 correction / §3.12.3 corrective action — [QMS Templates](https://qmsdoc.com/2026/01/14/the-difference-between-correction-and-corrective-action-iso-90002015-definitions-and-practical-application/), [Quality Gurus](https://www.qualitygurus.com/correction-corrective-action-and-preventive-action/)
-
-**United States**
-
-- FDA Quality Management System Regulation (QMSR) overview and 2 Feb 2026 effective date — [FDA](https://www.fda.gov/medical-devices/postmarket-requirements-devices/quality-management-system-regulation-qmsr), [FDA QMSR FAQ](https://www.fda.gov/medical-devices/quality-management-system-regulation-qmsr/quality-management-system-regulation-frequently-asked-questions)
-- Which Part 820 sections remain — [Greenlight Guru](https://www.greenlight.guru/blog/qmsr-your-guide-to-part-820), [BSI Compliance Navigator](https://compliancenavigator.bsigroup.com/en/medicaldeviceblog/the-new-fda-21-cfr-part-820--quality-management-system-regulation/)
-- 21 CFR §820.35 Control of records (complaint records, servicing records, UDI) — [Cornell LII](https://www.law.cornell.edu/cfr/text/21/820.35)
-- 21 CFR §803.50 — 30 calendar days — [Cornell LII](https://www.law.cornell.edu/cfr/text/21/803.50)
-- 21 CFR §803.53 — 5 work days — [Cornell LII](https://www.law.cornell.edu/cfr/text/21/803.53)
+- §8.4 Analysis of data — [13485store.com](https://13485store.com/iso-13485-requirements/8-measurement-analysis-and-improvement/)
+- §8.2.3 Reporting to regulatory authorities, §8.5.2 Corrective action, §8.5.3 Preventive action — clause numbers and titles from the official listing above; requirement text paraphrased in §1, §3.1 and §3.2 and not quoted. Nothing in this product implements §8.2.3.
+- ISO 9000:2015 §3.12.2 correction / §3.12.3 corrective action — [Quality Gurus](https://www.qualitygurus.com/correction-corrective-action-and-preventive-action/)
 
 **European Union**
 
-- MDR 2017/745 Art. 87 — 15 / 10 / 2 day deadlines, FSCA reporting — [Medical Device Regulation](https://www.medical-device-regulation.eu/2019/07/16/mdr-article-87-reporting-of-serious-incidents-and-field-safety-corrective-actions/), [Medical Device HQ](https://medicaldevicehq.com/documentation/mdr-article-87-reporting-of-serious-incidents/)
-- MDR Art. 88 trend reporting — [Medical Device Regulation](https://www.medical-device-regulation.eu/2019/07/16/mdr-article-88-trend-reporting/), [TÜV SÜD](https://de-mdr-ivdr.tuvsud.com/Article-88-Trend-reporting.html)
-- MDR Art. 83–86 PMS framework, PSUR frequencies, Annex III contents — [Zechmeister Solutions](https://zechmeister-solutions.com/en/blog/mdr-articles-83-86-pms-framework), [Emergo by UL — PMS and PSUR whitepaper](https://www.emergobyul.com/sites/default/files/2024-04/PMS-and-PSUR-Requirements-Under-European-MDR.pdf)
-- MDCG 2023-3 Rev.2, vigilance Q&A — [European Commission](https://health.ec.europa.eu/document/download/af1433fd-ed64-4c53-abc7-612a7f16f976_en?filename=mdcg_2023-3_en.pdf)
+- MDR Art. 88 trend reporting, baseline in the technical documentation — [Medical Device Regulation](https://www.medical-device-regulation.eu/2019/07/16/mdr-article-88-trend-reporting/), [TÜV SÜD](https://de-mdr-ivdr.tuvsud.com/Article-88-Trend-reporting.html)
+- MDR Art. 83–86 PMS framework, Annex III contents, Art. 86(1) denominator, and Art. 83(2)'s requirement that the system suit "actively and systematically gathering, recording and analysing" the data — [Zechmeister Solutions](https://zechmeister-solutions.com/en/blog/mdr-articles-83-86-pms-framework), [Emergo by UL](https://www.emergobyul.com/sites/default/files/2024-04/PMS-and-PSUR-Requirements-Under-European-MDR.pdf)
 
-### Confidence notes
+**Context**
 
-- **High confidence:** all CFR and MDR text (quoted from primary or near-primary sources); ISO 13485 clause numbers and titles (corroborated across multiple independent sources); QMSR effective date and remaining-section list.
-- **Paraphrased, not verified verbatim:** ISO 13485 requirement wording — the standard is paywalled. Clause numbers are reliable; exact phrasing should be checked against a purchased copy before any of this text appears in a customer-facing compliance claim.
-- **Corrected during research:** ISO 9000:2015 assigns **3.12.2 to correction** and **3.12.3 to corrective action** — the reverse of a common misstatement.
-- **Not covered here:** IVDR 2017/746, MDSAP, Health Canada, TGA, PMDA, and the UK post-Brexit regime. The architecture in `IDEA.md` should not hard-code MDR-specific reporting logic.
+- FDA QMSR, effective 2 February 2026, incorporates ISO 13485:2016 by reference — [FDA](https://www.fda.gov/medical-devices/postmarket-requirements-devices/quality-management-system-regulation-qmsr). Worth one line in a pitch: ISO 13485 is now the single correct backbone. Nothing in this product depends on it.
+
+Deeper research on registers this product no longer implements is preserved in [`reference/`](reference/); [`REGISTERS.md` §7](REGISTERS.md#7-out-of-scope) says which parts are now out of scope.

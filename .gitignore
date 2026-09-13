@@ -9,9 +9,6 @@ venv/
 # macOS
 .DS_Store
 
-# Generator scratch — intermediate state, never part of the frozen dataset
-tools/**/_scratch/
-
 # Mock data
 mock-company/
 tools/

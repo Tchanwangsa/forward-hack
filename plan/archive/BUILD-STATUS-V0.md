@@ -1,12 +1,23 @@
 # V0 Data Seed — Build Status
 
+> **SUPERSEDED — historical record.**
+>
+> This is the build log of the **v0 dataset**, generated 2026-09-13 against the previous
+> nine-workflow / vigilance-clock design. That design was replaced. The current shape is
+> five workflows over nine registers with no vigilance machinery — see
+> [`../README.md`](../README.md).
+>
+> Nothing here describes the current dataset. It is kept because the generation techniques,
+> the imperfection calibration, and the decisions it closed are worth re-reading. Section
+> references into `../REGISTER-SHAPES-V0.md` point at sections that no longer exist.
+
 Started 2026-09-13. Goal: generate everything `mock-company/` needs for the V0 journey in
-[`REGISTER-SHAPES-V0.md` §9](REGISTER-SHAPES-V0.md), so the product has real data to ingest.
+[`REGISTER-SHAPES-V0.md` §9](../REGISTER-SHAPES-V0.md), so the product has real data to ingest.
 
 ## Decisions closed before any generation started
 
-All four open decisions in [`REGISTER-SHAPES-V0.md` §10](REGISTER-SHAPES-V0.md) are now closed in
-[`mock/asteria/GENERATION-CONTRACT-V0.md`](mock/asteria/GENERATION-CONTRACT-V0.md):
+All four open decisions in [`REGISTER-SHAPES-V0.md` §10](../REGISTER-SHAPES-V0.md) are now closed in
+[`mock/asteria/GENERATION-CONTRACT-V0.md`](../mock/asteria/GENERATION-CONTRACT-V0.md):
 
 | # | Decision | Resolution |
 |---|---|---|
@@ -19,7 +30,7 @@ The cast grew from 12/8/15/30 to **13 employees / 11 orgs / 17 sites / 38 contac
 schemes, serial and lot ranges, and the 2025-03-01 → 2026-08-31 window are fixed in the contract.
 
 The physical root cause, the seven mandatory confounders, and the demo journey's raw material are in
-[`mock/asteria/PRIVATE-WORLD-V0.md`](mock/asteria/PRIVATE-WORLD-V0.md) — private, and deliberately
+[`mock/asteria/PRIVATE-WORLD-V0.md`](../mock/asteria/PRIVATE-WORLD-V0.md) — private, and deliberately
 withheld from the source renderers, because a renderer that knows the answer writes records that are
 plausible only because the answer is known.
 
@@ -41,7 +52,7 @@ plausible only because the answer is known.
 ```
 
 The `observations` mechanism is the load-bearing idea. Missing fields are generated as *a system that
-did not know a fact*, never as a random null — which is what [`MOCK-DATA.md`](MOCK-DATA.md)'s
+did not know a fact*, never as a random null — which is what [`MOCK-DATA.md`](../MOCK-DATA.md)'s
 imperfection model actually requires and what makes the messiness defensible rather than arbitrary.
 
 ## Task status

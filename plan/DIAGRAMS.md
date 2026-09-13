@@ -1,295 +1,362 @@
-# Agent workflow diagrams
+# The three tiers, in diagrams
 
-Companion to [`WORKFLOW.md`](WORKFLOW.md). One diagram per agent workflow, in the order they appear in [§9 Where the agent intervenes](WORKFLOW.md#9-where-the-agent-intervenes). Each diagram starts at its own trigger, so no diagram depends on reading another.
+Companion to [`ARCHITECTURE.md`](ARCHITECTURE.md) (the spine), [`WORKFLOW.md`](WORKFLOW.md) (the domain) and [`REGISTERS.md`](REGISTERS.md) (the tables). One diagram per tier, plus one per tier-2 workflow, each starting at its own trigger.
 
 | Colour | Meaning |
 |---|---|
-| ⬜ **grey** | Trigger — an event in the customer's existing tools, or human work the agent does not touch |
-| 🟩 **green** | Agent work — Observe, Recommend, or Draft |
+| ⬜ **grey** | Trigger — an event in a source system, or human work the agent does not touch |
+| 🟩 **green** | Agent work |
 | 🟧 **amber** | Human decision — never automated, regardless of confidence |
-| 🟦 **blue** | Output — review material, a draft record, or a deliverable |
+| 🟦 **blue** | Output — a register row, a metric, or a draft |
 
-**The rule the colours encode:** a green node never creates an approved record. It produces evidence, a recommendation, or a draft that a named human accepts, amends, or rejects. The record exists only when a human signs it. The amber gates are the [hard human gates](WORKFLOW.md#hard-human-gates--never-agent-regardless-of-confidence) — they are not candidates for confidence-based automation later.
-
-| # | Workflow | Autonomy | Clause |
-|---|---|---|---|
-| [1](#1-ingest-and-resolve) | Ingest and resolve | Draft | §8.2.1 |
-| [2](#2-complaint-triage-recommendation) | Complaint triage recommendation | Recommend | §8.2.2 |
-| [3](#3-reportability-evidence-assembly) | Reportability evidence assembly | Draft | §8.2.3 · Part 803 · Art. 87 |
-| [4](#4-precedent-lookup) | Precedent lookup | Recommend | §8.2.2 |
-| [5](#5-scope-expansion) | Scope expansion | Draft | §8.3.2 / §8.3.3 |
-| [6](#6-trend-detection) | Trend detection | Draft | §8.4 · Art. 88 |
-| [7](#7-record-drafting) | Record drafting | Draft | §8.2.2 · §8.3.1 · §8.5.2 |
-| [8](#8-coordination) | Coordination | Execute with approval | all lanes |
-| [9](#9-evidence-bundle-assembly) | Evidence bundle assembly | Observe | all lanes |
+**The rule the colours encode:** a green node never creates an approved record. It produces a classification, a number, a draft, or a recommendation that a named human accepts, amends, or rejects.
 
 ---
 
-## 1. Ingest and resolve
-
-**Trigger:** anything inbound lands in a connected source — no human has to file it first.
+## The three tiers
 
 ```mermaid
-flowchart LR
-  T["<b>Trigger</b><br/>email · support ticket<br/>distributor or rep mail<br/>service job · return"]
-  A1["Extract the event facts<br/><small>free-text serial · lot · UDI<br/>software version · date</small>"]
-  A2["Match to a canonical unit<br/><small>installed base · shipment · DHR</small>"]
-  A3["Propose duplicate links<br/><small>one real event arriving<br/>through three channels</small>"]
-  G{"Confirm or reject the link<br/><small>human · official record merges<br/>are never automatic</small>"}
-  O["Resolved event in the quality inbox<br/><small>every fact keeps source, extraction<br/>method, timestamp, confidence</small>"]
-  T --> A1 --> A2 --> A3 --> G --> O
+flowchart TB
+  SRC["<b>Upstream sources</b><br/><small>telemetry stream · mailboxes · transcripts<br/>service work orders · ward rounds</small>"]
+  T1["<b>TIER 1 · CAPTURE</b><br/><small>five bots, one primitive<br/>observe → resolve → classify → draft</small>"]
+  G1{"Confirm each drafted row<br/><small>human · accept · edit · reject</small>"}
+  REG["<b>Capture-fed registers</b><br/><small>incidents · returns · checks<br/>comms · complaints</small>"]
+  T2["<b>TIER 2 · ANALYSIS</b><br/><small>Watch · Measure · Raise<br/>Investigate · Record</small>"]
+  G2{"Promote a signal to a<br/>Product NC?<br/><small>human · or close with a rationale</small>"}
+  NC["<b>Signal · Product NC</b>"]
+  T3["<b>TIER 3 · CAPA</b><br/><small>overlap across registers · recurrence<br/>prior NCs that did not hold</small>"]
+  G3{"Open a CAPA?<br/><small>human · declined and deferred<br/>are both records</small>"}
+  CAPA["<b>CAPA Register</b>"]
+  SRC --> T1 --> G1 --> REG --> T2 --> G2 --> NC --> T3 --> G3 --> CAPA
   classDef trigger fill:#eceae5,stroke:#8a8578,stroke-width:1.5px,color:#2e2c27
   classDef agent fill:#d9f0e3,stroke:#2f7d5d,stroke-width:1.5px,color:#12351f
   classDef gate fill:#fdecd2,stroke:#b8761f,stroke-width:1.5px,color:#4a2f07
   classDef out fill:#e3ecf7,stroke:#3f6ea8,stroke-width:1.5px,color:#12253d
-  class T trigger
-  class A1,A2,A3 agent
-  class G gate
-  class O out
-```
-
-Everything downstream reads from the resolved event, so this is the workflow the rest depend on. It is also the hardest: entity resolution across fragmented sources at volume is what a human cannot do reliably. §8.2.1 is the intake net — *all* feedback, not only the subset that turns out to be a complaint.
-
----
-
-## 2. Complaint triage recommendation
-
-**Trigger:** a resolved event appears in the inbox that has not yet been classified.
-
-```mermaid
-flowchart LR
-  T["<b>Trigger</b><br/>unclassified resolved event"]
-  A1["Apply the §3.4 definition<br/><small>alleged deficiency in a device<br/>released from the organisation's control</small>"]
-  A2["Assemble the reasoning<br/><small>quoted evidence · cited clause<br/>precedent classifications</small>"]
-  G{"Is it a complaint?<br/><small>§8.2.2 · named human decider<br/>this gate starts regulatory obligations</small>"}
-  O1["Complaint — open the record<br/><small>goes to workflows 3, 4 and 7</small>"]
-  O2["Feedback only<br/><small>still recorded · still feeds §8.4</small>"]
-  T --> A1 --> A2 --> G
-  G -->|yes| O1
-  G -->|no| O2
-  classDef trigger fill:#eceae5,stroke:#8a8578,stroke-width:1.5px,color:#2e2c27
-  classDef agent fill:#d9f0e3,stroke:#2f7d5d,stroke-width:1.5px,color:#12351f
-  classDef gate fill:#fdecd2,stroke:#b8761f,stroke-width:1.5px,color:#4a2f07
-  classDef out fill:#e3ecf7,stroke:#3f6ea8,stroke-width:1.5px,color:#12253d
-  class T trigger
-  class A1,A2 agent
-  class G gate
-  class O1,O2 out
-```
-
-The agent buys consistency: the same judgement made the same way every time, with the rationale recorded. The classification itself stays human because it is what starts the regulatory obligations. "Shipment arrived late" is not a complaint; "reading drifted mid-procedure" is.
-
----
-
-## 3. Reportability evidence assembly
-
-**Trigger:** awareness. Not the end of an investigation — the moment the organisation first holds the information.
-
-```mermaid
-flowchart LR
-  T["<b>Trigger</b><br/>awareness of a potentially<br/>reportable event"]
-  A1["Pin the start of the clock<br/><small>first receipt timestamp<br/>and where it landed</small>"]
-  A2["Assemble the decision facts<br/><small>harm · malfunction · recurrence<br/>device identification · patient outcome</small>"]
-  A3["Surface the applicable clocks<br/><small>US 30 calendar / 5 work days<br/>EU 15 / 10 / 2 days · flag divergence</small>"]
-  G{"Reportability determination<br/><small>§8.2.3 · human only, always</small>"}
-  O["Submission pack, or a recorded<br/>not-reportable rationale"]
-  T --> A1 --> A2 --> A3 --> G --> O
-  classDef trigger fill:#eceae5,stroke:#8a8578,stroke-width:1.5px,color:#2e2c27
-  classDef agent fill:#d9f0e3,stroke:#2f7d5d,stroke-width:1.5px,color:#12351f
-  classDef gate fill:#fdecd2,stroke:#b8761f,stroke-width:1.5px,color:#4a2f07
-  classDef out fill:#e3ecf7,stroke:#3f6ea8,stroke-width:1.5px,color:#12253d
-  class T trigger
-  class A1,A2,A3 agent
-  class G gate
-  class O out
-```
-
-This workflow runs on its own statutory clock, in parallel with any investigation — it is never a downstream step, and waiting for the investigation is the single most common place a real QMS takes a finding. The clocks start on awareness, and awareness is scattered across inboxes, so surfacing the start of the clock is the highest-value thing the agent does anywhere.
-
----
-
-## 4. Precedent lookup
-
-**Trigger:** a complaint record is open and someone has to decide whether to investigate.
-
-```mermaid
-flowchart LR
-  T["<b>Trigger</b><br/>open complaint awaiting<br/>the investigation decision"]
-  A1["Retrieve materially similar priors<br/><small>same failure mode · model · lot<br/>software version</small>"]
-  A2["Attach their outcomes<br/><small>investigation findings · dispositions<br/>linked CAPAs · effectiveness verdicts</small>"]
-  G{"Investigation required?<br/><small>§8.2.2 · decline only with<br/>documented justification</small>"}
-  O1["Investigate<br/><small>recover device · pull DHR<br/>check lot · attempt reproduction</small>"]
-  O2["Declined, citing the prior investigation<br/><small>the negative decision is a record</small>"]
-  T --> A1 --> A2 --> G
-  G -->|yes| O1
-  G -->|no| O2
-  classDef trigger fill:#eceae5,stroke:#8a8578,stroke-width:1.5px,color:#2e2c27
-  classDef agent fill:#d9f0e3,stroke:#2f7d5d,stroke-width:1.5px,color:#12351f
-  classDef gate fill:#fdecd2,stroke:#b8761f,stroke-width:1.5px,color:#4a2f07
-  classDef out fill:#e3ecf7,stroke:#3f6ea8,stroke-width:1.5px,color:#12253d
-  class T trigger
-  class A1,A2 agent
-  class G gate
-  class O1,O2 out
-```
-
-§8.2.2 explicitly permits not investigating where a materially similar complaint was already investigated — but only if you can find it and cite it. Retrieval over the full history is exactly what a human cannot do reliably, which is why the justification is usually thin in practice.
-
----
-
-## 5. Scope expansion
-
-**Trigger:** a nonconformity is detected, or a complaint investigation confirms product is nonconforming.
-
-```mermaid
-flowchart LR
-  T["<b>Trigger</b><br/>NC detected at incoming, in-process,<br/>release or returns · or confirmed<br/>by a complaint investigation"]
-  A1["Expand the population<br/><small>same lot · adjacent lots · same tool<br/>same supplier · same software version</small>"]
-  A2["Answer the fork question<br/><small>did any of it ship?<br/>joins ERP, shipment, installed base</small>"]
-  G1{"§8.3.2 or §8.3.3?<br/><small>pre-delivery or post-delivery<br/>human · getting this wrong<br/>is a serious finding</small>"}
-  G2{"MRB disposition<br/><small>§8.3.2 · use-as-is under concession<br/>rework · repair · regrade · scrap</small>"}
-  G3{"Advisory notice or FSCA?<br/><small>§8.3.3 · MDR Art. 87.1.b<br/>feeds workflow 3</small>"}
-  O["Scoped NC record<br/><small>affected population with<br/>its evidence trail</small>"]
-  T --> A1 --> A2 --> G1
-  G1 -->|nothing delivered| G2
-  G1 -->|units delivered| G3
-  G2 --> O
-  G3 --> O
-  classDef trigger fill:#eceae5,stroke:#8a8578,stroke-width:1.5px,color:#2e2c27
-  classDef agent fill:#d9f0e3,stroke:#2f7d5d,stroke-width:1.5px,color:#12351f
-  classDef gate fill:#fdecd2,stroke:#b8761f,stroke-width:1.5px,color:#4a2f07
-  classDef out fill:#e3ecf7,stroke:#3f6ea8,stroke-width:1.5px,color:#12253d
-  class T trigger
-  class A1,A2 agent
+  class SRC trigger
+  class T1,T2,T3 agent
   class G1,G2,G3 gate
-  class O out
+  class REG,NC,CAPA out
 ```
 
-Containment and segregation happen before any of this — they are physical, immediate, and human. The agent's job starts once the record exists: work out how far the problem reaches. A complaint that confirms a product nonconformity creates a *linked* NC record; it does not merge into the complaint or get absorbed by it.
+Read it downwards and the argument is in the shape: nothing in tier 2 is trustworthy until tier 1 has closed the gap beneath it. The registers correctly identify 53% of the indicator events that actually happened — 62 of 369 have no incident row at all, and of the 307 that do, 197 carry a correct event code. Tier 2 running on that is the same incomplete join the specialist already runs, just faster.
+
+| Tier | Unit of work | Output | Human gate | Writes to |
+|---|---|---|---|---|
+| **1 · Capture** | one artifact → one or more drafted rows | a drafted row, or a completion for a blank cell | confirm each drafted row | the five capture-fed registers |
+| **2 · Analysis** | one indicator × cohort × window | a Signal, then a drafted Product NC | promote signal → NC; approve/close NC | Signal Register · Product NC Register |
+| **3 · CAPA** | one failure mode across registers and time | a CAPA recommendation | the CAPA-considered decision | CAPA Register |
 
 ---
 
-## 6. Trend detection
+## Tier 1 · The capture primitive
 
-**Trigger:** continuous. This is a planned aggregation layer above the registers, not a reaction to any single event.
+One diagram for all five bots, because all five are the same shape pointed at a different source. What differs between them is only the source, the register, and how hard the classification is — see [`CAPTURE-AGENTS.md`](CAPTURE-AGENTS.md) for each one field by field.
 
 ```mermaid
 flowchart LR
-  T["<b>Trigger</b><br/>scheduled run over<br/>the connected evidence"]
-  A1["Aggregate and normalise<br/><small>complaints · service jobs · returns<br/>literature · one event, many records</small>"]
-  A2["Compute the denominator<br/><small>shipped units · installed base<br/>usage cycles — deterministic</small>"]
-  A3["Compare and explain<br/><small>rate by period and cohort<br/>agent cites, it does not compute</small>"]
-  G1{"Signal review<br/><small>human · benefit-risk impact</small>"}
-  G2{"Art. 88 trend report?<br/><small>human · threshold pre-set in<br/>the technical documentation</small>"}
-  O["PMS and PSUR sections<br/><small>§8.4 · MDR Art. 83–86</small>"]
-  T --> A1 --> A2 --> A3 --> G1 --> G2 --> O
+  T["<b>Trigger</b><br/>an artifact appears in a watched source<br/><small>telemetry event · email thread · transcript<br/>work order · ward round</small>"]
+  A1["Observe<br/><small>read the artifact whole —<br/>the thread, not the message</small>"]
+  A2["Resolve<br/><small>customer · hub · serial · ward<br/>bed · lot. Plumbing, never a screen.</small>"]
+  A3["Classify<br/><small>one of the seven indicator codes,<br/>or none — with a confidence</small>"]
+  A4["Draft the row<br/><small>every field this source evidences<br/>and no field it does not<br/>+ Captured From → the artifact</small>"]
+  Q{"Low confidence?<br/><small>routes to a human as a<br/>question, not a draft</small>"}
+  G{"Confirm<br/><small>human · accept · edit · reject</small>"}
+  O1["Committed register row<br/><small>Row Origin = Agent (accepted / edited)<br/>Captured From = the artifact</small>"]
+  O2["Completion<br/><small>a proposed value for a blank cell on an<br/>existing human row — held in the capture<br/>layer, the source row untouched</small>"]
+  O3["Rejected draft<br/><small>logged with its reason<br/>in the Agent Action Log</small>"]
+  T --> A1 --> A2 --> A3 --> A4 --> G
+  A3 --> Q
+  Q --> G
+  G --> O1
+  G --> O2
+  G --> O3
+  classDef trigger fill:#eceae5,stroke:#8a8578,stroke-width:1.5px,color:#2e2c27
+  classDef agent fill:#d9f0e3,stroke:#2f7d5d,stroke-width:1.5px,color:#12351f
+  classDef gate fill:#fdecd2,stroke:#b8761f,stroke-width:1.5px,color:#4a2f07
+  classDef out fill:#e3ecf7,stroke:#3f6ea8,stroke-width:1.5px,color:#12253d
+  class T trigger
+  class A1,A2,A3,A4 agent
+  class Q,G gate
+  class O1,O2,O3 out
+```
+
+Four things the diagram is asserting, and each of them is a rule:
+
+**A capture bot never commits a row.** There is no path from a green node to a committed row that does not pass through amber. Capture is autonomy level 3 forever, however good its accept rate gets.
+
+**A blank is a correct answer.** The draft node fills only what the artifact evidences. Outage watch knows the SW version at the moment of the fault because the hub reported it; it does not know who the ward will assign the incident to, and leaves `Assigned To` blank rather than guessing. Guessing to make a row look complete is the failure mode that discredits the whole tier.
+
+**A completion is not an edit.** When a bot has a value for a blank cell on a row a human already wrote, the source row is not touched. The proposal lives in the capture layer with its evidence and downstream analysis reads the completed view — [`REGISTERS.md`](REGISTERS.md) §6.
+
+**Rejection is an output, not an absence.** A rejected draft is a logged record with a reason, exactly as *Closed — no action* is on a signal, because the rejection rate per bot is one of the few honest measures of whether a bot is any good.
+
+---
+
+## Tier 2 · The five workflows
+
+Tier 2 is what the product was before the reframe, unchanged in substance: the NC path, one tier of three.
+
+| # | Workflow | Autonomy | Writes to |
+|---|---|---|---|
+| [1](#1-watch) | **Watch** — classify an incoming event to an indicator | Automatic | Classified event in the agent layer · Agent Action Log |
+| [2](#2-measure) | **Measure** — rate vs baseline vs threshold | Automatic, deterministic | Indicator metrics (computed) |
+| [3](#3-raise) | **Raise** — write a Signal when something breaches | Draft | Signal Register |
+| [4](#4-investigate) | **Investigate** — precedent, cohort slicing, ask the site | Recommend / Execute with approval | Signal Register · Agent Action Log |
+| [5](#5-record) | **Record** — prefill the Product NC and the PMS report section | Draft, human signs | Product NC Register · PMS report |
+
+### How they chain
+
+```mermaid
+flowchart LR
+  W["1 · Watch<br/><small>event → indicator code</small>"]
+  M["2 · Measure<br/><small>rate vs threshold</small>"]
+  R["3 · Raise<br/><small>Signal</small>"]
+  I["4 · Investigate<br/><small>cohort + precedent</small>"]
+  C["5 · Record<br/><small>Product NC</small>"]
+  X["Closed — no action<br/><small>still a permanent record</small>"]
+  W --> M --> R --> I
+  I -->|promoted| C
+  I -->|explained| X
+  R -.->|monitor only| X
+  classDef agent fill:#d9f0e3,stroke:#2f7d5d,stroke-width:1.5px,color:#12351f
+  classDef out fill:#e3ecf7,stroke:#3f6ea8,stroke-width:1.5px,color:#12253d
+  class W,M,R,I,C agent
+  class X out
+```
+
+Most events stop at Measure. That is the correct behaviour, not a failure — a surveillance system that raises a signal per event is as useless as one that raises none.
+
+---
+
+### 1. Watch
+
+**Trigger:** anything lands in a source. No human has to file it first — and after tier 1, a great deal more lands.
+
+```mermaid
+flowchart LR
+  T["<b>Trigger</b><br/>telemetry event · incident/outage row<br/>RMA · troubleshooting check<br/>inbound client email · complaint"]
+  A1["Normalise the row<br/><small>dates in two formats<br/>org-name variants · serial variants</small>"]
+  A2["Classify to an indicator code<br/><small>one of the seven in the PMS plan<br/>telemetry already carries its code</small>"]
+  A3["Attach to the fleet<br/><small>hub · serial · lot · ward · bed<br/>customer · SW version at time</small>"]
+  G{"Low confidence, or no code fits?<br/><small>human labels it<br/>correction is logged and reused</small>"}
+  O["Classified event<br/><small>held in the agent layer against the<br/>source row ID, + an Agent Action Log entry</small>"]
+  T --> A1 --> A2 --> A3 --> G --> O
   classDef trigger fill:#eceae5,stroke:#8a8578,stroke-width:1.5px,color:#2e2c27
   classDef agent fill:#d9f0e3,stroke:#2f7d5d,stroke-width:1.5px,color:#12351f
   classDef gate fill:#fdecd2,stroke:#b8761f,stroke-width:1.5px,color:#4a2f07
   classDef out fill:#e3ecf7,stroke:#3f6ea8,stroke-width:1.5px,color:#12253d
   class T trigger
   class A1,A2,A3 agent
+  class G gate
+  class O out
+```
+
+Telemetry arrives pre-classified — the hub emits `CONN-LINK-LOSS`, which *is* IND-01's internal code. The work is in the human-authored sources: a troubleshooting row with `Software Issues = "1.1.0 alert logic"` and `Patient & Alert Issues = "6x false RR alert overnight"` is an `ALERT-FALSE` event, and nothing in the row says so. Entity resolution (`RNH` → `Royal North Hospital`, `4111` → `PO-P1-004111`) happens here as plumbing; it is never a screen.
+
+The classification is held **against** the source row, not written into it. The customer's spreadsheet is not edited by any tier — see [`REGISTERS.md`](REGISTERS.md) §6.
+
+---
+
+### 2. Measure
+
+**Trigger:** nightly, and on every newly classified event.
+
+```mermaid
+flowchart LR
+  T["<b>Trigger</b><br/>nightly run<br/>or a new classified event"]
+  RULE{"Approved indicator rule set<br/><small>7 rows in PMS-PLAN-001 v3.0<br/>/ PMS-PLAN-002 v2.0<br/>baseline + threshold set in advance<br/>by a named approver</small>"}
+  A1["Count the numerator<br/><small>events per indicator per cohort<br/>rolling 90 days</small>"]
+  A2["Compute the denominator<br/><small>unit-months from Hub Inventory<br/>patches from Lot Allocation</small>"]
+  A3["Divide and compare<br/><small>rate · baseline · ratio<br/>deterministic code, not a model</small>"]
+  O["Indicator metrics<br/><small>per indicator × cohort, with the<br/>event IDs and denominator shown</small>"]
+  B["Threshold breach<br/><small>fires the webhook → workflow 3</small>"]
+  T --> A1
+  RULE --> A1
+  RULE --> A3
+  A1 --> A2 --> A3 --> O
+  A3 --> B
+  classDef trigger fill:#eceae5,stroke:#8a8578,stroke-width:1.5px,color:#2e2c27
+  classDef agent fill:#d9f0e3,stroke:#2f7d5d,stroke-width:1.5px,color:#12351f
+  classDef gate fill:#fdecd2,stroke:#b8761f,stroke-width:1.5px,color:#4a2f07
+  classDef out fill:#e3ecf7,stroke:#3f6ea8,stroke-width:1.5px,color:#12253d
+  class T trigger
+  class A1,A2,A3 agent
+  class RULE gate
+  class O,B out
+```
+
+No model runs in this workflow. The human gate is drawn upstream and in amber because it already happened: a named person approved the baseline and the threshold in a controlled document before any of this data existed. That is what makes a breach mean something. The agent may later *explain* a number here; it never produces one.
+
+The numerator is where tier 1 shows up in the arithmetic. The denominator is not: **no capture agent may write to the Hub Inventory or the Lot Allocation sheet**, because a bot that can move the denominator can move every rate in the product.
+
+---
+
+### 3. Raise
+
+**Trigger:** a rate crosses its escalation threshold, or a cluster appears in one lot, one SW version, one site, or one ward.
+
+```mermaid
+flowchart LR
+  T["<b>Trigger</b><br/>threshold breach from workflow 2<br/>or a cohort cluster"]
+  A1["State the breach<br/><small>which indicator, observed rate,<br/>baseline, ratio, window, denominator</small>"]
+  A2["Find the tightest cohort<br/><small>is it fleet-wide, or SW 1.1.0?<br/>one lot? one ward? three sites?</small>"]
+  A3["Attach the evidence<br/><small>every event ID, affected serials,<br/>what changed in the window</small>"]
+  A4["Write the rationale<br/><small>what it thinks and why<br/>including the innocent explanation<br/>and whether tier 1 made it visible</small>"]
+  G{"Triage the signal<br/><small>human · a signal never<br/>promotes or closes itself</small>"}
+  O1["Open — investigate"]
+  O2["Monitoring — recheck next run"]
+  O3["Closed, no action<br/><small>permanent row, rationale required</small>"]
+  T --> A1 --> A2 --> A3 --> A4 --> G
+  G --> O1
+  G --> O2
+  G --> O3
+  classDef trigger fill:#eceae5,stroke:#8a8578,stroke-width:1.5px,color:#2e2c27
+  classDef agent fill:#d9f0e3,stroke:#2f7d5d,stroke-width:1.5px,color:#12351f
+  classDef gate fill:#fdecd2,stroke:#b8761f,stroke-width:1.5px,color:#4a2f07
+  classDef out fill:#e3ecf7,stroke:#3f6ea8,stroke-width:1.5px,color:#12253d
+  class T trigger
+  class A1,A2,A3,A4 agent
+  class G gate
+  class O1,O2,O3 out
+```
+
+The cohort slice is the whole value. "IND-04 is up 2.8x" is a number a spreadsheet gives you. "IND-04 is up 2.8x and every contributing event is on SW 1.1.0, across three organisations" is a signal someone can act on. The signal also records `Capture-dependent (Y/N)` — whether it is visible at all without tier 1's drafted rows and completions; on the primary story it is `Y`. *Closed — no action* is a first-class outcome with its own row and rationale: a ward-wide outage caused by hospital network maintenance should be closed, and the record should say so.
+
+---
+
+### 4. Investigate
+
+**Trigger:** a human opens a signal.
+
+```mermaid
+flowchart LR
+  T["<b>Trigger</b><br/>human opens a signal<br/>from the queue"]
+  A1["Precedent lookup<br/><small>prior signals, NCs, RMAs, complaints<br/>same indicator, cohort, component</small>"]
+  A2["Slice the cohort<br/><small>SW version · HW rev · lot · site · ward<br/>and the control group that did not breach</small>"]
+  A3["Call out the gaps<br/><small>which contributing rows are still<br/>incomplete after capture, and which<br/>artifact could not fill them</small>"]
+  A4["Draft the information request<br/><small>to the site contact, naming<br/>the units and the question</small>"]
+  G1{"Approve before sending<br/><small>human · every outbound<br/>customer message, always</small>"}
+  G2{"Promote to a Product NC?<br/><small>human · or close with a rationale</small>"}
+  O["Investigated signal<br/><small>cohort finding · precedent links<br/>request sent · verdict recorded</small>"]
+  T --> A1 --> A2 --> A3 --> A4 --> G1 --> G2 --> O
+  classDef trigger fill:#eceae5,stroke:#8a8578,stroke-width:1.5px,color:#2e2c27
+  classDef agent fill:#d9f0e3,stroke:#2f7d5d,stroke-width:1.5px,color:#12351f
+  classDef gate fill:#fdecd2,stroke:#b8761f,stroke-width:1.5px,color:#4a2f07
+  classDef out fill:#e3ecf7,stroke:#3f6ea8,stroke-width:1.5px,color:#12253d
+  class T trigger
+  class A1,A2,A3,A4 agent
   class G1,G2 gate
   class O out
 ```
 
-The denominator is the product. Without shipped-unit and installed-base data a trend is only a raw count, and a raw count is not defensible under Art. 88 — where the threshold is a legal commitment made in advance. The calculation is deterministic and reproducible; the model explains and cites it rather than performing it.
+Retrieval over the full history is what a person cannot do reliably, and it cuts both ways: the precedent that says "we already investigated this in March and it was patch placement" saves the investigation, and the one that says "we replaced four comms modules for the same fault last quarter" starts it. The missing-data callout changes character after tier 1 — the blanks capture could fill are already filled, so what is left is the honest residue: fields no artifact evidences, and checks that were never done. That residue is a request to a named person, and it is also a tier-1 requirement discovered downstream.
 
 ---
 
-## 7. Record drafting
+### 5. Record
 
-**Trigger:** a human decision has just created the need for a record — a complaint confirmed, an NC raised, a CAPA warranted.
+**Trigger:** a human promotes a signal.
 
 ```mermaid
 flowchart LR
-  T["<b>Trigger</b><br/>complaint confirmed · NC raised<br/>CAPA evaluation says warranted"]
-  A1["Prefill the mandated fields<br/><small>QMSR §820.35.a · spec, quantity,<br/>lot or serial, detector · problem, risk, scope</small>"]
-  A2["Cite every field<br/><small>each value links back to<br/>the evidence it came from</small>"]
-  A3["Flag the gaps<br/><small>what is missing, what conflicts<br/>between sources</small>"]
-  G{"Human review and sign-off<br/><small>§8.2.2 · §8.3.1 · §8.5.2<br/>opening a CAPA is a human act</small>"}
-  O["Approved record<br/><small>complaint · NC · CAPA · PMS section</small>"]
-  T --> A1 --> A2 --> A3 --> G --> O
+  T["<b>Trigger</b><br/>human promotes a signal"]
+  A1["Prefill the Product NC<br/><small>description · indicator ·<br/>evidence links back to every event</small>"]
+  A2["Resolve the affected scope<br/><small>serials from Hub Inventory<br/>lots from Patch Lot Allocation<br/>units still in the field</small>"]
+  A3["Propose containment<br/>and disposition<br/><small>from what the RMAs actually did</small>"]
+  A4["Draft the CAPA-considered<br/>rationale<br/><small>a position to accept or reject,<br/>not a conclusion</small>"]
+  G1{"Approve and sign the NC<br/><small>human · named approver</small>"}
+  G2{"CAPA needed?<br/><small>human · 'no' is a record<br/>with a rationale</small>"}
+  O1["Product NC<br/><small>linked to its signal and events</small>"]
+  O2["PMS report section<br/><small>half-yearly roll-up of the<br/>period's signals and outcomes</small>"]
+  T --> A1 --> A2 --> A3 --> A4 --> G1 --> G2 --> O1
+  G1 --> O2
   classDef trigger fill:#eceae5,stroke:#8a8578,stroke-width:1.5px,color:#2e2c27
   classDef agent fill:#d9f0e3,stroke:#2f7d5d,stroke-width:1.5px,color:#12351f
   classDef gate fill:#fdecd2,stroke:#b8761f,stroke-width:1.5px,color:#4a2f07
   classDef out fill:#e3ecf7,stroke:#3f6ea8,stroke-width:1.5px,color:#12253d
   class T trigger
-  class A1,A2,A3 agent
-  class G gate
-  class O out
+  class A1,A2,A3,A4 agent
+  class G1,G2 gate
+  class O1,O2 out
 ```
 
-This removes transcription, not judgement. The value is not the speed of the draft — it is that every prefilled field carries provenance back to the original evidence, so the reviewer checks a citation instead of hunting for a source. Root cause, effectiveness verdict, and closure all stay human gates inside the CAPA that follows.
+This removes transcription, not judgement. Affected scope is the part worth having: "SW 1.1.0" is a version string until it is resolved into named serials at named organisations, which is a join across the hub inventory the specialist would otherwise do by hand in a spreadsheet.
+
+`CAPA considered (Y/N)` here is the hand-off to tier 3. `N` requires a rationale; `Y` is not the same thing as opening one.
 
 ---
 
-## 8. Coordination
+## Tier 3 · The CAPA sweep
 
-**Trigger:** an open item needs something from a named person — a reply, an attachment, a decision, a deadline met.
+**Trigger:** an NC reaching a terminal status, a signal closed or set to monitoring, and a weekly sweep regardless. Tier 3 does not watch events — it watches the records the tiers above it left behind. The weekly sweep is the one that earns its keep, because the interesting case has no trigger: a mode that recurs while each occurrence is individually closed as too small never fires an event-driven check.
 
 ```mermaid
 flowchart LR
-  T["<b>Trigger</b><br/>open action needing input<br/>or an approaching due date"]
-  A1["Identify the responsible owner<br/><small>process · site · supplier · role</small>"]
-  A2["Draft the information request<br/><small>what is needed, why, by when</small>"]
-  G{"Approve before sending<br/><small>human · external requests always<br/>routine reminders automatic</small>"}
-  A3["Match replies back<br/><small>attachments and answers land on<br/>the open request, not an inbox</small>"]
-  O["Action register with live status"]
-  T --> A1 --> A2 --> G --> A3 --> O
+  T["<b>Trigger</b><br/>an NC reaching a terminal status · a signal<br/>closed or set to monitoring · the weekly sweep"]
+  A1["Gather the history<br/><small>signals · NCs · complaints · RMAs<br/>checks · comms · PMS meeting minutes</small>"]
+  A2["Test for one failure mode<br/><small>the same thing in three different logs<br/>— or three things that merely look alike</small>"]
+  A3["Test for recurrence<br/><small>over what period, in which registers,<br/>and whether the cohort is the same one</small>"]
+  A4["Find the prior action<br/><small>the earlier NC, containment or CAPA<br/>that was supposed to have fixed this —<br/>and what it actually did</small>"]
+  A5["Draft the recommendation<br/><small>problem statement · recurrence evidence<br/>why the prior action did not hold<br/>affected scope, resolved</small>"]
+  G{"CAPA decision<br/><small>human · opened · declined · deferred<br/>rationale mandatory either way</small>"}
+  O1["CAPA Register row<br/><small>Status = Open. Investigation, root cause,<br/>effectiveness: human, out of scope.</small>"]
+  O2["Declined or deferred<br/><small>a permanent record with a rationale.<br/>Never a deletion.</small>"]
+  T --> A1 --> A2 --> A3 --> A4 --> A5 --> G
+  G --> O1
+  G --> O2
   classDef trigger fill:#eceae5,stroke:#8a8578,stroke-width:1.5px,color:#2e2c27
   classDef agent fill:#d9f0e3,stroke:#2f7d5d,stroke-width:1.5px,color:#12351f
   classDef gate fill:#fdecd2,stroke:#b8761f,stroke-width:1.5px,color:#4a2f07
   classDef out fill:#e3ecf7,stroke:#3f6ea8,stroke-width:1.5px,color:#12253d
   class T trigger
-  class A1,A2,A3 agent
+  class A1,A2,A3,A4,A5 agent
   class G gate
-  class O out
+  class O1,O2 out
 ```
 
-Lowest regulatory risk, highest time saving. This is where quality teams actually lose their days: chasing people, then re-finding the reply three weeks later in a thread. Routine reminders go out automatically; anything leaving the organisation is approved first.
+The green nodes stop at a drafted argument, and that boundary is the scope line: **tier 3 recommends opening a CAPA and drafts its problem statement; it does not run the investigation, implement the action, verify effectiveness, or close it.** CAPA execution is out of scope and stays out.
+
+The hardest node is A2, and it is hard in both directions. Seventeen RMA rows reading `Battery module replaced, capacity 61% of nominal`, a `BATT` cluster on H1 units that never breaches at fleet level, and a prior signal left on *monitoring* that asked service to record measured capacity — a measurement that was then taken into a register nobody read back against the signal — are plausibly one failure mode, or three unrelated facts about old hardware. Getting that wrong in the generous direction produces a CAPA system nobody trusts. The reasoning is specified in [`CAPA.md`](CAPA.md).
+
+`Why prior action did not hold` is the sharpest field in the register, and it is also a tier-1 finding in disguise: a CAPA that failed because the evidence was thin names the register that was empty, which is a capture requirement discovered from the top of the stack.
 
 ---
 
-## 9. Evidence bundle assembly
+## The gates that no confidence level may bypass
 
-**Trigger:** an audit, an inspection, a notified-body request — or any time someone asks "show me the trail".
+- Committing any drafted register row (tier 1)
+- Classifying an inbound communication as a **complaint** (tier 1 recommends, a human decides)
+- Promoting a signal to a Product NC (tier 2)
+- Approving and closing a Product NC (tier 2)
+- The CAPA-considered decision, and opening a CAPA (tier 3)
+- Any outbound customer communication (any tier)
 
-```mermaid
-flowchart LR
-  T["<b>Trigger</b><br/>audit · inspection<br/>notified body request"]
-  A1["Walk the chain backwards<br/><small>approved decision → record →<br/>investigation → source message</small>"]
-  A2["Assemble with provenance<br/><small>who decided, when, on what evidence<br/>including the negative decisions</small>"]
-  O["Audit evidence pack<br/><small>source record through<br/>approved decision</small>"]
-  T --> A1 --> A2 --> O
-  classDef trigger fill:#eceae5,stroke:#8a8578,stroke-width:1.5px,color:#2e2c27
-  classDef agent fill:#d9f0e3,stroke:#2f7d5d,stroke-width:1.5px,color:#12351f
-  classDef out fill:#e3ecf7,stroke:#3f6ea8,stroke-width:1.5px,color:#12253d
-  class T trigger
-  class A1,A2 agent
-  class O out
-```
+A capture draft rejected, a complaint declined, a signal closed as *no action*, a CAPA declined or deferred — each is a permanent record with a named reviewer and a rationale. Every agent output, in every tier, lands in the Agent Action Log with its tier, its autonomy level and the human's verdict on it.
 
-No gate, because nothing is being decided — this workflow only retrieves. It is Observe-level autonomy, and it works only if the eight workflows above kept their provenance as they went. Audit preparation is recurring, expensive, and purely retrieval-shaped.
+## Source dependency
 
----
+All eleven registers ([`REGISTERS.md`](REGISTERS.md)) and the upstream artifacts ([`UPSTREAM-SOURCES.md`](UPSTREAM-SOURCES.md)). **●** reads · **✎** writes or drafts.
 
-## Source dependency matrix
+| | Upstream artifacts | Orgs & Hubs | PMS Plan | Incidents | Returns | Checks | Comms | Complaints | Signal | Product NC | CAPA | Action Log |
+|---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| **T1 · Outage watch** | ● | ● | ● | ✎ | | | | | | | | ✎ |
+| **T1 · Inbox triage** | ● | ● | ● | ● | ● | | ✎ | ✎ | | | | ✎ |
+| **T1 · Meeting scribe** | ● | ● | ● | | | | ✎ | ✎ | | | | ✎ |
+| **T1 · RMA capture** | ● | ● | ● | | ✎ | | ● | ● | | | | ✎ |
+| **T1 · Field-check nudge** | ● | ● | ● | | | ✎ | | | ● | | | ✎ |
+| T2 · 1 Watch | ● | ● | ● | ● | ● | ● | ● | ● | | | | ✎ |
+| T2 · 2 Measure | | ● | ● | ● | ● | ● | ● | ● | | | | ✎ |
+| T2 · 3 Raise | | ● | ● | ● | ● | ● | ● | ● | ✎ | | | ✎ |
+| T2 · 4 Investigate | ● | ● | ● | ● | ● | ● | ● | ● | ✎ | ● | ● | ✎ |
+| T2 · 5 Record | | ● | ● | ● | ● | ● | ● | ● | ● | ✎ | | ✎ |
+| **T3 · CAPA sweep** | | ● | ● | ● | ● | ● | ● | ● | ● | ● | ✎ | ✎ |
 
-Every workflow above reads from the same shared quality context, in which each fact retains its source, extraction method, timestamp, confidence, and review status. Source systems never write directly into a regulated record. This matrix is which source families each workflow actually needs.
+Four things the table says that are worth saying in words.
 
-| Agent workflow | Comms | Commercial + ops | Product data | Service + returns | QMS of record | External |
-|---|:---:|:---:|:---:|:---:|:---:|:---:|
-| 1 · Ingest and resolve | ● | ● | ● | ● | | |
-| 2 · Triage recommendation | ● | | ● | | ● | |
-| 3 · Reportability evidence | ● | | ● | ● | ● | |
-| 4 · Precedent lookup | | | | ● | ● | |
-| 5 · Scope expansion | | ● | ● | | ● | |
-| 6 · Trend detection | ● | ● | ● | ● | ● | ● |
-| 7 · Record drafting | | | | | ● | |
-| 8 · Coordination | ● | ● | | | ● | |
-| 9 · Evidence bundle | | | | | ● | |
+**No agent writes to a reference register.** The `Orgs & Hubs` and `PMS Plan` columns are read-only in every row, across all three tiers. Both denominators and the entire indicator rule set live there.
 
-The source families, as they exist in the customer's tools today: **comms** — email, support, chat, distributor and rep mail. **Commercial and operations** — CRM, ERP, orders, shipments, installed base. **Product data** — model, lot, serial, UDI, software version, DHR. **Service and returns** — service jobs, repairs, RMAs, replacements. **QMS of record** — complaint, NC and CAPA registers, audit findings, PMS plan, risk file. **External** — literature, regulator notices, similar-device data.
+**Two sources carry everything.** The Hub Inventory and Patch Lot Allocation sheets are read by every workflow and every bot, because both denominators, all entity resolution and all affected-scope resolution come from them. The PMS plan's indicator table is read by everything that has to say what an event *is* or whether a rate is too high — including tier 1, which classifies to the same seven codes.
 
-The integration is the moat: the individual workflows are straightforward, but those six families sit across different systems and teams. Trend detection is the only workflow that needs all six, and commercial data is what turns event counts into rates. The human boundary is explicit throughout: no agent path reaches an approved record without a named human decision.
+**Tier 1 is narrow by design.** Each bot writes one register — two for the comms-log pair, plus the complaint recommendation — and reads its own source plus reference data. A capture bot with a wide write surface is a capture bot that can damage a rate.
+
+**Tier 3 reads widely and writes once.** It touches every register and produces one row, which is the correct ratio for a tier whose entire job is an argument about recurrence.

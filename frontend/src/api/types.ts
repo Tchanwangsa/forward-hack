@@ -50,11 +50,54 @@ export interface Episode {
   events: TelemetryEventView[]
 }
 
+/** One read against the estate: what was run, what it returned, what it printed. */
+export interface Probe {
+  tool: string
+  target: string
+  summary: string
+  ref: string
+  metrics: Record<string, unknown>
+  transcript: string[]
+  /** set when an earlier step already opened this session — the reading is there */
+  reused_from?: string | null
+}
+
+/** One clause of the procedure, executed. Including the ones that found nothing —
+ *  what was ruled out is half of a diagnosis. */
+export interface TriageStepView {
+  step_id: string
+  section: string | null
+  title: string
+  question: string | null
+  /** the condition that fired, if one did */
+  satisfied: string | null
+  outcome: string | null
+  goto: string | null
+  note: string | null
+  probes: Probe[]
+}
+
+export interface TriageView {
+  procedure: string
+  verification: string | null
+  outcome: string
+  label: string
+  disposition: string
+  citation: string | null
+  narrative: string | null
+  escalate_to: string | null
+  checks_run: number
+  confidence: number | null
+  steps: TriageStepView[]
+}
+
 export interface DraftDetail extends DraftSummary {
   fields: DraftField[]
   /** field -> why this source cannot evidence it. Rendered, never hidden. */
   blank_by_design: Record<string, string>
   artifact: Episode
+  /** the procedure walk behind a diagnosis, where the bot ran one */
+  triage: TriageView | null
 }
 
 export interface CompletionSummary {
@@ -86,52 +129,6 @@ export interface QueueResponse {
   drafts: DraftSummary[]
   completions: CompletionSummary[]
   counts: { drafts: number; completions: number }
-}
-
-export interface Coverage {
-  basis: string
-  events_happened: number
-  correct_before: number
-  rows_recovered: number
-  codes_corrected: number
-  correct_after: number
-  pct_before: number
-  pct_after: number
-}
-
-export interface Scorecard {
-  baseline: {
-    events_happened: number
-    events_logged: number
-    never_written_up: number
-    correctly_coded: number
-    blank_code: number
-    wrong_code: number
-    identified_pct: number
-    sentence: string
-  }
-  coverage: Coverage
-  coverage_projected: Coverage
-  field_completeness: { table: string; column: string; blank_pct: number; capture_knows: string }[]
-  field_accuracy: {
-    bot: string
-    field_name: string
-    proposed: number
-    scoreable: number
-    correct: number
-    contradictions: number
-    accuracy_pct: number | null
-    unscoreable: number
-  }[]
-  classification_accuracy: {
-    by_bot: { bot: string; classified: number; correct: number; accuracy_pct: number | null }[]
-  }
-  latency: {
-    human: { median_days: number; p90_days: number; max_days: number; rows_scored: number; scope: string }
-    agent: { median_days: number; p90_days: number; max_days: number; note: string }
-  }
-  verdicts: { bot: string; kind: string; status: string; n: number }[]
-  caveats: string[]
 }
 
 export interface Verdict {

@@ -1,13 +1,18 @@
 import { useEffect, useRef, useState } from 'react'
-import type { Kind, QueueItem } from '../api/types'
+import { Check, HelpCircle, Layers, Pencil, Plus } from 'lucide-react'
+import type { Kind, QueueItem, RailEntry } from '@/api/types'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { cn } from '@/lib/utils'
 
-// The queue. Nothing is pre-selected beyond the first item, and there is no
-// select-all accept.
+// The list of things waiting. Which bot produced them is a dropdown, not a
+// column of its own — one list, one panel, and that is the whole screen.
 //
-// Bulk accept exists in exactly one place: per field type across completions.
-// Thirteen `SW Version at Time` completions from one telemetry window are one
-// decision. Bulk accept across new rows is not, and is not offered. The
-// friction is the feature.
+// There is one bulk accept, and only for completions of the same field. Thirteen
+// software-version cells from one window are one decision. Thirteen new rows are
+// not, and there is no button for it.
 
 export type Filter = 'all' | 'new_row' | 'question' | 'completion'
 
@@ -15,11 +20,23 @@ const FILTERS: { id: Filter; label: string }[] = [
   { id: 'all', label: 'All' },
   { id: 'new_row', label: 'New rows' },
   { id: 'question', label: 'Questions' },
-  { id: 'completion', label: 'Completions' },
+  { id: 'completion', label: 'Fill-ins' },
 ]
+
+const PLANNED: Record<string, string> = {
+  'inbox-triage': 'Inbox triage',
+  'meeting-scribe': 'Meeting scribe',
+  'rma-capture': 'RMA capture',
+  'field-check': 'Field-check nudge',
+}
+
+const BOT_LABELS: Record<string, string> = { 'outage-watch': 'Outage watch', ...PLANNED }
 
 export default function QueueList({
   items,
+  rail,
+  bot,
+  onBot,
   selectedKey,
   filter,
   onFilter,
@@ -29,6 +46,9 @@ export default function QueueList({
   canAct,
 }: {
   items: QueueItem[]
+  rail: RailEntry[]
+  bot: string | null
+  onBot: (bot: string | null) => void
   selectedKey: string | null
   filter: Filter
   onFilter: (f: Filter) => void
@@ -37,33 +57,57 @@ export default function QueueList({
   bulkBusy: string | null
   canAct: boolean
 }) {
+  const live = new Set(rail.map((r) => r.bot))
+  const idle = Object.entries(PLANNED).filter(([id]) => !live.has(id))
+
   return (
-    <section className="flex min-h-0 min-w-0 flex-col border-r border-neutral-200 bg-white">
-      <header className="flex items-center gap-1 border-b border-neutral-200 px-2 py-1.5">
-        {FILTERS.map((f) => (
-          <button
-            key={f.id}
-            onClick={() => onFilter(f.id)}
-            className={[
-              'rounded px-2 py-1 text-[12px]',
-              filter === f.id ? 'bg-neutral-900 text-white' : 'text-neutral-600 hover:bg-neutral-100',
-            ].join(' ')}
-          >
-            {f.label}
-          </button>
-        ))}
-        <span className="ml-auto pr-1 text-[11px] text-neutral-500">{items.length} pending</span>
-      </header>
+    <section className="flex min-h-0 min-w-0 flex-col border-r bg-background">
+      <div className="space-y-2 border-b px-3 py-2.5">
+        <Select
+          value={bot ?? 'all'}
+          onValueChange={(v) => onBot(v === 'all' ? null : v)}
+        >
+          <SelectTrigger className="h-8 text-[13px]">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All bots</SelectItem>
+            {rail.map((r) => (
+              <SelectItem key={r.bot} value={r.bot}>
+                {BOT_LABELS[r.bot] ?? r.bot} — {r.new_rows + r.questions + r.completions} waiting
+              </SelectItem>
+            ))}
+            {idle.map(([id, label]) => (
+              <SelectItem key={id} value={id} disabled>
+                {label} — not running
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+
+        <div className="flex items-center gap-2">
+          <Tabs value={filter} onValueChange={(v) => onFilter(v as Filter)} className="min-w-0">
+            <TabsList className="h-8">
+              {FILTERS.map((f) => (
+                <TabsTrigger key={f.id} value={f.id} className="px-2 text-xs">
+                  {f.label}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+          </Tabs>
+          <span className="ml-auto shrink-0 text-xs text-muted-foreground">{items.length} waiting</span>
+        </div>
+      </div>
 
       <ol className="flex-1 overflow-y-auto">
         {items.map((it, i) => {
           const prev = items[i - 1]
-          const newGroup =
+          const startsGroup =
             it.type === 'completion' &&
             (!prev || prev.type !== 'completion' || prev.item.field !== it.item.field)
           return (
             <li key={`${it.type}-${it.id}`}>
-              {newGroup && it.type === 'completion' && (
+              {startsGroup && it.type === 'completion' && (
                 <GroupHeader
                   field={it.item.field}
                   ids={items
@@ -83,7 +127,9 @@ export default function QueueList({
           )
         })}
         {items.length === 0 && (
-          <li className="p-4 text-[13px] text-neutral-500">Nothing pending here.</li>
+          <li className="px-4 py-6 text-center text-[13px] text-muted-foreground">
+            Nothing waiting here.
+          </li>
         )}
       </ol>
     </section>
@@ -105,51 +151,44 @@ function GroupHeader({
 }) {
   const [confirming, setConfirming] = useState(false)
   return (
-    <div className="sticky top-0 z-10 flex items-center gap-2 border-y border-neutral-200 bg-neutral-100 px-3 py-1.5">
-      <span className="text-[11px] font-semibold uppercase tracking-wider text-neutral-600">
-        {field}
-      </span>
-      <span className="text-[11px] text-neutral-500">{ids.length} completions</span>
+    <div className="sticky top-0 z-10 flex items-center gap-2 border-y bg-muted/95 px-3 py-1.5 backdrop-blur">
+      <Layers className="size-3.5 shrink-0 text-muted-foreground" />
+      <span className="truncate text-xs font-medium">{field}</span>
+      <span className="shrink-0 text-xs text-muted-foreground">{ids.length}</span>
       {confirming ? (
-        <span className="ml-auto flex items-center gap-1">
-          <button
-            className="rounded bg-neutral-900 px-2 py-0.5 text-[11px] text-white disabled:opacity-40"
+        <span className="ml-auto flex shrink-0 items-center gap-1">
+          <Button
+            size="xs"
             disabled={busy || !canAct}
             onClick={() => {
               onAccept(field, ids)
               setConfirming(false)
             }}
           >
-            {busy ? 'accepting…' : `Yes — one decision, ${ids.length} cells`}
-          </button>
-          <button
-            className="rounded border border-neutral-300 bg-white px-2 py-0.5 text-[11px]"
-            onClick={() => setConfirming(false)}
-          >
+            {busy ? 'Saving…' : `Yes, all ${ids.length}`}
+          </Button>
+          <Button size="xs" variant="outline" onClick={() => setConfirming(false)}>
             No
-          </button>
+          </Button>
         </span>
       ) : (
-        <button
-          className="ml-auto rounded border border-neutral-300 bg-white px-2 py-0.5 text-[11px] text-neutral-700 hover:bg-neutral-50"
+        <Button
+          size="xs"
+          variant="outline"
+          className="ml-auto shrink-0"
           onClick={() => setConfirming(true)}
         >
-          Accept all {field}
-        </button>
+          <Check /> Accept all
+        </Button>
       )}
     </div>
   )
 }
 
-const KIND_STYLE: Record<Kind, string> = {
-  new_row: 'bg-emerald-100 text-emerald-900',
-  completion: 'bg-blue-100 text-blue-900',
-  question: 'bg-amber-100 text-amber-900',
-}
-const KIND_LABEL: Record<Kind, string> = {
-  new_row: 'new row',
-  completion: 'completion',
-  question: 'question',
+const KIND: Record<Kind, { label: string; icon: typeof Plus; className: string }> = {
+  new_row: { label: 'new row', icon: Plus, className: 'bg-emerald-100 text-emerald-800' },
+  completion: { label: 'fill-in', icon: Pencil, className: 'bg-blue-100 text-blue-800' },
+  question: { label: 'question', icon: HelpCircle, className: 'bg-amber-100 text-amber-900' },
 }
 
 function Row({
@@ -166,49 +205,40 @@ function Row({
     if (selected) ref.current?.scrollIntoView({ block: 'nearest' })
   }, [selected])
 
-  const lines =
+  const kind = KIND[item.kind]
+  const [headline, detail] =
     item.type === 'draft'
       ? [
-          // A question leads with what it is asking about; a drafted row leads
-          // with the code it is claiming.
           item.kind === 'question'
-            ? (item.item.row['Incident Description'] ?? 'not confident enough to draft')
-            : [item.item.event_code, item.item.row['SW Version at Time']]
-                .filter(Boolean)
-                .join(' · '),
+            ? (item.item.row['Incident Description'] ?? 'Not sure enough to draft this one')
+            : [item.item.event_code, item.item.row['SW Version at Time']].filter(Boolean).join(' · '),
           [item.item.row['Organisation'], item.item.row['WardID'], item.item.row['BedID']]
             .filter(Boolean)
-            .join(' '),
+            .join(' · '),
         ]
-      : [
-          item.item.field,
-          `${item.item.existing ?? 'blank'} → ${item.item.proposed}`,
-        ]
+      : [item.item.field, `${item.item.existing ?? 'blank'} → ${item.item.proposed}`]
 
   return (
     <button
       ref={ref}
       onClick={onSelect}
-      className={[
-        'block w-full border-b border-neutral-100 px-3 py-2 text-left',
-        selected ? 'bg-blue-50 ring-1 ring-inset ring-blue-300' : 'hover:bg-neutral-50',
-      ].join(' ')}
+      className={cn(
+        'block w-full border-b px-3 py-2.5 text-left transition-colors',
+        selected ? 'bg-accent' : 'hover:bg-accent/50',
+      )}
     >
       <span className="flex items-center gap-2">
-        <span className={`rounded px-1.5 py-0.5 text-[10px] ${KIND_STYLE[item.kind]}`}>
-          {KIND_LABEL[item.kind]}
-        </span>
-        <span className="truncate font-mono text-[12px] text-neutral-700">
-          {item.type === 'draft' ? item.item.artifact_ref : item.item.row}
-        </span>
+        <Badge className={cn('shrink-0 border-transparent', kind.className)}>
+          <kind.icon /> {kind.label}
+        </Badge>
         {item.type === 'draft' && item.item.events.length > 1 && (
-          <span className="rounded bg-neutral-200 px-1.5 py-0.5 text-[10px] text-neutral-700">
-            {item.item.events.length} events
+          <span className="shrink-0 text-xs text-muted-foreground">
+            {item.item.events.length} reports
           </span>
         )}
       </span>
-      <span className="mt-0.5 block truncate text-[13px] text-neutral-900">{lines[0]}</span>
-      <span className="block truncate text-[11px] text-neutral-500">{lines[1]}</span>
+      <span className="mt-1 block truncate text-[13px] font-medium">{headline}</span>
+      <span className="block truncate text-xs text-muted-foreground">{detail}</span>
     </button>
   )
 }

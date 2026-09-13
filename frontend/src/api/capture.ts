@@ -4,7 +4,6 @@ import type {
   CompletionDetail,
   DraftDetail,
   QueueResponse,
-  Scorecard,
   Verdict,
 } from './types'
 
@@ -32,15 +31,11 @@ export function useCompletion(id: number | null) {
   })
 }
 
-export function useScorecard() {
-  return useQuery({ queryKey: ['scorecard'], queryFn: () => api<Scorecard>('/capture/scorecard') })
-}
-
 type Target = { type: 'draft' | 'completion'; id: number }
 type Action = 'accept' | 'edit' | 'reject'
 
 /** Every verdict goes through here: nothing on this screen commits without a
- *  named reviewer, and the queue and the scorecard both move afterwards. */
+ *  named reviewer, and the queue moves afterwards. */
 export function useVerdict() {
   const qc = useQueryClient()
   return useMutation({
@@ -51,7 +46,6 @@ export function useVerdict() {
       }),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ['queue'] })
-      qc.invalidateQueries({ queryKey: ['scorecard'] })
     },
   })
 }
